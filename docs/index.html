@@ -6,6 +6,44 @@
   <title>Lofi Study Room</title>
   <base href="./">
   <link rel="stylesheet" href="index.css" />
+  <style>
+    /* Bigger, consistent arrow styling */
+    .home-arrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: background 0.2s ease;
+    }
+
+    .home-arrow:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .home-arrow.left {
+      left: 20px;
+    }
+
+    .home-arrow.right {
+      right: 20px;
+    }
+
+    .arrow-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+  </style>
 </head>
 <body>
   <!-- Home Page -->
@@ -19,7 +57,6 @@
 
   <!-- Timer Page -->
   <div class="page" id="timerPage">
-    <button class="back-btn" onclick="showPage('home')">← back</button>
     <div class="timer-content">
       <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
         focus session
@@ -34,25 +71,27 @@
     </div>
   </div>
 
-  <!-- Navigation Arrows (Same Tab Navigation) -->
+  <!-- Navigation Arrows (same-tab navigation, big and consistent) -->
   <div class="home-arrow left" onclick="window.location.href='src/spots.html'">
-    <div class="arrow-text">Discover Study Spots</div>
     <div class="arrow-icon">&lt;</div>
+    <div class="arrow-text">Discover Study Spots</div>
   </div>
 
   <div class="home-arrow right" onclick="window.location.href='src/buddy.html'">
-    <div class="arrow-icon">&gt;</div>
     <div class="arrow-text">Find Study Buddies</div>
+    <div class="arrow-icon">&gt;</div>
   </div>
 
-  <!-- Timer Script -->
+  <!-- Timer Script with Persistence -->
   <script>
     function showPage(pageName) {
       document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
       document.getElementById(pageName + "Page").classList.add("active");
     }
 
-    let timerState = { minutes: 25, seconds: 0, isRunning: false, totalTime: 1500, currentTime: 1500 };
+    // ✅ Load state from localStorage if it exists
+    let savedState = JSON.parse(localStorage.getItem("timerState"));
+    let timerState = savedState || { minutes: 25, seconds: 0, isRunning: false, totalTime: 1500, currentTime: 1500 };
     let timerInterval;
 
     function updateTimerDisplay() {
@@ -61,6 +100,10 @@
       document.getElementById("timerStatus").textContent =
         timerState.isRunning ? "deep focus mode" :
         timerState.currentTime === timerState.totalTime ? "ready to focus" : "paused";
+    }
+
+    function saveTimerState() {
+      localStorage.setItem("timerState", JSON.stringify(timerState));
     }
 
     function startTimer() {
@@ -72,17 +115,20 @@
               timerState.isRunning = false;
               clearInterval(timerInterval);
               document.getElementById("timerStatus").textContent = "session complete! ✨";
+              saveTimerState();
               return;
             }
-            timerState.minutes--; 
+            timerState.minutes--;
             timerState.seconds = 59;
           } else {
             timerState.seconds--;
           }
           timerState.currentTime = timerState.minutes * 60 + timerState.seconds;
           updateTimerDisplay();
+          saveTimerState();
         }, 1000);
         updateTimerDisplay();
+        saveTimerState();
       }
     }
 
@@ -90,6 +136,7 @@
       timerState.isRunning = false;
       clearInterval(timerInterval);
       updateTimerDisplay();
+      saveTimerState();
     }
 
     function resetTimer() {
@@ -99,12 +146,19 @@
       timerState.currentTime = timerState.totalTime;
       clearInterval(timerInterval);
       updateTimerDisplay();
+      saveTimerState();
+    }
+
+    // ✅ If saved state was running, restart countdown immediately
+    if (timerState.isRunning) {
+      startTimer();
+    } else {
+      updateTimerDisplay();
     }
 
     document.getElementById("startBtn").addEventListener("click", startTimer);
     document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
     document.getElementById("resetBtn").addEventListener("click", resetTimer);
-    updateTimerDisplay();
   </script>
 
   <script type="module" src="src/module/auth.js"></script>

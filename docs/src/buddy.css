@@ -27,12 +27,12 @@ body {
   width: 80%;       /* ✅ uses most of screen width */
   margin: 30px auto;
   padding: 20px;
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);  
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(0, 0, 0, 0.3);
 }
 
 .buddy-form h2, .buddy-form h3 {
@@ -46,12 +46,34 @@ body {
   max-width: none; /* remove any browser default limits */
 }
 
+input {
+    padding: 10px;
+    margin-top: 25px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    border: 1px solid #fff;
+    color: #fff;
+    font-size: 13px;
+}
+
 .buddy-form button {
   width: 100%; /* ✅ full-width buttons look cleaner on wide layouts */
 }
 
-h1 {
-  text-align: center;
+h1,h2,h3 {
   color: white;
-  margin-top: 60px;
+}
+
+.back-btn{
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-decoration: none;
+  color: white;
+  font-size: 20px;
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);  
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }

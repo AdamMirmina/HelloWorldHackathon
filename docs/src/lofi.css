@@ -1,34 +1,58 @@
+/* Fullscreen Reset */
 html, body {
   margin: 0;
   padding: 0;
-  width: 100%;
   height: 100%;
   overflow: hidden;
+  font-family: 'Helvetica', sans-serif;
+  background: #1e1e1e;
 }
 
-.video-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.video-container iframe {
-  position: absolute;
+/* YouTube iframe fullscreen */
+iframe {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none;
-  z-index: 1;
+  border: none;
+  z-index: 0; /* background */
+  filter: brightness(0.7);
 }
 
-.overlay-video {
-  position: absolute;
+/* Overlay local video */
+#overlayVideo {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  z-index: 2;
+  object-fit: cover; /* fill screen */
+  z-index: 1; /* above YouTube, below button */
   pointer-events: none;
+  background: black;
+}
+
+/* Play Button Styling */
+#playButton {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px 40px;
+  font-size: 24px;
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.8);
+  border: none;
+  border-radius: 10px;
+  color: #1e1e1e;
+  font-weight: bold;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 2; /* above everything */
+}
+
+#playButton:hover {
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
 }

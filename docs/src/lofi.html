@@ -3,37 +3,39 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lofi Video Overlay</title>
+  <title>Lofi Stream</title>
   <link rel="stylesheet" href="lofi.css">
 </head>
 <body>
-  <div class="video-container">
-    <!-- YouTube background video -->
-    <iframe 
-      src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&modestbranding=1&rel=0"
-      frameborder="0"
-      allow="autoplay; fullscreen"
-      allowfullscreen>
-    </iframe>
+  
+  <!-- Fullscreen YouTube Background -->
+  <iframe
+    id="ytVideo"
+    src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&modestbranding=1&rel=0"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
 
-    <!-- Local video overlay -->
-    <video id="overlayVideo" muted loop class="overlay-video">
-      <source src="../wallpapers/aesthetic.mp4" type="video/mp4">
-      Your browser does not support the video tag.
-    </video>
-  </div>
+  <!-- Looping Local Video Overlay -->
+  <video id="overlayVideo" autoplay loop muted playsinline>
+    <source src="../wallpapers/aesthetic.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <!-- Play Button Overlay -->
+  <button id="playButton">Click to Play Lofi</button>
 
   <script>
-    const video = document.getElementById('overlayVideo');
+    const player = document.getElementById('ytVideo');
+    const button = document.getElementById('playButton');
 
-    // Try to play the video when page loads
-    video.play().catch(() => {
-      console.log("Autoplay blocked. Will try after user interaction.");
-      // Wait for a user interaction
-      window.addEventListener('click', () => video.play());
+    button.addEventListener('click', () => {
+      // Reload iframe with sound enabled
+      const src = player.src;
+      player.src = src.replace("mute=1", "mute=0") + "&autoplay=1";
+      button.style.display = "none"; // hide button after click
     });
   </script>
+
 </body>
 </html>
-
-        

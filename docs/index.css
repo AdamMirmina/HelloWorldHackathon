@@ -145,7 +145,7 @@ body::before {
 }
 
 .title {
-    font-size: 4rem;
+    font-size: 5.5rem;
     font-weight: 500;
     margin-bottom: 20px;
     background: linear-gradient(135deg, #788ef0 0%, #9265c0 100%);

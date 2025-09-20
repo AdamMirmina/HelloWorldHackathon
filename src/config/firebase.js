@@ -18,6 +18,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+<<<<<<< HEAD:src/firebase.js
 const analytics = getAnalytics(app);
 
 // Code for authentication
@@ -33,3 +34,6 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
+=======
+const analytics = getAnalytics(app); // TODO: disable analytics?
+>>>>>>> 155980d2a5cb8abbf1daf7b53dd3fe4e06830f7c:src/config.js/firebase.js

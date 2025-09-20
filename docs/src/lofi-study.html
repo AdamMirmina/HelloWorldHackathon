@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube Firebase Embed</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YouTube Embed from Firestore</title>
 </head>
 <body>
-    <h1>YouTube Video from Firebase</h1>
-    <div id="video-container">
-        <!-- Video will be injected here -->
-    </div>
+  <h1>YouTube Video Embed</h1>
+  <!-- Placeholder YouTube src (can be blank or a default video) -->
+  <iframe id="youtube-video" width="560" height="315"
+          src="https://www.youtube.com/embed/DEFAULT_VIDEO_ID" 
+          title="YouTube video player" frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          allowfullscreen>
+  </iframe>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore-compat.js"></script>
-
-    <!-- Your JS file -->
-    <script type="module" src="./module/lofi-streams.js"></script>
+  <!-- Firebase SDK (modular) -->
+  <script type="module" src="../src/module/lofi-streams.js"></script>
 </body>
 </html>

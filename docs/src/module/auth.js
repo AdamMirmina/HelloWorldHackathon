@@ -1,8 +1,7 @@
 // src/module/auth.js
 
 // ✅ Import Firebase app from config
-import { app } from '../config/firebase.js';
-
+import { db } from "../config/firebase.js";
 import {
   getAuth,
   createUserWithEmailAndPassword,

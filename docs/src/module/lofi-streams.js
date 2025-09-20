@@ -18,31 +18,18 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-async function loadVideo() {
-  try {
-    // Replace "videos" and "vid1" with your collection/document
-    const docRef = doc(db, "lofi-streams", "stream1");
-    const docSnap = await getDoc(docRef);
 
-    if (docSnap.exists()) {
-      const videoId = docSnap.data().videoId;
-      const videoContainer = document.getElementById("video-container");
+// Reference to your Firestore document
+const docRef = doc(db, "lofi-streams", "stream1");
+const docSnap = await getDoc(docRef);
 
-      videoContainer.innerHTML = `
-        <iframe width="560" height="315"
-          src="https://www.youtube.com/embed/${videoId}"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen>
-        </iframe>
-      `;
-    } else {
-      console.log("No such document!");
-    }
-  } catch (error) {
-    console.error("Error fetching document:", error);
-  }
+if (docSnap.exists()) {
+  console.log("Document data:", docSnap.data());
+  const videoId = docSnap.data();
+  console.log("videoID: " + videoId);
+  const iframe = document.getElementById("youtube-video");
+  iframe.src = `https://www.youtube.com/embed/${videoId}`;
+} else {
+  // docSnap.data() will be undefined in this case
+  console.log("No such document!");
 }
-
-// 4. Load video when page loads
-window.onload = loadVideo;

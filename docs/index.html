@@ -59,13 +59,17 @@
     </div>
 
     <!-- Home Arrows -->
-    <div class="home-arrow left" onclick="window.open('spots.html', '_blank')"></div>
-        <div class="arrow-text">Discover Study Spots</div>
-        <div class="arrow-icon">&lt;</div>
+    <div class="home-arrow left">
+        <a target="_blank" href="src/spots.html">
+            <div class="arrow-text">Discover Study Spots</div>
+            <div class="arrow-icon">&lt;</div>
+        </a>
     </div>
-    <div class="home-arrow right" onclick="window.open('buddy.html', '_blank')">
-        <div class="arrow-icon">&gt;</div>
-        <div class="arrow-text">Find Study Buddies</div>
+    <div class="home-arrow right">
+        <a target="_blank" href="src/buddy.html">
+            <div class="arrow-icon">&gt;</div>
+            <div class="arrow-text">Find Study Buddies</div>
+        </a>
     </div>
    
 
@@ -151,6 +155,7 @@
     <script type="module" src="../src/module/index.js"></script>
     
     <!-- ✅ Load Firebase Auth Logic -->
-    <script type="module" src="../src/module/auth.js"></script>
+    <script type="module" src="src/module/auth.js"></script>
+<script type="module" src="src/module/match.js"></script>
   </body>
 </html>

@@ -1,1 +1,27 @@
-<!-- THis is where buddies happen idk-->
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Study Buddy Finder</title>
+        <base href="./">
+    </head>
+    <body>
+        <!-- 🔑 Email/Password Auth Form -->
+        <div class="auth-container" style="margin-top: 20px">
+            <input type="email" id="email" placeholder="Email" />
+            <input type="password" id="password" placeholder="Password" />
+            <button id="signup">Sign Up</button>
+            <button id="login">Log In</button>
+            <button id="logout" style="display: none">Log Out</button>
+            <p
+            id="current-user"
+            style="margin-top: 8px; color: #ccc; font-size: 0.9rem"
+            ></p>
+        </div>
+        </div>
+    </div>
+        <!-- ✅ Load Firebase Auth Logic -->
+        <script type="module" src="../src/module/auth.js"></script>
+    </body>
+</html>

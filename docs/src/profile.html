@@ -33,11 +33,6 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .profile-header h1 {
-      margin: 0;
-      text-align: center;
-    }
-
     .profile-info p {
       margin: 8px 0;
       font-size: 1rem;
@@ -88,26 +83,8 @@
 </head>
 
 <body>
-  <!-- Top Navigation Bar with Lucide Icons -->
-  <div class="top-nav">
-    <div class="nav-icons">
-      <span class="nav-icon" title="Messages" id="messagesIcon">
-        <i data-lucide="message-circle"></i>
-      </span>
-      <span class="nav-icon" title="Settings" onclick="window.location.href='settings.html'">
-        <i data-lucide="settings"></i>
-      </span>
-      <span class="nav-icon" title="Profile" onclick="window.location.href='profile.html'">
-        <i data-lucide="user"></i>
-      </span>
-    </div>
-  </div>
-
   <div class="profile-container" id="profileContainer">
-    <div class="profile-header">
-      <h1 id="profileTitle">Your Profile</h1>
-    </div>
-
+    <h1 id="profileTitle">Your Profile</h1>
     <div class="profile-info">
       <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
       <p><strong>Name:</strong> <input id="nameInput" placeholder="Your name" /></p>
@@ -122,6 +99,9 @@
   </div>
 
   <script type="module">
+    import { renderNavBar } from "../module/nav.js";
+    renderNavBar("profile");
+
     import { auth } from "../module/auth.js";
     import { db } from "../config/firebase.js";
     import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -139,8 +119,8 @@
 
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        alert("You must be logged in to view profiles.");
-        window.location.href = "../index.html";
+        // Redirect with return path so user goes back to profile after signing in
+        window.location.href = `../signin.html?redirect=${encodeURIComponent("src/profile.html")}`;
         return;
       }
 
@@ -164,7 +144,6 @@
           profileContainer.innerHTML = "<div class='private-message'>This profile is private.</div>";
           return;
         }
-        profileTitle.textContent = `${data.name || "User"}'s Profile`;
         profileContainer.innerHTML = `
           <h2>${data.name || "Unknown User"}</h2>
           <p><strong>School:</strong> ${data.school || "(not set)"}</p>
@@ -189,30 +168,8 @@
         alert("Profile updated!");
       });
     });
-
-    // Messages icon behavior
-    document.getElementById("messagesIcon").addEventListener("click", async () => {
-      const user = auth.currentUser;
-      if (!user) {
-        alert("Please log in first.");
-        return;
-      }
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-      const data = snap.data();
-      if (!data.public) {
-        if (confirm("Your profile must be public to use messaging. Make public now?")) {
-          await updateDoc(userRef, { public: true });
-          window.location.href = "messages.html";
-        }
-      } else {
-        window.location.href = "messages.html";
-      }
-    });
   </script>
 
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>lucide.createIcons();</script>
 </body>
 </html>

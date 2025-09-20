@@ -65,21 +65,6 @@
 </head>
 
 <body>
-  <!-- Top Navigation Bar with Lucide Icons -->
-  <div class="top-nav">
-    <div class="nav-icons">
-      <span class="nav-icon" title="Messages" id="messagesIcon">
-        <i data-lucide="message-circle"></i>
-      </span>
-      <span class="nav-icon" title="Settings" onclick="window.location.href='settings.html'">
-        <i data-lucide="settings"></i>
-      </span>
-      <span class="nav-icon" title="Profile" onclick="window.location.href='profile.html'">
-        <i data-lucide="user"></i>
-      </span>
-    </div>
-  </div>
-
   <div class="settings-container">
     <h1 style="text-align:center;">Settings</h1>
 
@@ -111,6 +96,9 @@
   </div>
 
   <script type="module">
+    import { renderNavBar } from "../module/nav.js";
+    renderNavBar("settings");
+
     import { auth } from "../module/auth.js";
     import { db } from "../config/firebase.js";
     import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -123,8 +111,8 @@
 
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        alert("You must be logged in to access settings.");
-        window.location.href = "../index.html";
+        // ✅ redirect with ?redirect so they return to settings after sign in
+        window.location.href = `../signin.html?redirect=${encodeURIComponent("src/settings.html")}`;
         return;
       }
 
@@ -169,30 +157,8 @@
         window.location.href = "profile.html";
       });
     });
-
-    // Messages icon logic
-    document.getElementById("messagesIcon").addEventListener("click", async () => {
-      const user = auth.currentUser;
-      if (!user) {
-        alert("Please log in first.");
-        return;
-      }
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-      const data = snap.data();
-      if (!data.public) {
-        if (confirm("Your profile must be public to use messaging. Make public now?")) {
-          await updateDoc(userRef, { public: true });
-          window.location.href = "messages.html";
-        }
-      } else {
-        window.location.href = "messages.html";
-      }
-    });
   </script>
 
-  <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>lucide.createIcons();</script>
 </body>
 </html>

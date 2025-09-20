@@ -6,101 +6,10 @@
   <title>Lofi Study Room</title>
   <base href="./" />
   <link rel="stylesheet" href="index.css" />
-
-  <style>
-    /* Top Navigation Bar */
-    .top-nav {
-      position: fixed;
-      top: 0;
-      right: 0;
-      left: 0;
-      display: flex;
-      justify-content: flex-end;
-      padding: 10px 20px;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      z-index: 1000;
-    }
-
-    .nav-icons {
-      display: flex;
-      gap: 20px;
-    }
-
-    .nav-icon {
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-    }
-
-    .nav-icon i {
-      width: 28px;
-      height: 28px;
-      stroke-width: 2;
-      color: white;
-      transition: transform 0.15s ease, color 0.15s ease;
-    }
-
-    .nav-icon:hover i {
-      transform: scale(1.2);
-      color: #ffd966;
-    }
-
-    /* Bigger, consistent arrow styling */
-    .home-arrow {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: background 0.2s ease;
-    }
-
-    .home-arrow:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    .home-arrow.left {
-      left: 20px;
-    }
-
-    .home-arrow.right {
-      right: 20px;
-    }
-
-    .arrow-icon {
-      font-size: 2rem;
-      line-height: 1;
-    }
-  </style>
 </head>
 
 <body>
-  <!-- Top Navigation Bar with Lucide Icons -->
-  <div class="top-nav">
-    <div class="nav-icons">
-      <span class="nav-icon" title="Messages" onclick="window.location.href='src/messages.html'">
-        <i data-lucide="message-circle"></i>
-      </span>
-      <span class="nav-icon" title="Settings" onclick="window.location.href='src/settings.html'">
-        <i data-lucide="settings"></i>
-      </span>
-      <span class="nav-icon" title="Profile" onclick="window.location.href='src/profile.html'">
-        <i data-lucide="user"></i>
-      </span>
-    </div>
-  </div>
+  <!-- Nav bar will be injected dynamically -->
 
   <!-- Home Page -->
   <div class="page active" id="homePage">
@@ -138,7 +47,7 @@
     <div class="arrow-text">Find Study Buddies</div>
   </div>
 
-  <!-- Timer Script with Persistence -->
+  <!-- Timer Script -->
   <script>
     function showPage(pageName) {
       document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
@@ -215,13 +124,14 @@
     document.getElementById("resetBtn").addEventListener("click", resetTimer);
   </script>
 
+  <!-- Shared Navigation Bar -->
+  <script type="module">
+    import { renderNavBar } from "./src/module/nav.js";
+    renderNavBar("index");
+  </script>
+
   <script type="module" src="src/module/auth.js"></script>
   <script type="module" src="src/module/match.js"></script>
-
-  <!-- Lucide Icons Script -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <script>
-    lucide.createIcons();
-  </script>
 </body>
 </html>

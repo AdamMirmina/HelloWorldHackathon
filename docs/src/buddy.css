@@ -1,151 +1,179 @@
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  body {
+      font-family: "Space Mono", monospace;    
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      background-image: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png);
+      background-size: cover;        /* Scales image to cover entire area */  
+      background-position: center;   
+      background-repeat: no-repeat;  
+      background-attachment: fixed; 
+      background-size: cover;        /* Scales image to cover entire area */
+      background-position: center;   /* Centers the image */
+      background-repeat: no-repeat;  /* Prevents image from repeating */
+      background-attachment: fixed;  /* Keeps background fixed while scrolling */
+  }
+
+
+  .buddy-form {
+    max-width: 700px; /* ✅ wider on desktop */
+    width: 80%;       /* ✅ uses most of screen width */
+    margin: 30px auto;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.15);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);  
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(0, 0, 0, 0.3);
+  }
+
+  .buddy-form h2, .buddy-form h3 {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .buddy-form input, .buddy-form select {
+    display: block;
+    width: 100%; /* ✅ fill container width */
+    max-width: none; /* remove any browser default limits */
+  }
+
+  input {
+      padding: 10px;
+      margin-top: 25px;
+      border: none;
+      border-radius: 10px;
+      background: transparent;
+      border: 1px solid #fff;
+      color: #fff;
+      font-size: 13px;
+  }
+
+  .buddy-form button {
+    width: 100%; /* ✅ full-width buttons look cleaner on wide layouts */
+  }
+
+  h1,h2,h3 {
+    color: white;
+  }
+
+.home-link {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 20;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-body {
-    font-family: "Space Mono", monospace;    
-    min-height: 100vh;
-    overflow: hidden;
-    position: relative;
-    background-image: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png);
-    background-size: cover;        /* Scales image to cover entire area */  
-    background-position: center;   
-    background-repeat: no-repeat;  
-    background-attachment: fixed; 
-    background-size: cover;        /* Scales image to cover entire area */
-    background-position: center;   /* Centers the image */
-    background-repeat: no-repeat;  /* Prevents image from repeating */
-    background-attachment: fixed;  /* Keeps background fixed while scrolling */
+.home-link:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 
+@media (max-width: 768px) {
+    .title {
+        font-size: 2rem;
+    }
+    
+    .spots-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 20px 15px;
+    }
+    
+    .map-container {
+        height: 300px;
+    }
+    
+    .study-metrics {
+        grid-template-columns: 1fr;
+    }
+    
+    .home-link {
+        top: 20px;
+        left: 20px;
+        padding: 8px 16px;
+        font-size: 0.9rem;
+    }
+} 
 
-.buddy-form {
-  max-width: 700px; /* ✅ wider on desktop */
-  width: 80%;       /* ✅ uses most of screen width */
-  margin: 30px auto;
-  padding: 20px;
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);  
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(0, 0, 0, 0.3);
-}
-
-.buddy-form h2, .buddy-form h3 {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.buddy-form input, .buddy-form select {
-  display: block;
-  width: 100%; /* ✅ fill container width */
-  max-width: none; /* remove any browser default limits */
-}
-
-input {
+  /* Glass-style inputs & selects */
+  input,
+  select {
+    width: 100%;
     padding: 10px;
-    margin-top: 25px;
-    border: none;
-    border-radius: 10px;
-    background: transparent;
-    border: 1px solid #fff;
-    color: #fff;
-    font-size: 13px;
-}
+    margin-top: 12px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    color: white;
+    font-size: 1rem;
+  }
 
-.buddy-form button {
-  width: 100%; /* ✅ full-width buttons look cleaner on wide layouts */
-}
+  input::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+  }
 
-h1,h2,h3 {
-  color: white;
-}
+  select option {
+    background-color: #222;
+    color: white;
+  }
 
-.back-btn{
-  position: absolute;
-  display: inline-flex;
-  align-items: center;  
-  top: 20px;
-  left: 20px;
-  text-decoration: none;
-  color: white;
-  cursor: pointer;
-  font-size: 1rem;
-  padding: 10px 16px;
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);  
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  transition: background 0.2s ease;
-  z-index: 1000;
-}
+  /* Buttons styled like glass theme */
+  button {
+    margin-top: 15px;
+    padding: 10px 15px;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 100%;
+  }
 
+  button:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
 
-.back-btn:hover {
-  background: rgba(0, 0, 0, 0.6);
-}
+  /* Give some top space for title */
+  h1 {
+    margin-top: 80px;
+    text-align: center;
+  }
 
-/* Glass-style inputs & selects */
-input,
-select {
-  width: 100%;
-  padding: 10px;
-  margin-top: 12px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  color: white;
-  font-size: 1rem;
-}
-
-input::placeholder {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-select option {
-  background-color: #222;
-  color: white;
-}
-
-/* Buttons styled like glass theme */
-button {
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 8px;
-  color: white;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background 0.2s ease;
-  width: 100%;
-}
-
-button:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-/* Give some top space for title */
-h1 {
-  margin-top: 80px;
-  text-align: center;
-}
-
-.buddy-form {
-  max-width: 700px;
-  width: 90%;
-  margin: 20px auto;
-  padding: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
+  .buddy-form {
+    max-width: 700px;
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }

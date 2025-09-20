@@ -46,18 +46,25 @@
 </head>
 
 <body>
-  <!-- Top Navigation Bar -->
-  <div class="top-nav">
-    <div class="nav-icons">
-      <span class="nav-icon" title="Messages" onclick="window.location.href='messages.html'">💬</span>
-      <span class="nav-icon" title="Settings" onclick="window.location.href='settings.html'">⚙️</span>
-      <span class="nav-icon" title="Profile" onclick="window.location.href='profile.html'">👤</span>
-    </div>
-  </div>
-
   <div class="messages-container">
     <h1>📨 Messages</h1>
     <p>Messaging is coming soon! Once implemented, you’ll be able to chat with your matches and study buddies right here.</p>
   </div>
+
+  <script type="module">
+    import { renderNavBar } from "../module/nav.js";
+    renderNavBar("messages");
+
+    import { auth } from "../module/auth.js";
+
+    auth.onAuthStateChanged((user) => {
+      if (!user) {
+        // ✅ redirect with ?redirect so user comes back here after login
+        window.location.href = `../signin.html?redirect=${encodeURIComponent("src/messages.html")}`;
+      }
+    });
+  </script>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
 </body>
 </html>

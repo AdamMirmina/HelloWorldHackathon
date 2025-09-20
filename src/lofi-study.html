@@ -1,27 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>YouTube Livestream Switcher</title>
-  <style>
-    body { font-family: Arial; text-align: center; margin: 30px; }
-    iframe { border-radius: 10px; margin-bottom: 20px; }
-    button { margin: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Firebase Embed</title>
 </head>
 <body>
+    <h1>YouTube Video from Firebase</h1>
+    <div id="video-container">
+        <!-- Video will be injected here -->
+    </div>
 
-  <!-- YouTube player -->
-  <iframe id="player" width="560" height="315" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.6.0/firebase-firestore-compat.js"></script>
 
-  <!-- Buttons will be generated dynamically -->
-  <div id="buttons"></div>
-
-  <!-- Include your Firebase JS module -->
-  <script type="module">
-    import { loadStreams } from 'src/module/lofi-streams.js';
-    loadStreams();
-  </script>
-
+    <!-- Your JS file -->
+    <script type="module" src="./module/lofi-streams.js"></script>
 </body>
 </html>

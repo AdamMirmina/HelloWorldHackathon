@@ -47,6 +47,7 @@ body::before {
 
 /* Side buttons */
 .home-arrow {
+    text-decoration: none;
     position: fixed;
     top: 50%;
     transform: translateY(-50%);

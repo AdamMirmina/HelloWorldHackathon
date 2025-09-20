@@ -1,0 +1,292 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Space Mono", monospace;    
+    font-family: 'Courier New', monospace;
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background-image: url(https://cdnb.artstation.com/p/assets/images/images/049/953/491/large/diana-baltezar-room2-recuperado2.jpg?1653695448);
+    background-size: cover;        /* Scales image to cover entire area */  
+    background-position: center;   
+    background-repeat: no-repeat;  
+    background-attachment: fixed; 
+    background-size: cover;        /* Scales image to cover entire area */
+    background-position: center;   /* Centers the image */
+    background-repeat: no-repeat;  /* Prevents image from repeating */
+    background-attachment: fixed;  /* Keeps background fixed while scrolling */
+}
+
+/* Subtle texture overlay */
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+.container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+}
+
+/* Hidden side buttons */
+.nav-button {
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.4);
+    padding: 20px 15px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    letter-spacing: 2px;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.nav-button.left {
+    
+    left: -80px;
+    border-radius: 0 15px 15px 0;
+    border-left: none;
+}
+
+.nav-button.right {
+    right: -80px;
+    border-radius: 15px 0 0 15px;
+    border-right: none;
+}
+
+.nav-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-50%) translateX(0);
+}
+
+.nav-button.left:hover {
+    transform: translateY(-50%) translateX(75px);
+}
+
+.nav-button.right:hover {
+    transform: translateY(-50%) translateX(-75px);
+}
+
+/* Main content areas */
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.5s ease;
+    pointer-events: none;
+}
+
+.page.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+}
+
+/* Home page styles */
+.home-content {
+    text-align: center;
+    color: white;
+}
+
+.title {
+    font-size: 4rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, #788ef0 0%, #9265c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 3px;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 60px;
+    font-weight: 300;
+}
+
+.main-timer-btn {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 20px 40px;
+    font-size: 1.3rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    letter-spacing: 1px;
+}
+
+.main-timer-btn:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.3) 0%, rgba(118, 75, 162, 0.3) 100%);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+/* Timer page styles */
+.timer-content {
+    text-align: center;
+    color: white;
+}
+
+.timer-display {
+    font-size: 6rem;
+    font-weight: 300;
+    margin: 40px 0;
+    color: #667eea;
+    text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+}
+
+.timer-controls {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.timer-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.timer-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+}
+
+.timer-status {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-top: 20px;
+}
+
+/* Study pages styles */
+.study-content {
+    max-width: 800px;
+    padding: 40px;
+    color: white;
+}
+
+.study-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #667eea;
+    text-align: center;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.feature-card:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-5px);
+}
+
+.feature-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #764ba2;
+}
+
+.feature-card p {
+    color: rgba(255, 255, 255, 0.7);
+    line-height: 1.6;
+}
+
+.back-btn {
+    position: fixed;
+    top: 30px;
+    left: 30px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    z-index: 20;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-width: 768px) {
+    .title {
+        font-size: 2.5rem;
+    }
+    
+    .timer-display {
+        font-size: 4rem;
+    }
+    
+    .nav-button {
+        display: none;
+    }
+    
+    .study-content {
+        padding: 20px;
+    }
+    
+    .feature-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+

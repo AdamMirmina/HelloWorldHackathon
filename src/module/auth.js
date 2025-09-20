@@ -1,29 +1,46 @@
 import { app } from './firebase.js';
-import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } 
-  from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
-// Google Sign In
+// Sign in with Google
 document.getElementById("google-signin").addEventListener("click", () => {
   signInWithPopup(auth, provider)
-    .then(result => console.log("✅ Signed in as:", result.user.displayName))
-    .catch(error => console.error("❌ Login error:", error.message));
+    .then(result => {
+      console.log("✅ Signed in as:", result.user.displayName, result.user.email);
+      document.getElementById("google-signin").style.display = "none";
+      document.getElementById("logout").style.display = "block";
+    })
+    .catch(error => console.error("❌ Sign-in error:", error.message));
 });
 
-// Logout
+// Log out
 document.getElementById("logout").addEventListener("click", () => {
-  signOut(auth).then(() => console.log("✅ Logged out"));
+  signOut(auth)
+    .then(() => {
+      console.log("✅ Signed out");
+      document.getElementById("google-signin").style.display = "block";
+      document.getElementById("logout").style.display = "none";
+    })
+    .catch(error => console.error("❌ Sign-out error:", error.message));
 });
 
-// Track auth state
-onAuthStateChanged(auth, (user) => {
+// Detect login state on page load
+onAuthStateChanged(auth, user => {
   if (user) {
-    console.log("User is logged in:", user.email);
+    console.log("🔑 Logged in as:", user.email);
+    document.getElementById("google-signin").style.display = "none";
     document.getElementById("logout").style.display = "block";
   } else {
     console.log("No user signed in");
+    document.getElementById("google-signin").style.display = "block";
     document.getElementById("logout").style.display = "none";
   }
 });

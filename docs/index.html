@@ -1,132 +1,123 @@
-🟢 Cleaned-Up index.html
-
-Here’s what I recommend you use as your final index.html before pushing:
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lofi Study Room</title>
-    <base href="./">
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <!-- Home Page -->
-    <div class="page active" id="homePage">
-      <div class="home-content">
-        <h1 class="title">Study Room</h1>
-        <p class="subtitle">It's time to lock in</p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lofi Study Room</title>
+  <base href="./">
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <!-- Home Page -->
+  <div class="page active" id="homePage">
+    <div class="home-content">
+      <h1 class="title">Study Room</h1>
+      <p class="subtitle">It's time to lock in</p>
+      <button class="main-timer-btn" onclick="showPage('timer')">Go To Timer</button>
 
-        <!-- Timer Navigation -->
-        <button class="main-timer-btn" onclick="showPage('timer')">
-          Go To Timer
-        </button>
+      <!-- 🔑 Email/Password Auth Form -->
+      <div class="auth-container" style="margin-top: 20px">
+        <input type="email" id="email" placeholder="Email" />
+        <input type="password" id="password" placeholder="Password" />
+        <button id="signup">Sign Up</button>
+        <button id="login">Log In</button>
+        <button id="logout" style="display: none">Log Out</button>
+        <p id="current-user" style="margin-top: 8px; color: #ccc; font-size: 0.9rem"></p>
       </div>
     </div>
+  </div>
 
-    <!-- Timer Page -->
-    <div class="page" id="timerPage">
-      <button class="back-btn" onclick="showPage('home')">← back</button>
-      <div class="timer-content">
-        <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
-          focus session
-        </h2>
-        <div class="timer-display" id="timerDisplay">25:00</div>
-        <div class="timer-status" id="timerStatus">ready to focus</div>
-        <div class="timer-controls">
-          <button class="timer-btn" id="startBtn">start</button>
-          <button class="timer-btn" id="pauseBtn">pause</button>
-          <button class="timer-btn" id="resetBtn">reset</button>
-        </div>
+  <!-- Timer Page -->
+  <div class="page" id="timerPage">
+    <button class="back-btn" onclick="showPage('home')">← back</button>
+    <div class="timer-content">
+      <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
+        focus session
+      </h2>
+      <div class="timer-display" id="timerDisplay">25:00</div>
+      <div class="timer-status" id="timerStatus">ready to focus</div>
+      <div class="timer-controls">
+        <button class="timer-btn" id="startBtn">start</button>
+        <button class="timer-btn" id="pauseBtn">pause</button>
+        <button class="timer-btn" id="resetBtn">reset</button>
       </div>
     </div>
+  </div>
 
-    <!-- Home Arrows -->
-    <a class="home-arrow left" href="src/spots.html" target="_blank">
-        <div class="arrow-icon">🡐</div> 
-        <div class="arrow-text">Discover Study Spots</div>
-    </a>
-    <a class="home-arrow right" href="src/buddy.html" target="_blank">
-        <div class="arrow-icon">🡒</div>
-        <div class="arrow-text">Find Study Buddies</div>
-    </a>
+  <!-- Navigation Arrows (Same Tab Navigation) -->
+  <div class="home-arrow left" onclick="window.location.href='src/spots.html'">
+    <div class="arrow-text">Discover Study Spots</div>
+    <div class="arrow-icon">&lt;</div>
+  </div>
 
-    <!-- Timer Script -->
-    <script>
-      function showPage(pageName) {
-        document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
-        document.getElementById(pageName + "Page").classList.add("active");
-      }
+  <div class="home-arrow right" onclick="window.location.href='src/buddy.html'">
+    <div class="arrow-icon">&gt;</div>
+    <div class="arrow-text">Find Study Buddies</div>
+  </div>
 
-      let timerState = {
-        minutes: 25,
-        seconds: 0,
-        isRunning: false,
-        totalTime: 1500,
-        currentTime: 1500,
-      };
-      let timerInterval;
+  <!-- Timer Script -->
+  <script>
+    function showPage(pageName) {
+      document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
+      document.getElementById(pageName + "Page").classList.add("active");
+    }
 
-      function updateTimerDisplay() {
-        const display = document.getElementById("timerDisplay");
-        const status = document.getElementById("timerStatus");
-        display.textContent = `${timerState.minutes.toString().padStart(2, "0")}:${timerState.seconds.toString().padStart(2, "0")}`;
-        status.textContent = timerState.isRunning
-          ? "deep focus mode"
-          : timerState.currentTime === timerState.totalTime
-          ? "ready to focus"
-          : "paused";
-      }
+    let timerState = { minutes: 25, seconds: 0, isRunning: false, totalTime: 1500, currentTime: 1500 };
+    let timerInterval;
 
-      function startTimer() {
-        if (!timerState.isRunning && (timerState.minutes > 0 || timerState.seconds > 0)) {
-          timerState.isRunning = true;
-          timerInterval = setInterval(() => {
-            if (timerState.seconds === 0) {
-              if (timerState.minutes === 0) {
-                timerState.isRunning = false;
-                clearInterval(timerInterval);
-                document.getElementById("timerStatus").textContent = "session complete! ✨";
-                return;
-              }
-              timerState.minutes--;
-              timerState.seconds = 59;
-            } else {
-              timerState.seconds--;
+    function updateTimerDisplay() {
+      document.getElementById("timerDisplay").textContent =
+        `${timerState.minutes.toString().padStart(2,"0")}:${timerState.seconds.toString().padStart(2,"0")}`;
+      document.getElementById("timerStatus").textContent =
+        timerState.isRunning ? "deep focus mode" :
+        timerState.currentTime === timerState.totalTime ? "ready to focus" : "paused";
+    }
+
+    function startTimer() {
+      if (!timerState.isRunning && (timerState.minutes > 0 || timerState.seconds > 0)) {
+        timerState.isRunning = true;
+        timerInterval = setInterval(() => {
+          if (timerState.seconds === 0) {
+            if (timerState.minutes === 0) {
+              timerState.isRunning = false;
+              clearInterval(timerInterval);
+              document.getElementById("timerStatus").textContent = "session complete! ✨";
+              return;
             }
-            timerState.currentTime = timerState.minutes * 60 + timerState.seconds;
-            updateTimerDisplay();
-          }, 1000);
+            timerState.minutes--; 
+            timerState.seconds = 59;
+          } else {
+            timerState.seconds--;
+          }
+          timerState.currentTime = timerState.minutes * 60 + timerState.seconds;
           updateTimerDisplay();
-        }
-      }
-
-      function pauseTimer() {
-        timerState.isRunning = false;
-        clearInterval(timerInterval);
+        }, 1000);
         updateTimerDisplay();
       }
+    }
 
-      function resetTimer() {
-        timerState.isRunning = false;
-        timerState.minutes = 25;
-        timerState.seconds = 0;
-        timerState.currentTime = timerState.totalTime;
-        clearInterval(timerInterval);
-        updateTimerDisplay();
-      }
-
-      document.getElementById("startBtn").addEventListener("click", startTimer);
-      document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
-      document.getElementById("resetBtn").addEventListener("click", resetTimer);
-
+    function pauseTimer() {
+      timerState.isRunning = false;
+      clearInterval(timerInterval);
       updateTimerDisplay();
-    </script>
+    }
 
-    <!-- ✅ Script Imports (corrected paths) -->
-    <script type="module" src="src/module/index.js"></script>
-    <script type="module" src="src/module/auth.js"></script>
-    <script type="module" src="src/module/match.js"></script>
-  </body>
+    function resetTimer() {
+      timerState.isRunning = false;
+      timerState.minutes = 25;
+      timerState.seconds = 0;
+      timerState.currentTime = timerState.totalTime;
+      clearInterval(timerInterval);
+      updateTimerDisplay();
+    }
+
+    document.getElementById("startBtn").addEventListener("click", startTimer);
+    document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
+    document.getElementById("resetBtn").addEventListener("click", resetTimer);
+    updateTimerDisplay();
+  </script>
+
+  <script type="module" src="src/module/auth.js"></script>
+  <script type="module" src="src/module/match.js"></script>
+</body>
 </html>

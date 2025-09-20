@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lofi Background Video</title>
+    <title>Lofi Video Overlay</title>
     <link rel="stylesheet" href="lofi.css" />
   </head>
   <body>
     <div class="video-container">
-      <!-- YouTube video (autoplay, muted, loop, no controls) -->
+      <!-- YouTube background video -->
       <iframe
         src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&modestbranding=1&rel=0"
         frameborder="0"
@@ -17,8 +17,11 @@
       >
       </iframe>
 
-      <!-- Overlay content -->
-      <div class="overlay">Relaxing Lofi</div>
+      <!-- Local video overlay -->
+      <video autoplay muted loop class="overlay-video">
+        <source src="../wallpapers/aesthetic.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
     </div>
   </body>
 </html>

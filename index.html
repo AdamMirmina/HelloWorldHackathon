@@ -5,13 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lofi Study Room</title>
     <link rel="stylesheet" href="style.css">
-    
 </head>
 <body>
-    <!-- Hidden Navigation 
-    <div class="nav-button left" onclick="showPage('buddy')">STUDY BUDDY</div>
-    <div class="nav-button right" onclick="showPage('spots')">STUDY SPOTS</div>
--->
     <!-- Home Page -->
     <div class="page active" id="homePage">
         <div class="home-content">
@@ -20,6 +15,10 @@
             <button class="main-timer-btn" onclick="showPage('timer')">
                 Go To Timer
             </button>
+            <div style="margin-top: 20px;">
+    <button id="google-signin">Sign in with Google</button>
+    <button id="logout" style="display:none;">Log Out</button>
+</div>
         </div>
     </div>
 
@@ -38,9 +37,19 @@
         </div>
     </div>
 
-    <!-- Study Buddy Page -->
+    <!-- Study Buddy Page (right side) -->
     <div class="page" id="buddyPage">
         <button class="back-btn" onclick="showPage('home')">← back</button>
+
+        <a href="buddy.html" class="side-nav right-nav">
+            <span class="nav-text">Study Buddy</span>
+            <span class="nav-arrow">
+                <!-- SVG icon goes here -->
+                <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e3e3e3">
+                    <path d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z"/>
+                </svg>
+            </span>
+        </a>
         <div class="study-content">
             <h2>find your study buddy</h2>
             <p style="text-align: center; color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-bottom: 30px;">
@@ -71,7 +80,7 @@
         </div>
     </div>
 
-    <!-- Study Spots Page -->
+    <!-- Study Spots Page (left side)-->
     <div class="page" id="spotsPage">
         <button class="back-btn" onclick="showPage('home')">← back</button>
         <div class="study-content">
@@ -195,5 +204,6 @@
         // Initialize
         updateTimerDisplay();
     </script>
+    <script type="module" src="./auth.js"></script>
 </body>
 </html>

@@ -1,10 +1,12 @@
-// ✅ Import Firebase app config from correct folder (config/firebase.js)
+// src/module/auth.js
+
+// ✅ Import Firebase app from config
 import { app } from '../config/firebase.js';
 
 import {
   getAuth,
-  GoogleAuthProvider,
-  signInWithPopup,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
@@ -13,56 +15,67 @@ console.log("✅ auth.js loaded successfully");
 
 // Initialize Firebase Auth
 const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
 
-// Wait until DOM is fully loaded before attaching event listeners
 document.addEventListener("DOMContentLoaded", () => {
-  console.log("✅ DOM fully loaded - setting up auth event listeners");
+  console.log("✅ DOM fully loaded - setting up email/password auth");
 
-  const signInButton = document.getElementById("google-signin");
-  const logoutButton = document.getElementById("logout");
+  const emailField = document.getElementById("email");
+  const passwordField = document.getElementById("password");
+  const signupBtn = document.getElementById("signup");
+  const loginBtn = document.getElementById("login");
+  const logoutBtn = document.getElementById("logout");
+  const currentUserDisplay = document.getElementById("current-user");
 
-  if (!signInButton) {
-    console.error("❌ google-signin button not found in DOM");
-    return;
-  }
+  // 🔑 Sign up new user
+  signupBtn.addEventListener("click", () => {
+    const email = emailField.value;
+    const password = passwordField.value;
 
-  // Sign in with Google
-  signInButton.addEventListener("click", () => {
-    console.log("🔘 Sign-in button clicked");
-    signInWithPopup(auth, provider)
-      .then(result => {
-        console.log("✅ Signed in as:", result.user.displayName, result.user.email);
-        signInButton.style.display = "none";
-        logoutButton.style.display = "block";
+    createUserWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        console.log("✅ User signed up:", userCredential.user.email);
+        alert("Account created successfully!");
       })
       .catch(error => {
-        console.error("❌ Sign-in error:", error.code, error.message);
-        alert(`Sign-in failed: ${error.message}`); // Visible feedback for users
+        console.error("❌ Signup error:", error.message);
+        alert(`Signup failed: ${error.message}`);
       });
   });
 
-  // Log out
-  logoutButton.addEventListener("click", () => {
-    console.log("🔘 Logout button clicked");
-    signOut(auth)
-      .then(() => {
-        console.log("✅ Signed out");
-        signInButton.style.display = "block";
-        logoutButton.style.display = "none";
+  // 🔑 Log in existing user
+  loginBtn.addEventListener("click", () => {
+    const email = emailField.value;
+    const password = passwordField.value;
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(userCredential => {
+        console.log("✅ User logged in:", userCredential.user.email);
       })
-      .catch(error => console.error("❌ Sign-out error:", error.message));
+      .catch(error => {
+        console.error("❌ Login error:", error.message);
+        alert(`Login failed: ${error.message}`);
+      });
   });
 
-  // Detect login state changes
+  // 🔑 Log out
+  logoutBtn.addEventListener("click", () => {
+    signOut(auth)
+      .then(() => {
+        console.log("✅ User signed out");
+      })
+      .catch(error => console.error("❌ Logout error:", error.message));
+  });
+
+  // 🔄 Detect login state changes
   onAuthStateChanged(auth, user => {
-    console.log("👀 Auth state changed:", user ? user.email : "No user signed in");
     if (user) {
-      signInButton.style.display = "none";
-      logoutButton.style.display = "block";
+      console.log("🔑 Logged in as:", user.email);
+      logoutBtn.style.display = "block";
+      currentUserDisplay.textContent = `Logged in as: ${user.email}`;
     } else {
-      signInButton.style.display = "block";
-      logoutButton.style.display = "none";
+      console.log("No user logged in");
+      logoutBtn.style.display = "none";
+      currentUserDisplay.textContent = "";
     }
   });
 });

@@ -6,45 +6,8 @@
   <title>Lofi Study Room</title>
   <base href="./">
   <link rel="stylesheet" href="index.css" />
-  <style>
-    /* Bigger, consistent arrow styling */
-    .home-arrow {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: background 0.2s ease;
-    }
-
-    .home-arrow:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    .home-arrow.left {
-      left: 20px;
-    }
-
-    .home-arrow.right {
-      right: 20px;
-    }
-
-    .arrow-icon {
-      font-size: 2rem;
-      line-height: 1;
-    }
-  </style>
 </head>
+
 <body>
   <!-- Home Page -->
   <div class="page active" id="homePage">
@@ -98,7 +61,7 @@
       document.getElementById("timerDisplay").textContent =
         `${timerState.minutes.toString().padStart(2,"0")}:${timerState.seconds.toString().padStart(2,"0")}`;
       document.getElementById("timerStatus").textContent =
-        timerState.isRunning ? "deep focus mode" :
+        timerState.isRunning ? "focus mode" :
         timerState.currentTime === timerState.totalTime ? "ready to focus" : "paused";
     }
 
@@ -165,3 +128,45 @@
   <script type="module" src="src/module/match.js"></script>
 </body>
 </html>
+
+
+<!--
+<style>
+    /* Bigger, consistent arrow styling */
+    .home-arrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: background 0.2s ease;
+    }
+
+    .home-arrow:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .home-arrow.left {
+      left: 20px;
+    }
+
+    .home-arrow.right {
+      right: 20px;
+    }
+
+    .arrow-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+  </style>
+  -->

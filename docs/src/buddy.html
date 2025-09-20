@@ -1,152 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Study Buddy Finder</title>
-  <link rel="stylesheet" href="buddy.css" />
-  <style>
-    /* Make back arrow match index.html styling */
-    .back-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: none;
-      transition: background 0.2s ease;
-      z-index: 1000;
-    }
-
-    .back-btn:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    /* Glass-style inputs & selects */
-    input, select {
-      width: 100%;
-      padding: 10px;
-      margin-top: 12px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      color: white;
-      font-size: 1rem;
-    }
-
-    input::placeholder {
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    select option {
-      background-color: #222;
-      color: white;
-    }
-
-    /* Buttons styled like glass theme */
-    button {
-      margin-top: 15px;
-      padding: 10px 15px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: background 0.2s ease;
-      width: 100%;
-    }
-
-    button:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* Give some top space for title */
-    h1 {
-      margin-top: 80px;
-      text-align: center;
-    }
-
-    .buddy-form {
-      max-width: 700px;
-      width: 90%;
-      margin: 20px auto;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lofi Pomodoro</title>
+  <link rel="stylesheet" href="lofi.css">
 </head>
 <body>
-  <!-- Back Arrow -->
-  <button class="back-btn" onclick="window.history.back()">
-    ← Back
-  </button>
 
-  <h1>Find Your Study Buddy</h1>
+  <!-- Fullscreen YouTube Background -->
+  <iframe
+    id="ytVideo"
+    src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&modestbranding=1&rel=0"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
 
-  <!-- Auth -->
-  <div class="auth-container" style="margin: 20px auto; max-width: 500px;">
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
-    <button id="signup">Sign Up</button>
-    <button id="login">Log In</button>
-    <button id="logout" style="display:none;">Log Out</button>
-    <p id="current-user"></p>
-  </div>
+  <!-- Looping Local Video Overlay -->
+  <video id="overlayVideo" autoplay loop muted playsinline>
+    <source src="../wallpapers/aesthetic.mp4" type="video/mp4">
+  </video>
 
-  <!-- Preferences -->
-  <div class="buddy-form">
-    <h2 style="text-align:center;">Study Preferences</h2>
-    <input type="text" id="name" placeholder="Your Name" required>
-    <input type="text" id="school" placeholder="Your School" required>
-
-    <h3>Classes</h3>
-    <div id="classes-container">
-      <div class="class-input">
-        <input type="text" class="subject" placeholder="Class (e.g. CS180)">
-        <input type="text" class="teacher" placeholder="Teacher (optional)">
-        <input type="text" class="block" placeholder="Block/Period (optional)">
-      </div>
+  <!-- Pomodoro Timer -->
+  <div id="pomodoro">
+    <span class="typing-text">Pomodoro Timer</span>
+    <div id="time-display">25:00</div>
+    <div class="controls">
+      <button id="start">Start</button>
+      <button id="pause">Pause</button>
+      <button id="stop">Stop</button>
+      <button id="minus">-1 min</button>
+      <button id="plus">+1 min</button>
     </div>
-    <button type="button" id="add-class">+ Add Another Class</button>
-
-    <h3>Preferences</h3>
-    <select id="studyStyle">
-      <option value="">Select Study Style</option>
-      <option value="quiet">Quiet</option>
-      <option value="group">Group</option>
-      <option value="music">With Music</option>
-      <option value="late-night">Late Night</option>
-    </select>
-    <select id="timePreference">
-      <option value="">Best Time</option>
-      <option value="morning">Morning</option>
-      <option value="afternoon">Afternoon</option>
-      <option value="night">Night</option>
-    </select>
-
-    <button type="button" id="submit-preferences">Find My Buddy</button>
-    <div id="match-result"></div>
   </div>
 
-  <script type="module" src="module/auth.js"></script>
-  <script type="module" src="module/match.js"></script>
+  <script src="lofi.js"></script>
 </body>
 </html>

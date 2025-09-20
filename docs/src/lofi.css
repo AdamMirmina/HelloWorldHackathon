@@ -1,14 +1,14 @@
-/* Fullscreen Reset */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   height: 100%;
   overflow: hidden;
-  font-family: 'Helvetica', sans-serif;
+  font-family: "Courier New", monospace;
   background: #1e1e1e;
 }
 
-/* YouTube iframe fullscreen */
+/* YouTube background */
 iframe {
   position: fixed;
   top: 0;
@@ -16,7 +16,7 @@ iframe {
   width: 100%;
   height: 100%;
   border: none;
-  z-index: 0; /* background */
+  z-index: 0;
   filter: brightness(0.7);
 }
 
@@ -27,32 +27,79 @@ iframe {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* fill screen */
-  z-index: 1; /* above YouTube, below button */
+  object-fit: cover;
+  z-index: 1;
   pointer-events: none;
-  background: black;
 }
 
-/* Play Button Styling */
-#playButton {
+/* Pomodoro container */
+#pomodoro {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  padding: 20px 40px;
-  font-size: 24px;
-  cursor: pointer;
-  background: rgba(255, 255, 255, 0.8);
-  border: none;
-  border-radius: 10px;
-  color: #1e1e1e;
-  font-weight: bold;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  z-index: 2; /* above everything */
+  background: #eecbb0;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 0 30px rgba(238, 203, 176, 0.7);
+  text-align: center;
+  z-index: 2;
 }
 
-#playButton:hover {
-  transform: translate(-50%, -50%) scale(1.05);
-  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+/* Typing animation */
+.typing-text {
+  display: inline-block;
+  border-right: 2px solid #2e2e2e;
+  white-space: nowrap;
+  overflow: hidden;
+  font-weight: bold;
+  font-size: 22px;
+  width: 0ch;
+  animation: typing 3s steps(14, end) forwards, blink 0.75s step-end infinite;
+}
+
+@keyframes typing {
+  from {
+    width: 0ch;
+  }
+  to {
+    width: 14ch;
+  } /* "Pomodoro Timer" */
+}
+
+@keyframes blink {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: #2e2e2e;
+  }
+}
+
+/* Timer display */
+#time-display {
+  margin: 20px 0;
+  font-size: 36px;
+  font-weight: bold;
+  color: #2e2e2e;
+}
+
+/* Controls */
+.controls button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: #fff3ea;
+  color: #2e2e2e;
+  transition: all 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+}
+
+.controls button:hover {
+  background: #f7dac3;
+  transform: scale(1.05);
 }

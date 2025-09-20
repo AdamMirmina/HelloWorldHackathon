@@ -8,6 +8,7 @@
 
 body {
     font-family: "Space Mono", monospace;    
+    font-family: 'Courier New', monospace;
     min-height: 100vh;
     overflow: hidden;
     position: relative;
@@ -16,6 +17,10 @@ body {
     background-position: center;   
     background-repeat: no-repeat;  
     background-attachment: fixed; 
+    background-size: cover;        /* Scales image to cover entire area */
+    background-position: center;   /* Centers the image */
+    background-repeat: no-repeat;  /* Prevents image from repeating */
+    background-attachment: fixed;  /* Keeps background fixed while scrolling */
 }
 
 /* Subtle texture overlay */

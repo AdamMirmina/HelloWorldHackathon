@@ -1,6 +1,27 @@
-<div>
-  <iframe id="player" width="560" height="315"
-    src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-  </iframe>
-</div>
-<div id="buttons"></div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>YouTube Livestream Switcher</title>
+  <style>
+    body { font-family: Arial; text-align: center; margin: 30px; }
+    iframe { border-radius: 10px; margin-bottom: 20px; }
+    button { margin: 5px; padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <!-- YouTube player -->
+  <iframe id="player" width="560" height="315" src="" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+  <!-- Buttons will be generated dynamically -->
+  <div id="buttons"></div>
+
+  <!-- Include your Firebase JS module -->
+  <script type="module">
+    import { loadStreams } from 'src/module/lofi-streams.js';
+    loadStreams();
+  </script>
+
+</body>
+</html>

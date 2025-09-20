@@ -1,39 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Lofi Pomodoro</title>
-  <link rel="stylesheet" href="lofi.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Study Buddy Finder</title>
+    <link rel="stylesheet" href="buddy.css" />
+  </head>
+  <body>
+    <!-- Back Arrow -->
+    <button class="back-btn" onclick="window.history.back()">← Back</button>
 
-  <!-- Fullscreen YouTube Background -->
-  <iframe
-    id="ytVideo"
-    src="https://www.youtube.com/embed/jfKfPfyJRdk?autoplay=1&mute=1&controls=0&loop=1&playlist=jfKfPfyJRdk&modestbranding=1&rel=0"
-    allow="autoplay; fullscreen"
-    allowfullscreen
-  ></iframe>
+    <h1>Find Your Study Buddy</h1>
 
-  <!-- Looping Local Video Overlay -->
-  <video id="overlayVideo" autoplay loop muted playsinline>
-    <source src="../wallpapers/aesthetic.mp4" type="video/mp4">
-  </video>
-
-  <!-- Pomodoro Timer -->
-  <div id="pomodoro">
-    <span class="typing-text">Pomodoro Timer</span>
-    <div id="time-display">25:00</div>
-    <div class="controls">
-      <button id="start">Start</button>
-      <button id="pause">Pause</button>
-      <button id="stop">Stop</button>
-      <button id="minus">-1 min</button>
-      <button id="plus">+1 min</button>
+    <!-- Auth -->
+    <div class="auth-container" style="margin: 20px auto; max-width: 500px">
+      <input type="email" id="email" placeholder="Email" />
+      <input type="password" id="password" placeholder="Password" />
+      <button id="signup">Sign Up</button>
+      <button id="login">Log In</button>
+      <button id="logout" style="display: none">Log Out</button>
+      <p id="current-user"></p>
     </div>
-  </div>
 
-  <script src="lofi.js"></script>
-</body>
+    <!-- Preferences -->
+    <div class="buddy-form">
+      <h2 style="text-align: center">Study Preferences</h2>
+      <input type="text" id="name" placeholder="Your Name" required />
+      <input type="text" id="school" placeholder="Your School" required />
+
+      <h3>Classes</h3>
+      <div id="classes-container">
+        <div class="class-input">
+          <input type="text" class="subject" placeholder="Class (e.g. CS180)"    />
+          <input type="text" class="teacher" placeholder="Teacher (optional)" />
+          <input
+            type="text"
+            class="block"
+            placeholder="Block/Period (optional)"
+          />
+        </div>
+      </div>
+      <button type="button" id="add-class">+ Add Another Class</button>
+
+      <h3>Preferences</h3>
+      <select id="studyStyle">
+        <option value="">Select Study Style</option>
+        <option value="quiet">Quiet</option>
+        <option value="group">Group</option>
+        <option value="music">With Music</option>
+        <option value="late-night">Late Night</option>
+      </select>
+      <select id="timePreference">
+        <option value="">Best Time</option>
+        <option value="morning">Morning</option>
+        <option value="afternoon">Afternoon</option>
+        <option value="night">Night</option>
+      </select>
+
+      <button type="button" id="submit-preferences">Find My Buddy</button>
+      <div id="match-result"></div>
+    </div>
+
+    <script type="module" src="module/auth.js"></script>
+    <script type="module" src="module/match.js"></script>
+  </body>
 </html>

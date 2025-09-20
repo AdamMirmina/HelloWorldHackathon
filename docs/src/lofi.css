@@ -1,105 +1,101 @@
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  overflow: hidden;
-  font-family: "Courier New", monospace;
-  background: #1e1e1e;
+/* Global Lofi Chill Style */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f7dac3;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* YouTube background */
-iframe {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-  z-index: 0;
-  filter: brightness(0.7);
+/* Youtube Background */
+#youtube-background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    z-index: 0;
 }
 
-/* Overlay local video */
-#overlayVideo {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: 1;
-  pointer-events: none;
+#youtube-background iframe {
+    width: 100%;
+    height: 100%;
 }
 
-/* Pomodoro container */
-#pomodoro {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: #eecbb0;
-  padding: 30px;
-  border-radius: 20px;
-  box-shadow: 0 0 30px rgba(238, 203, 176, 0.7);
-  text-align: center;
-  z-index: 2;
+/* Overlay video */
+#overlay-video {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+    pointer-events: none;
 }
 
-/* Typing animation */
-.typing-text {
-  display: inline-block;
-  border-right: 2px solid #2e2e2e;
-  white-space: nowrap;
-  overflow: hidden;
-  font-weight: bold;
-  font-size: 22px;
-  width: 0ch;
-  animation: typing 3s steps(14, end) forwards, blink 0.75s step-end infinite;
+/* Start screen button */
+#start-screen {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(247, 218, 195, 0.5);
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-@keyframes typing {
-  from {
-    width: 0ch;
-  }
-  to {
-    width: 14ch;
-  } /* "Pomodoro Timer" */
+#start-button {
+    font-size: 3rem;
+    background: transparent;
+    border: 2px solid #f7dac3;
+    color: #f7dac3;
+    padding: 2rem 4rem;
+    cursor: pointer;
+    text-transform: uppercase;
 }
 
-@keyframes blink {
-  from,
-  to {
-    border-color: transparent;
-  }
-  50% {
-    border-color: #2e2e2e;
-  }
+/* Pomodoro Timer */
+.hidden {
+    display: none;
 }
 
-/* Timer display */
-#time-display {
-  margin: 20px 0;
-  font-size: 36px;
-  font-weight: bold;
-  color: #2e2e2e;
+#pomodoro-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
+    background: rgba(247, 218, 195, 0.8);
+    padding: 2rem;
+    border-radius: 2rem;
+    text-align: center;
 }
 
-/* Controls */
-.controls button {
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  background: #fff3ea;
-  color: #2e2e2e;
-  transition: all 0.2s ease;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+.timer-display input {
+    width: 60px;
+    font-size: 2rem;
+    text-align: center;
+    border: none;
+    background: transparent;
 }
 
-.controls button:hover {
-  background: #f7dac3;
-  transform: scale(1.05);
+.timer-controls button {
+    font-size: 1rem;
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid #f7dac3;
+    background: transparent;
+    color: #f7dac3;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    transition: 0.3s;
+}
+
+.timer-controls button:hover {
+    background: #f7dac3;
+    color: #000;
 }

@@ -6,12 +6,90 @@
   <title>Lofi Study Room</title>
   <base href="./">
   <link rel="stylesheet" href="index.css" />
+  <style>
+    /* Top Navigation Bar */
+    .top-nav {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      display: flex;
+      justify-content: flex-end;
+      padding: 10px 20px;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 1000;
+    }
+
+    .nav-icons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .nav-icon {
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: transform 0.15s ease, color 0.15s ease;
+    }
+
+    .nav-icon:hover {
+      transform: scale(1.2);
+      color: #ffd966; /* nice highlight */
+    }
+
+    /* Bigger, consistent arrow styling */
+    .home-arrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: background 0.2s ease;
+    }
+
+    .home-arrow:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .home-arrow.left {
+      left: 20px;
+    }
+
+    .home-arrow.right {
+      right: 20px;
+    }
+
+    .arrow-icon {
+      font-size: 2rem;
+      line-height: 1;
+    }
+  </style>
 </head>
 
 <body>
+  <!-- Top Navigation Bar -->
+  <div class="top-nav">
+    <div class="nav-icons">
+      <span class="nav-icon" title="Messages" onclick="window.location.href='src/messages.html'">💬</span>
+      <span class="nav-icon" title="Settings" onclick="window.location.href='src/profile.html'">⚙️</span>
+      <span class="nav-icon" title="Profile" onclick="window.location.href='src/profile.html'">👤</span>
+    </div>
+  </div>
+
   <!-- Home Page -->
   <div class="page active" id="homePage">
-    <div class="home-content">
+    <div class="home-content" style="margin-top: 60px;">
       <h1 class="title">Study Room</h1>
       <p class="subtitle">It's time to lock in</p>
       <button class="main-timer-btn" onclick="showPage('timer')">Go To Timer</button>
@@ -20,7 +98,7 @@
 
   <!-- Timer Page -->
   <div class="page" id="timerPage">
-    <div class="timer-content">
+    <div class="timer-content" style="margin-top: 60px;">
       <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
         focus session
       </h2>
@@ -34,7 +112,7 @@
     </div>
   </div>
 
-  <!-- Navigation Arrows (same-tab navigation, big and consistent) -->
+  <!-- Navigation Arrows -->
   <div class="home-arrow left" onclick="window.location.href='src/spots.html'">
     <div class="arrow-icon">&lt;</div>
     <div class="arrow-text">Discover Study Spots</div>
@@ -43,6 +121,10 @@
   <div class="home-arrow right" onclick="window.location.href='src/buddy.html'">
     <div class="arrow-text">Find Study Buddies</div>
     <div class="arrow-icon">&gt;</div>
+  </div>
+
+  <div class="clock">
+    
   </div>
 
   <!-- Timer Script with Persistence -->
@@ -112,7 +194,7 @@
       saveTimerState();
     }
 
-    // ✅ If saved state was running, restart countdown immediately
+    // ✅ Resume timer if it was running
     if (timerState.isRunning) {
       startTimer();
     } else {
@@ -128,45 +210,3 @@
   <script type="module" src="src/module/match.js"></script>
 </body>
 </html>
-
-
-<!--
-<style>
-    /* Bigger, consistent arrow styling */
-    .home-arrow {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: background 0.2s ease;
-    }
-
-    .home-arrow:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
-
-    .home-arrow.left {
-      left: 20px;
-    }
-
-    .home-arrow.right {
-      right: 20px;
-    }
-
-    .arrow-icon {
-      font-size: 2rem;
-      line-height: 1;
-    }
-  </style>
-  -->

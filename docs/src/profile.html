@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Profile</title>
+  <link rel="stylesheet" href="profile.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+      min-height: 100vh;
+      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
+        no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    /* Back arrow like index.html */
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: white;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: none;
+      transition: background 0.2s ease;
+      z-index: 1000;
+    }
+
+    .back-btn:hover {
+      background: rgba(0, 0, 0, 0.6);
+    }
+
+    .profile-container {
+      margin-top: 80px;
+      max-width: 700px;
+      width: 90%;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .profile-header h1 {
+      margin: 0;
+    }
+
+    .profile-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .profile-actions button {
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 8px 12px;
+      transition: background 0.2s ease;
+    }
+
+    .profile-actions button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .toggle-container {
+      margin: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .toggle-container input[type="checkbox"] {
+      transform: scale(1.5);
+    }
+
+    .profile-info p {
+      margin: 6px 0;
+      font-size: 1rem;
+    }
+
+    .message-prompt {
+      display: none;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 8px;
+      text-align: center;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Back Button -->
+  <button class="back-btn" onclick="window.history.back()">← Back</button>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>Your Profile</h1>
+      <div class="profile-actions">
+        <button id="messagesBtn">Messages</button>
+        <button id="settingsBtn">Settings</button>
+      </div>
+    </div>
+
+    <div class="toggle-container">
+      <label for="publicProfileToggle">Public Profile</label>
+      <input type="checkbox" id="publicProfileToggle" />
+    </div>
+
+    <div class="profile-info">
+      <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
+      <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+      <p><strong>School:</strong> <span id="userSchool">Loading...</span></p>
+    </div>
+
+    <div class="message-prompt" id="messagePrompt">
+      <p>Your profile must be public to use messaging.</p>
+      <button onclick="makePublicAndContinue()">Make Public & Continue</button>
+    </div>
+  </div>
+
+  <script type="module">
+    import { auth } from "./src/module/auth.js";
+    import { db } from "./src/config/firebase.js";
+    import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const publicToggle = document.getElementById("publicProfileToggle");
+    const userEmail = document.getElementById("userEmail");
+    const userName = document.getElementById("userName");
+    const userSchool = document.getElementById("userSchool");
+    const messagePrompt = document.getElementById("messagePrompt");
+    const messagesBtn = document.getElementById("messagesBtn");
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        alert("You must be logged in to view your profile.");
+        window.location.href = "index.html";
+        return;
+      }
+
+      userEmail.textContent = user.email;
+
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+
+      if (snap.exists()) {
+        const data = snap.data();
+        userName.textContent = data.name || "(not set)";
+        userSchool.textContent = data.school || "(not set)";
+        publicToggle.checked = !!data.public;
+      } else {
+        // Create an empty profile doc if it doesn't exist
+        await setDoc(userRef, { public: false });
+        publicToggle.checked = false;
+      }
+
+      publicToggle.addEventListener("change", async () => {
+        await updateDoc(userRef, { public: publicToggle.checked });
+      });
+
+      messagesBtn.addEventListener("click", () => {
+        if (!publicToggle.checked) {
+          messagePrompt.style.display = "block";
+        } else {
+          window.location.href = "messages.html"; // Placeholder for future messages page
+        }
+      });
+    });
+
+    async function makePublicAndContinue() {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, { public: true });
+        publicToggle.checked = true;
+        messagePrompt.style.display = "none";
+        window.location.href = "messages.html";
+      }
+    }
+  </script>
+</body>
+</html>

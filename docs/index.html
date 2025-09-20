@@ -58,47 +58,16 @@
       </div>
     </div>
 
-    <!-- Study Buddy Page -->
-    <div class="page" id="buddyPage">
-      <a href="../src/buddy.html" class="side-nav right-nav">
-        <span class="nav-text">Study Buddies</span>
-        <span class="nav-arrow">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            height="32px"
-            viewBox="0 -960 960 960"
-            width="32px"
-            fill="#e3e3e3"
-          >
-            <path
-              d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z"
-            />
-          </svg>
-        </span>
-      </a>
+    <!-- Home Arrows -->
+    <div class="home-arrow left" onclick="window.open('buddy-finder.html', '_blank')"></div>
+        <div class="arrow-text">find study buddies</div>
+        <div class="arrow-icon">&lt;</div>
     </div>
-
-    <!-- Study Spots Page -->
-    <div class="page" id="spotsPage">
-        <button class="side-nav-container">
-            <a href="../src/spots.html" class="side-nav left-nav">
-                <span class="nav-text">Study Places</span>
-                <span class="nav-arrow">
-                    <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    height="48px"
-                    viewBox="0 -960 960 960"
-                    width="48px"
-                    fill="#e3e3e3"
-                    >
-                    <path>
-                    d="M400-240 160-480l241-241 43 42-169 169h526v60H275l168 168-43 42Z"
-                    />
-                </svg>
-                </span>
-            </a>
-        </button>
+    <div class="home-arrow right" onclick="window.open('study-spots.html', '_blank')">
+        <div class="arrow-icon">&gt;</div>
+        <div class="arrow-text">discover study spots</div>
     </div>
+   
 
     <!-- Timer Script -->
     <script>
@@ -179,9 +148,9 @@
 
       updateTimerDisplay();
     </script>
-    <script type="module" src="../src/module/index.js"></script>
+    <script type="script" src="../src/module/index.js"></script>
     
     <!-- ✅ Load Firebase Auth Logic -->
-    <script type="module" src="../src/module/auth.js"></script>
+    <script type="script" src="../src/module/auth.js"></script>
   </body>
 </html>

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lofi Study Room</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <!-- Home Page -->
@@ -39,17 +39,16 @@
 
     <!-- Study Buddy Page (right side) -->
     <div class="page" id="buddyPage">
-        <button class="back-btn" onclick="showPage('home')">← back</button>
-
-        <a href="buddy.html" class="side-nav right-nav">
-            <span class="nav-text">Study Buddy</span>
-            <span class="nav-arrow">
-                <!-- SVG icon goes here -->
-                <svg xmlns="http://www.w3.org/2000/svg" height="50px" viewBox="0 -960 960 960" width="50px" fill="#e3e3e3">
-                    <path d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z"/>
-                </svg>
-            </span>
-        </a>
+        <!--<button class="back-btn" onclick="showPage('home')">← back</button> -->
+            <a href="buddy.html" class="side-nav right-nav">
+                <span class="nav-text">Study Buddy</span>
+                <span class="nav-arrow">
+                    <!-- SVG icon goes here -->
+                    <svg xmlns="http://www.w3.org/2000/svg" height="32px" viewBox="0 -960 960 960" width="32px" fill="#e3e3e3">
+                        <path d="m560-242-43-42 168-168H160v-60h525L516-681l43-42 241 241-240 240Z"/>
+                    </svg>
+                </span>
+            </a>
         <div class="study-content">
             <h2>find your study buddy</h2>
             <p style="text-align: center; color: rgba(255,255,255,0.7); font-size: 1.1rem; margin-bottom: 30px;">
@@ -204,6 +203,6 @@
         // Initialize
         updateTimerDisplay();
     </script>
-    <script type="module" src="src/module/auth.js"></script>
+    <script type="module" src="./auth.js"></script>
 </body>
 </html>

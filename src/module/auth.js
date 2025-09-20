@@ -10,6 +10,8 @@ import {
 const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
+console.log("✅ auth.js loaded successfully");
+
 // Sign in with Google
 document.getElementById("google-signin").addEventListener("click", () => {
   signInWithPopup(auth, provider)

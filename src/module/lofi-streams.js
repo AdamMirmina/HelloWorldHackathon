@@ -3,12 +3,11 @@ import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "src/config/firebase.js";
 
 // Your Firebase config
-const firebaseConfig = { /* from Firebase console */ };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 async function loadStreams() {
-  const querySnapshot = await getDocs(collection(db, "streams"));
+  const querySnapshot = await getDocs(collection(db, "lofi-streams"));
   querySnapshot.forEach(doc => {
     const stream = doc.data();
 

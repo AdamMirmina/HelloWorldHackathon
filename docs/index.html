@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lofi Study Room</title>
-  <base href="./">
+  <base href="./" />
   <link rel="stylesheet" href="index.css" />
+
   <style>
     /* Top Navigation Bar */
     .top-nav {
@@ -24,18 +25,26 @@
 
     .nav-icons {
       display: flex;
-      gap: 15px;
+      gap: 20px;
     }
 
     .nav-icon {
-      font-size: 1.5rem;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    .nav-icon i {
+      width: 28px;
+      height: 28px;
+      stroke-width: 2;
+      color: white;
       transition: transform 0.15s ease, color 0.15s ease;
     }
 
-    .nav-icon:hover {
+    .nav-icon:hover i {
       transform: scale(1.2);
-      color: #ffd966; /* nice highlight */
+      color: #ffd966;
     }
 
     /* Bigger, consistent arrow styling */
@@ -78,18 +87,24 @@
 </head>
 
 <body>
-  <!-- Top Navigation Bar -->
+  <!-- Top Navigation Bar with Lucide Icons -->
   <div class="top-nav">
     <div class="nav-icons">
-      <span class="nav-icon" title="Messages" onclick="window.location.href='src/messages.html'">💬</span>
-      <span class="nav-icon" title="Settings" onclick="window.location.href='src/profile.html'">⚙️</span>
-      <span class="nav-icon" title="Profile" onclick="window.location.href='src/profile.html'">👤</span>
+      <span class="nav-icon" title="Messages" onclick="window.location.href='src/messages.html'">
+        <i data-lucide="message-circle"></i>
+      </span>
+      <span class="nav-icon" title="Settings" onclick="window.location.href='src/settings.html'">
+        <i data-lucide="settings"></i>
+      </span>
+      <span class="nav-icon" title="Profile" onclick="window.location.href='src/profile.html'">
+        <i data-lucide="user"></i>
+      </span>
     </div>
   </div>
 
   <!-- Home Page -->
   <div class="page active" id="homePage">
-    <div class="home-content" style="margin-top: 60px;">
+    <div class="home-content" style="margin-top: 60px">
       <h1 class="title">Study Room</h1>
       <p class="subtitle">It's time to lock in</p>
       <button class="main-timer-btn" onclick="showPage('timer')">Go To Timer</button>
@@ -98,7 +113,7 @@
 
   <!-- Timer Page -->
   <div class="page" id="timerPage">
-    <div class="timer-content" style="margin-top: 60px;">
+    <div class="timer-content" style="margin-top: 60px">
       <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
         focus session
       </h2>
@@ -119,12 +134,8 @@
   </div>
 
   <div class="home-arrow right" onclick="window.location.href='src/buddy.html'">
-    <div class="arrow-text">Find Study Buddies</div>
     <div class="arrow-icon">&gt;</div>
-  </div>
-
-  <div class="clock">
-    
+    <div class="arrow-text">Find Study Buddies</div>
   </div>
 
   <!-- Timer Script with Persistence -->
@@ -134,7 +145,6 @@
       document.getElementById(pageName + "Page").classList.add("active");
     }
 
-    // ✅ Load state from localStorage if it exists
     let savedState = JSON.parse(localStorage.getItem("timerState"));
     let timerState = savedState || { minutes: 25, seconds: 0, isRunning: false, totalTime: 1500, currentTime: 1500 };
     let timerInterval;
@@ -194,7 +204,6 @@
       saveTimerState();
     }
 
-    // ✅ Resume timer if it was running
     if (timerState.isRunning) {
       startTimer();
     } else {
@@ -208,5 +217,11 @@
 
   <script type="module" src="src/module/auth.js"></script>
   <script type="module" src="src/module/match.js"></script>
+
+  <!-- Lucide Icons Script -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>
+    lucide.createIcons();
+  </script>
 </body>
 </html>

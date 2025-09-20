@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Profile</title>
-  <link rel="stylesheet" href="profile.css" />
+  <title>User Profile</title>
+  <link rel="stylesheet" href="../index.css" />
   <style>
     body {
       margin: 0;
@@ -20,32 +20,6 @@
       padding: 20px;
     }
 
-    /* Back arrow like index.html */
-    .back-btn {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      cursor: pointer;
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: white;
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 12px;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      border: none;
-      transition: background 0.2s ease;
-      z-index: 1000;
-    }
-
-    .back-btn:hover {
-      background: rgba(0, 0, 0, 0.6);
-    }
-
     .profile-container {
       margin-top: 80px;
       max-width: 700px;
@@ -59,151 +33,186 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .profile-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
     .profile-header h1 {
       margin: 0;
+      text-align: center;
     }
 
-    .profile-actions {
-      display: flex;
-      gap: 10px;
+    .profile-info p {
+      margin: 8px 0;
+      font-size: 1rem;
     }
 
-    .profile-actions button {
+    input, textarea {
+      width: 100%;
+      margin-top: 5px;
+      padding: 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 1rem;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    textarea::placeholder, input::placeholder {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .save-btn {
+      margin-top: 15px;
+      padding: 10px 15px;
       background: rgba(255, 255, 255, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 8px;
       color: white;
       font-size: 1rem;
       cursor: pointer;
-      padding: 8px 12px;
-      transition: background 0.2s ease;
+      width: 100%;
     }
 
-    .profile-actions button:hover {
+    .save-btn:hover {
       background: rgba(255, 255, 255, 0.3);
     }
 
-    .toggle-container {
-      margin: 20px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .toggle-container input[type="checkbox"] {
-      transform: scale(1.5);
-    }
-
-    .profile-info p {
-      margin: 6px 0;
-      font-size: 1rem;
-    }
-
-    .message-prompt {
-      display: none;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 10px;
-      margin-top: 15px;
-      border-radius: 8px;
+    .private-message {
       text-align: center;
+      font-size: 1.2rem;
+      padding: 20px;
     }
   </style>
 </head>
 
 <body>
-  <!-- Back Button -->
-  <button class="back-btn" onclick="window.history.back()">← Back</button>
-
-  <div class="profile-container">
-    <div class="profile-header">
-      <h1>Your Profile</h1>
-      <div class="profile-actions">
-        <button id="messagesBtn">Messages</button>
-        <button id="settingsBtn">Settings</button>
-      </div>
+  <!-- Top Navigation Bar with Lucide Icons -->
+  <div class="top-nav">
+    <div class="nav-icons">
+      <span class="nav-icon" title="Messages" id="messagesIcon">
+        <i data-lucide="message-circle"></i>
+      </span>
+      <span class="nav-icon" title="Settings" onclick="window.location.href='settings.html'">
+        <i data-lucide="settings"></i>
+      </span>
+      <span class="nav-icon" title="Profile" onclick="window.location.href='profile.html'">
+        <i data-lucide="user"></i>
+      </span>
     </div>
+  </div>
 
-    <div class="toggle-container">
-      <label for="publicProfileToggle">Public Profile</label>
-      <input type="checkbox" id="publicProfileToggle" />
+  <div class="profile-container" id="profileContainer">
+    <div class="profile-header">
+      <h1 id="profileTitle">Your Profile</h1>
     </div>
 
     <div class="profile-info">
       <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
-      <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
-      <p><strong>School:</strong> <span id="userSchool">Loading...</span></p>
-    </div>
-
-    <div class="message-prompt" id="messagePrompt">
-      <p>Your profile must be public to use messaging.</p>
-      <button onclick="makePublicAndContinue()">Make Public & Continue</button>
+      <p><strong>Name:</strong> <input id="nameInput" placeholder="Your name" /></p>
+      <p><strong>School:</strong> <input id="schoolInput" placeholder="Your school" /></p>
+      <p><strong>Description:</strong></p>
+      <textarea id="descriptionInput" placeholder="Tell others about your study habits, favorite subjects, etc."></textarea>
+      <div style="margin-top:10px;">
+        <label><input type="checkbox" id="publicProfileToggle" /> Public Profile</label>
+      </div>
+      <button class="save-btn" id="saveProfileBtn">Save Changes</button>
     </div>
   </div>
 
   <script type="module">
-    import { auth } from "./src/module/auth.js";
-    import { db } from "./src/config/firebase.js";
+    import { auth } from "../module/auth.js";
+    import { db } from "../config/firebase.js";
     import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
+    const profileTitle = document.getElementById("profileTitle");
+    const nameInput = document.getElementById("nameInput");
+    const schoolInput = document.getElementById("schoolInput");
+    const descriptionInput = document.getElementById("descriptionInput");
     const publicToggle = document.getElementById("publicProfileToggle");
+    const saveBtn = document.getElementById("saveProfileBtn");
     const userEmail = document.getElementById("userEmail");
-    const userName = document.getElementById("userName");
-    const userSchool = document.getElementById("userSchool");
-    const messagePrompt = document.getElementById("messagePrompt");
-    const messagesBtn = document.getElementById("messagesBtn");
+    const profileContainer = document.getElementById("profileContainer");
+    const params = new URLSearchParams(window.location.search);
+    const viewedUid = params.get("uid");
 
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        alert("You must be logged in to view your profile.");
-        window.location.href = "index.html";
+        alert("You must be logged in to view profiles.");
+        window.location.href = "../index.html";
+        return;
+      }
+
+      const isOwnProfile = !viewedUid || viewedUid === user.uid;
+      const userRef = doc(db, "users", viewedUid || user.uid);
+      const snap = await getDoc(userRef);
+
+      if (!snap.exists()) {
+        if (isOwnProfile) {
+          await setDoc(userRef, { public: false, name: "", school: "", description: "" });
+        } else {
+          profileContainer.innerHTML = "<div class='private-message'>This profile is private.</div>";
+          return;
+        }
+      }
+
+      const data = (await getDoc(userRef)).data();
+
+      if (!isOwnProfile) {
+        if (!data.public) {
+          profileContainer.innerHTML = "<div class='private-message'>This profile is private.</div>";
+          return;
+        }
+        profileTitle.textContent = `${data.name || "User"}'s Profile`;
+        profileContainer.innerHTML = `
+          <h2>${data.name || "Unknown User"}</h2>
+          <p><strong>School:</strong> ${data.school || "(not set)"}</p>
+          <p><strong>Description:</strong> ${data.description || "(no description provided)"}</p>
+        `;
         return;
       }
 
       userEmail.textContent = user.email;
+      nameInput.value = data.name || "";
+      schoolInput.value = data.school || "";
+      descriptionInput.value = data.description || "";
+      publicToggle.checked = !!data.public;
 
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-
-      if (snap.exists()) {
-        const data = snap.data();
-        userName.textContent = data.name || "(not set)";
-        userSchool.textContent = data.school || "(not set)";
-        publicToggle.checked = !!data.public;
-      } else {
-        // Create an empty profile doc if it doesn't exist
-        await setDoc(userRef, { public: false });
-        publicToggle.checked = false;
-      }
-
-      publicToggle.addEventListener("change", async () => {
-        await updateDoc(userRef, { public: publicToggle.checked });
-      });
-
-      messagesBtn.addEventListener("click", () => {
-        if (!publicToggle.checked) {
-          messagePrompt.style.display = "block";
-        } else {
-          window.location.href = "messages.html"; // Placeholder for future messages page
-        }
+      saveBtn.addEventListener("click", async () => {
+        await updateDoc(userRef, {
+          name: nameInput.value,
+          school: schoolInput.value,
+          description: descriptionInput.value,
+          public: publicToggle.checked
+        });
+        alert("Profile updated!");
       });
     });
 
-    async function makePublicAndContinue() {
+    // Messages icon behavior
+    document.getElementById("messagesIcon").addEventListener("click", async () => {
       const user = auth.currentUser;
-      if (user) {
-        const userRef = doc(db, "users", user.uid);
-        await updateDoc(userRef, { public: true });
-        publicToggle.checked = true;
-        messagePrompt.style.display = "none";
+      if (!user) {
+        alert("Please log in first.");
+        return;
+      }
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      const data = snap.data();
+      if (!data.public) {
+        if (confirm("Your profile must be public to use messaging. Make public now?")) {
+          await updateDoc(userRef, { public: true });
+          window.location.href = "messages.html";
+        }
+      } else {
         window.location.href = "messages.html";
       }
-    }
+    });
   </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
 </body>
 </html>

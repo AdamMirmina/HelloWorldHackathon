@@ -3,8 +3,10 @@ import { app } from '../config/firebase.js';
 import {
   getFirestore,
   collection,
-  addDoc,
+  setDoc,
+  doc,
   getDocs,
+  getDoc,
   query,
   where
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -17,7 +19,7 @@ import {
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-let currentUser = null; // store logged-in user info
+let currentUser = null;
 
 onAuthStateChanged(auth, user => {
   currentUser = user;
@@ -52,13 +54,12 @@ document.getElementById("submit-preferences").addEventListener("click", async ()
   const studyStyle = document.getElementById("studyStyle").value;
   const timePreference = document.getElementById("timePreference").value;
 
-  // Collect class info
   const classInputs = document.querySelectorAll(".class-input");
   const classes = Array.from(classInputs).map(div => ({
     subject: div.querySelector(".subject").value.trim(),
     teacher: div.querySelector(".teacher").value.trim(),
     block: div.querySelector(".block").value.trim()
-  })).filter(c => c.subject !== ""); // remove empty classes
+  })).filter(c => c.subject !== "");
 
   if (!name || !school || classes.length === 0) {
     alert("Please fill out your name, school, and at least one class.");
@@ -66,16 +67,20 @@ document.getElementById("submit-preferences").addEventListener("click", async ()
   }
 
   try {
-    // Save to Firestore with user ID
-    await addDoc(collection(db, "users"), {
+    // ✅ Save user preferences, merge so we don't overwrite profile fields
+    const userRef = doc(db, "users", currentUser.uid);
+    const existingSnap = await getDoc(userRef);
+
+    await setDoc(userRef, {
       uid: currentUser.uid,
       name,
       school,
       classes,
       studyStyle,
       timePreference,
-      timestamp: Date.now()
-    });
+      public: existingSnap.exists() ? existingSnap.data().public : false,
+      description: existingSnap.exists() ? existingSnap.data().description || "" : ""
+    }, { merge: true });
 
     console.log("✅ Preferences saved for", name);
 
@@ -84,19 +89,53 @@ document.getElementById("submit-preferences").addEventListener("click", async ()
     const snapshot = await getDocs(q);
     const allUsers = snapshot.docs.map(doc => doc.data());
 
-    // Filter for class matches
+    // Filter public users and class matches
     const matches = allUsers.filter(u =>
-      u.uid !== currentUser.uid && // exclude self
+      u.uid !== currentUser.uid &&
+      u.public === true &&
       u.classes.some(cls => classes.some(c => c.subject === cls.subject))
     );
 
+    // Rank matches by score
+    const rankedMatches = matches.map(u => {
+      let score = 0;
+      const matchingClasses = u.classes.filter(cls =>
+        classes.some(c => c.subject === cls.subject)
+      );
+      score += matchingClasses.length * 3; // prioritize multiple shared classes
+      if (u.studyStyle && u.studyStyle === studyStyle) score += 1;
+      if (u.timePreference && u.timePreference === timePreference) score += 1;
+
+      return { ...u, score, matchingClasses };
+    });
+
+    rankedMatches.sort((a, b) => b.score - a.score);
+
+    // Display results
     const resultDiv = document.getElementById("match-result");
-    if (matches.length > 0) {
-      const randomMatch = matches[Math.floor(Math.random() * matches.length)];
-      resultDiv.textContent = `🎉 You matched with ${randomMatch.name}! You both take ${randomMatch.classes[0].subject}.`;
+    resultDiv.innerHTML = "";
+
+    if (rankedMatches.length > 0) {
+      rankedMatches.forEach(match => {
+        const matchDiv = document.createElement("div");
+        matchDiv.style.marginBottom = "10px";
+        matchDiv.innerHTML = `
+          🎉 You matched with 
+          <span style="color:#ffd966; cursor:pointer; text-decoration:underline;"
+            onclick="window.location.href='profile.html?uid=${match.uid}'">
+            ${match.name}
+          </span>!
+          <br>
+          <small>Shared classes: ${match.matchingClasses.map(c => c.subject).join(", ")}</small>
+          <br>
+          <small style="opacity:0.7;">Match score: ${match.score}</small>
+        `;
+        resultDiv.appendChild(matchDiv);
+      });
     } else {
       resultDiv.textContent = "No matches found yet. Try again later!";
     }
+
   } catch (error) {
     console.error("❌ Firestore error:", error);
     alert("Failed to save preferences or fetch matches. Check console for details.");

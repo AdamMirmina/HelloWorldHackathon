@@ -1,101 +1,50 @@
-/* Global Lofi Chill Style */
-body, html {
+/* Make sure body and html fill the screen */
+html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    width: 100%;
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #f7dac3;
     overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    font-family: 'Varela Round', sans-serif;
 }
 
-/* Youtube Background */
-#youtube-background {
+#background-video {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    z-index: 0;
-}
-
-#youtube-background iframe {
-    width: 100%;
-    height: 100%;
-}
-
-/* Overlay video */
-#overlay-video {
-    position: fixed;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    z-index: 1;
-    pointer-events: none;
+    z-index: -1;
 }
 
-/* Start screen button */
-#start-screen {
+#overlay {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(247, 218, 195, 0.5);
-    z-index: 2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* semi-transparent dark overlay */
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-#start-button {
-    font-size: 3rem;
-    background: transparent;
-    border: 2px solid #f7dac3;
-    color: #f7dac3;
-    padding: 2rem 4rem;
     cursor: pointer;
-    text-transform: uppercase;
+    flex-direction: row;
 }
 
-/* Pomodoro Timer */
-.hidden {
-    display: none;
-}
-
-#pomodoro-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
-    background: rgba(247, 218, 195, 0.8);
-    padding: 2rem;
-    border-radius: 2rem;
-    text-align: center;
-}
-
-.timer-display input {
-    width: 60px;
+#start-text {
+    color: #f7dac3;
     font-size: 2rem;
-    text-align: center;
-    border: none;
-    background: transparent;
+    white-space: pre;
 }
 
-.timer-controls button {
-    font-size: 1rem;
-    margin: 0.5rem;
-    padding: 0.5rem 1rem;
-    border: 2px solid #f7dac3;
-    background: transparent;
+#cursor {
     color: #f7dac3;
-    cursor: pointer;
-    border-radius: 0.5rem;
-    transition: 0.3s;
+    font-size: 2rem;
+    animation: blink 1s infinite;
+    margin-left: 2px;
 }
 
-.timer-controls button:hover {
-    background: #f7dac3;
-    color: #000;
+@keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
 }

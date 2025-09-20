@@ -3,41 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lofi Study</title>
+    <title>Study Screen</title>
+    <!-- Google Font: Varela Round -->
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="lofi.css">
 </head>
 <body>
-    <!-- Youtube Background -->
-    <div id="youtube-background">
-        <iframe id="youtube-player"
-            src="https://www.youtube.com/embed/YOUTUBE_VIDEO_ID?autoplay=1&mute=1&controls=0&loop=1&playlist=YOUTUBE_VIDEO_ID&modestbranding=1&disablekb=1"
-            frameborder="0" 
-            allow="autoplay; encrypted-media" 
-            allowfullscreen>
-        </iframe>
-    </div>
+    <video id="background-video" autoplay muted loop>
+        <source src="../wallpapers/aesthetic.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
 
-    <!-- Overlay local looping video -->
-    <video id="overlay-video" src="overlay.mp4" autoplay loop muted></video>
-
-    <!-- Fullscreen transparent button -->
-    <div id="start-screen">
-        <button id="start-button">Click to study</button>
-    </div>
-
-    <!-- Pomodoro Timer -->
-    <div id="pomodoro-container" class="hidden">
-        <div class="timer-display">
-            <input type="number" id="timer-minutes" min="0" value="25"> : 
-            <input type="number" id="timer-seconds" min="0" max="59" value="0">
-        </div>
-        <div class="timer-controls">
-            <button id="start-timer">Start</button>
-            <button id="stop-timer">Stop</button>
-            <button id="reset-timer">Reset</button>
-            <button id="increment">+1 min</button>
-            <button id="decrement">-1 min</button>
-        </div>
+    <div id="overlay">
+        <span id="start-text"></span>
+        <span id="cursor">|</span>
     </div>
 
     <script src="lofi.js"></script>

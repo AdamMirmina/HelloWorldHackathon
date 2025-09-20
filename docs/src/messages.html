@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+      min-height: 100vh;
+      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
+        no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .messages-container {
+      max-width: 700px;
+      width: 90%;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      text-align: center;
+    }
+
+    .messages-container h1 {
+      margin-bottom: 10px;
+    }
+
+    .messages-container p {
+      opacity: 0.8;
+      font-size: 1.1rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Navigation Bar -->
+  <div class="top-nav">
+    <div class="nav-icons">
+      <span class="nav-icon" title="Messages" onclick="window.location.href='messages.html'">💬</span>
+      <span class="nav-icon" title="Settings" onclick="window.location.href='settings.html'">⚙️</span>
+      <span class="nav-icon" title="Profile" onclick="window.location.href='profile.html'">👤</span>
+    </div>
+  </div>
+
+  <div class="messages-container">
+    <h1>📨 Messages</h1>
+    <p>Messaging is coming soon! Once implemented, you’ll be able to chat with your matches and study buddies right here.</p>
+  </div>
+</body>
+</html>

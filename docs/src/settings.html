@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings</title>
+  <link rel="stylesheet" href="../index.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Space Mono", monospace;
+      min-height: 100vh;
+      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
+        no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .settings-container {
+      margin-top: 80px;
+      max-width: 700px;
+      width: 90%;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 0;
+      font-size: 1.1rem;
+    }
+
+    .setting-item input[type="checkbox"] {
+      transform: scale(1.4);
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      color: white;
+      font-size: 1rem;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s ease;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Navigation Bar with Lucide Icons -->
+  <div class="top-nav">
+    <div class="nav-icons">
+      <span class="nav-icon" title="Messages" id="messagesIcon">
+        <i data-lucide="message-circle"></i>
+      </span>
+      <span class="nav-icon" title="Settings" onclick="window.location.href='settings.html'">
+        <i data-lucide="settings"></i>
+      </span>
+      <span class="nav-icon" title="Profile" onclick="window.location.href='profile.html'">
+        <i data-lucide="user"></i>
+      </span>
+    </div>
+  </div>
+
+  <div class="settings-container">
+    <h1 style="text-align:center;">Settings</h1>
+
+    <div class="setting-item">
+      <span>Public Profile</span>
+      <input type="checkbox" id="publicProfileToggle" />
+    </div>
+
+    <div class="setting-item">
+      <span>Show Email on Profile</span>
+      <input type="checkbox" id="showEmailToggle" />
+    </div>
+
+    <div class="setting-item">
+      <span>Allow Direct Messages</span>
+      <input type="checkbox" id="allowDMsToggle" />
+    </div>
+
+    <div class="setting-item">
+      <span>Show Message Requests</span>
+      <input type="checkbox" id="showRequestsToggle" />
+    </div>
+
+    <hr style="margin: 20px 0; border-color: rgba(255, 255, 255, 0.3);" />
+
+    <button id="editProfileBtn">Edit Profile</button>
+    <button id="changePasswordBtn">Change Password</button>
+    <button id="logoutBtn">Log Out</button>
+  </div>
+
+  <script type="module">
+    import { auth } from "../module/auth.js";
+    import { db } from "../config/firebase.js";
+    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+
+    const publicToggle = document.getElementById("publicProfileToggle");
+    const showEmailToggle = document.getElementById("showEmailToggle");
+    const allowDMsToggle = document.getElementById("allowDMsToggle");
+    const showRequestsToggle = document.getElementById("showRequestsToggle");
+
+    auth.onAuthStateChanged(async (user) => {
+      if (!user) {
+        alert("You must be logged in to access settings.");
+        window.location.href = "../index.html";
+        return;
+      }
+
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+
+      if (snap.exists()) {
+        const data = snap.data();
+        publicToggle.checked = !!data.public;
+        showEmailToggle.checked = !!data.showEmail;
+        allowDMsToggle.checked = data.allowDMs !== false;
+        showRequestsToggle.checked = data.showRequests !== false;
+      }
+
+      publicToggle.addEventListener("change", async () => {
+        await updateDoc(userRef, { public: publicToggle.checked });
+      });
+
+      showEmailToggle.addEventListener("change", async () => {
+        await updateDoc(userRef, { showEmail: showEmailToggle.checked });
+      });
+
+      allowDMsToggle.addEventListener("change", async () => {
+        await updateDoc(userRef, { allowDMs: allowDMsToggle.checked });
+      });
+
+      showRequestsToggle.addEventListener("change", async () => {
+        await updateDoc(userRef, { showRequests: showRequestsToggle.checked });
+      });
+
+      document.getElementById("logoutBtn").addEventListener("click", async () => {
+        await auth.signOut();
+        window.location.href = "../index.html";
+      });
+
+      document.getElementById("changePasswordBtn").addEventListener("click", async () => {
+        await sendPasswordResetEmail(auth, user.email);
+        alert("Password reset link sent to " + user.email);
+      });
+
+      document.getElementById("editProfileBtn").addEventListener("click", () => {
+        window.location.href = "profile.html";
+      });
+    });
+
+    // Messages icon logic
+    document.getElementById("messagesIcon").addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) {
+        alert("Please log in first.");
+        return;
+      }
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      const data = snap.data();
+      if (!data.public) {
+        if (confirm("Your profile must be public to use messaging. Make public now?")) {
+          await updateDoc(userRef, { public: true });
+          window.location.href = "messages.html";
+        }
+      } else {
+        window.location.href = "messages.html";
+      }
+    });
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

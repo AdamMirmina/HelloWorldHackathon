@@ -1,10 +1,13 @@
+🟢 Cleaned-Up index.html
+
+Here’s what I recommend you use as your final index.html before pushing:
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lofi Study Room</title>
-    <!-- ✅ CSS stays the same since index.css is in docs/ -->
     <base href="./">
     <link rel="stylesheet" href="index.css" />
   </head>
@@ -19,19 +22,6 @@
         <button class="main-timer-btn" onclick="showPage('timer')">
           Go To Timer
         </button>
-
-        <!-- 🔑 Email/Password Auth Form -->
-        <div class="auth-container" style="margin-top: 20px">
-          <input type="email" id="email" placeholder="Email" />
-          <input type="password" id="password" placeholder="Password" />
-          <button id="signup">Sign Up</button>
-          <button id="login">Log In</button>
-          <button id="logout" style="display: none">Log Out</button>
-          <p
-            id="current-user"
-            style="margin-top: 8px; color: #ccc; font-size: 0.9rem"
-          ></p>
-        </div>
       </div>
     </div>
 
@@ -39,13 +29,7 @@
     <div class="page" id="timerPage">
       <button class="back-btn" onclick="showPage('home')">← back</button>
       <div class="timer-content">
-        <h2
-          style="
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: rgba(255, 255, 255, 0.8);
-          "
-        >
+        <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
           focus session
         </h2>
         <div class="timer-display" id="timerDisplay">25:00</div>
@@ -59,26 +43,19 @@
     </div>
 
     <!-- Home Arrows -->
-    <div class="home-arrow left">
-        <a target="_blank" href="src/spots.html">
-            <div class="arrow-text">Discover Study Spots</div>
-            <div class="arrow-icon">&lt;</div>
-        </a>
-    </div>
-    <div class="home-arrow right">
-        <a target="_blank" href="src/buddy.html">
-            <div class="arrow-icon">&gt;</div>
-            <div class="arrow-text">Find Study Buddies</div>
-        </a>
-    </div>
-   
+    <a class="home-arrow left" href="src/spots.html" target="_blank">
+      <div class="arrow-text">Discover Study Spots</div>
+      <div class="arrow-icon">&lt;</div>
+    </a>
+    <a class="home-arrow right" href="src/buddy.html" target="_blank">
+      <div class="arrow-icon">&gt;</div>
+      <div class="arrow-text">Find Study Buddies</div>
+    </a>
 
     <!-- Timer Script -->
     <script>
       function showPage(pageName) {
-        document
-          .querySelectorAll(".page")
-          .forEach((page) => page.classList.remove("active"));
+        document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
         document.getElementById(pageName + "Page").classList.add("active");
       }
 
@@ -94,9 +71,7 @@
       function updateTimerDisplay() {
         const display = document.getElementById("timerDisplay");
         const status = document.getElementById("timerStatus");
-        display.textContent = `${timerState.minutes
-          .toString()
-          .padStart(2, "0")}:${timerState.seconds.toString().padStart(2, "0")}`;
+        display.textContent = `${timerState.minutes.toString().padStart(2, "0")}:${timerState.seconds.toString().padStart(2, "0")}`;
         status.textContent = timerState.isRunning
           ? "deep focus mode"
           : timerState.currentTime === timerState.totalTime
@@ -105,18 +80,14 @@
       }
 
       function startTimer() {
-        if (
-          !timerState.isRunning &&
-          (timerState.minutes > 0 || timerState.seconds > 0)
-        ) {
+        if (!timerState.isRunning && (timerState.minutes > 0 || timerState.seconds > 0)) {
           timerState.isRunning = true;
           timerInterval = setInterval(() => {
             if (timerState.seconds === 0) {
               if (timerState.minutes === 0) {
                 timerState.isRunning = false;
                 clearInterval(timerInterval);
-                document.getElementById("timerStatus").textContent =
-                  "session complete! ✨";
+                document.getElementById("timerStatus").textContent = "session complete! ✨";
                 return;
               }
               timerState.minutes--;
@@ -124,8 +95,7 @@
             } else {
               timerState.seconds--;
             }
-            timerState.currentTime =
-              timerState.minutes * 60 + timerState.seconds;
+            timerState.currentTime = timerState.minutes * 60 + timerState.seconds;
             updateTimerDisplay();
           }, 1000);
           updateTimerDisplay();
@@ -137,6 +107,7 @@
         clearInterval(timerInterval);
         updateTimerDisplay();
       }
+
       function resetTimer() {
         timerState.isRunning = false;
         timerState.minutes = 25;
@@ -152,10 +123,10 @@
 
       updateTimerDisplay();
     </script>
-    <script type="module" src="../src/module/index.js"></script>
-    
-    <!-- ✅ Load Firebase Auth Logic -->
+
+    <!-- ✅ Script Imports (corrected paths) -->
+    <script type="module" src="src/module/index.js"></script>
     <script type="module" src="src/module/auth.js"></script>
-<script type="module" src="src/module/match.js"></script>
+    <script type="module" src="src/module/match.js"></script>
   </body>
 </html>

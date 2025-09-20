@@ -1,7 +1,8 @@
-// src/module/auth.js
+// docs/src/module/auth.js
 
-// ✅ Import Firebase app from config
-import { db } from "../config/firebase.js";
+// ✅ Import Firebase app + Firestore from config
+import { app, db } from "../config/firebase.js";
+
 import {
   getAuth,
   createUserWithEmailAndPassword,
@@ -26,43 +27,46 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentUserDisplay = document.getElementById("current-user");
 
   // 🔑 Sign up new user
-  signupBtn.addEventListener("click", () => {
-    const email = emailField.value;
-    const password = passwordField.value;
-
-    createUserWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        console.log("✅ User signed up:", userCredential.user.email);
-        alert("Account created successfully!");
-      })
-      .catch(error => {
-        console.error("❌ Signup error:", error.message);
-        alert(`Signup failed: ${error.message}`);
-      });
+  signupBtn.addEventListener("click", async () => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(
+        auth,
+        emailField.value,
+        passwordField.value
+      );
+      console.log("✅ User signed up:", userCredential.user.email);
+      alert("Account created successfully!");
+    } catch (error) {
+      console.error("❌ Signup error:", error.message);
+      alert(`Signup failed: ${error.message}`);
+    }
   });
 
   // 🔑 Log in existing user
-  loginBtn.addEventListener("click", () => {
-    const email = emailField.value;
-    const password = passwordField.value;
-
-    signInWithEmailAndPassword(auth, email, password)
-      .then(userCredential => {
-        console.log("✅ User logged in:", userCredential.user.email);
-      })
-      .catch(error => {
-        console.error("❌ Login error:", error.message);
-        alert(`Login failed: ${error.message}`);
-      });
+  loginBtn.addEventListener("click", async () => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        emailField.value,
+        passwordField.value
+      );
+      console.log("✅ User logged in:", userCredential.user.email);
+    } catch (error) {
+      console.error("❌ Login error:", error.message);
+      alert(`Login failed: ${error.message}`);
+    }
   });
 
   // 🔑 Log out
-  logoutBtn.addEventListener("click", () => {
-    signOut(auth)
-      .then(() => {
-        console.log("✅ User signed out");
-      })
-      .catch(error => console.error("❌ Logout error:", error.message));
+  logoutBtn.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      console.log("✅ User signed out");
+      emailField.value = "";
+      passwordField.value = "";
+    } catch (error) {
+      console.error("❌ Logout error:", error.message);
+    }
   });
 
   // 🔄 Detect login state changes

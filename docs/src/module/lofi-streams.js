@@ -1,7 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
 import {
   getFirestore,
-  collection,
   doc,
   getDoc,
 } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
@@ -24,9 +23,10 @@ const docRef = doc(db, "lofi-streams", "stream1");
 const docSnap = await getDoc(docRef);
 
 if (docSnap.exists()) {
-  console.log("Document data:", docSnap.data());
-  const videoId = docSnap.data();
-  console.log("videoID: " + videoId);
+  const videoId = docSnap.data(); // check the exact field name in Firestore
+  console.log("Fetched videoId:", videoId);
+
+  // Update iframe src
   const iframe = document.getElementById("youtube-video");
   iframe.src = `https://www.youtube.com/embed/${videoId}`;
 } else {

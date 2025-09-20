@@ -1,28 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Study Buddy Finder</title>
-        <base href="./">
-        <link rel="stylesheet" href="index.css" />
-    </head>
-    <body>
-        <!-- 🔑 Email/Password Auth Form -->
-        <div class="auth-container" style="margin-top: 20px">
-            <input type="email" id="email" placeholder="Email" />
-            <input type="password" id="password" placeholder="Password" />
-            <button id="signup">Sign Up</button>
-            <button id="login">Log In</button>
-            <button id="logout" style="display: none">Log Out</button>
-            <p
-            id="current-user"
-            style="margin-top: 8px; color: #ccc; font-size: 0.9rem"
-            ></p>
-        </div>
-        </div>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Buddy Finder</title>
+  <link rel="stylesheet" href="buddy.css" />
+</head>
+<body>
+  <h1 style="color:white; text-align:center; margin-top:10px;">Find Your Study Buddy</h1>
+
+  <!-- 🔑 Auth Section -->
+  <div class="auth-container" style="margin: 20px auto; max-width: 400px;">
+    <h2 style="color:#fff; text-align:center;">Sign In</h2>
+    <input type="email" id="email" placeholder="Email" style="width:100%; margin-bottom:6px;">
+    <input type="password" id="password" placeholder="Password" style="width:100%; margin-bottom:6px;">
+    <button id="signup" style="width:100%; margin-bottom:4px;">Sign Up</button>
+    <button id="login" style="width:100%; margin-bottom:4px;">Log In</button>
+    <button id="logout" style="width:100%; display:none;">Log Out</button>
+    <p id="current-user" style="margin-top:8px; color:#ccc; font-size:0.9rem; text-align:center;"></p>
+  </div>
+
+  <hr style="max-width:400px; margin: 20px auto; border: 0.5px solid rgba(255,255,255,0.2);">
+
+  <!-- 📋 Study Preferences Section -->
+  <div class="buddy-form" style="color:white; max-width:400px; margin:20px auto;">
+    <h2 style="text-align:center;">Your Study Preferences</h2>
+
+    <input type="text" id="name" placeholder="Your Name" required style="width:100%; margin-bottom:8px;">
+    <input type="text" id="school" placeholder="Your School" required style="width:100%; margin-bottom:8px;">
+
+    <h3>Classes</h3>
+    <div id="classes-container">
+      <div class="class-input" style="margin-bottom:8px;">
+        <input type="text" class="subject" placeholder="Class (e.g., CS180)" style="width:100%; margin-bottom:4px;">
+        <input type="text" class="teacher" placeholder="Teacher (optional)" style="width:100%; margin-bottom:4px;">
+        <input type="text" class="block" placeholder="Block/Period (optional)" style="width:100%;">
+      </div>
     </div>
-        <!-- ✅ Load Firebase Auth Logic -->
-        <script type="module" src="../src/module/auth.js"></script>
-    </body>
+    <button type="button" id="add-class" style="margin:8px 0; width:100%;">+ Add Another Class</button>
+
+    <h3>Preferences</h3>
+    <select id="studyStyle" style="width:100%; margin-bottom:8px;">
+      <option value="">Select Study Style</option>
+      <option value="quiet">Quiet</option>
+      <option value="group">Group</option>
+      <option value="music">With Music</option>
+      <option value="late-night">Late Night</option>
+    </select>
+
+    <select id="timePreference" style="width:100%; margin-bottom:8px;">
+      <option value="">Best Time to Study</option>
+      <option value="morning">Morning</option>
+      <option value="afternoon">Afternoon</option>
+      <option value="night">Night</option>
+    </select>
+
+    <button type="button" id="submit-preferences" style="width:100%; margin-top:8px;">Find My Buddy</button>
+
+    <div id="match-result" style="margin-top:16px; font-weight:bold; color:#fff; text-align:center;"></div>
+  </div>
+
+  <!-- ✅ Load Firebase Auth + Matching Scripts -->
+  <script type="module" src="module/auth.js"></script>
+  <script type="module" src="module/match.js"></script>
+</body>
 </html>

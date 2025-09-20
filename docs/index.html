@@ -6,6 +6,7 @@
     <title>Lofi Study Room</title>
     <!-- ✅ CSS stays the same since index.css is in docs/ -->
     <link rel="stylesheet" href="index.css" />
+    <base href=".">
   </head>
   <body>
     <!-- Home Page -->
@@ -178,9 +179,9 @@
 
       updateTimerDisplay();
     </script>
-
-    <!-- ✅ Load Firebase Auth Logic -->
     <script type="module" src="../src/module/index.js"></script>
+    
+    <!-- ✅ Load Firebase Auth Logic -->
     <script type="module" src="../src/module/auth.js"></script>
   </body>
 </html>

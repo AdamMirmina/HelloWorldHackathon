@@ -63,6 +63,21 @@ body::before {
     pointer-events: auto;
 }
 
+.right-nav{
+    align-items: flex-start;
+}
+
+.side-nav-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    padding: 20px;
+}
+
 /* Main content areas */
 .page {
     position: absolute;

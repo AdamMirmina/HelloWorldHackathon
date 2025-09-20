@@ -1,42 +1,34 @@
-/* Make the page fill the entire viewport */
 html, body {
   margin: 0;
   padding: 0;
+  width: 100%;
   height: 100%;
   overflow: hidden;
-  font-family: Arial, sans-serif;
 }
 
-/* Container to hold video and overlay */
 .video-container {
   position: relative;
   width: 100%;
   height: 100%;
 }
 
-/* YouTube iframe full screen */
 .video-container iframe {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  pointer-events: none; /* Prevent interaction with the video */
-  z-index: 1; /* Behind the overlay */
+  pointer-events: none;
+  z-index: 1;
 }
 
-/* Solid overlay completely blocking the video */
-.overlay {
+.overlay-video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #000000; /* fully solid black */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 2rem;
-  z-index: 2; /* On top of the video */
+  object-fit: cover;
+  z-index: 2;
+  pointer-events: none;
 }

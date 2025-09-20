@@ -49,3 +49,9 @@ body {
 .buddy-form button {
   width: 100%; /* ✅ full-width buttons look cleaner on wide layouts */
 }
+
+h1 {
+  text-align: center;
+  color: white;
+  margin-top: 60px;
+}

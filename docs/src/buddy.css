@@ -11,15 +11,11 @@ body {
     min-height: 100vh;
     overflow: hidden;
     position: relative;
-    background-image: url(https://wallpapers.com/images/hd/lo-fi-room-1eszquzwq2xbp3sv.jpg);
+    background-image: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png);
     background-size: cover;        /* Scales image to cover entire area */  
     background-position: center;   
     background-repeat: no-repeat;  
     background-attachment: fixed;   
-    background-size: cover;        /* Scales image to cover entire area */
-    background-position: center;   /* Centers the image */
-    background-repeat: no-repeat;  /* Prevents image from repeating */
-    background-attachment: fixed;  /* Keeps background fixed while scrolling */
 }
 
 /* Subtle texture overlay */
@@ -44,12 +40,12 @@ body::before {
     display: flex;
     justify-content: center;
     align-items: center;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    background-color: rgba(255, 255, 255, 0.2);
     border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-    box-shadow: 1px solid rgba(0, 0, 0, 0.667);
 }
 
 .glass-container::before{
@@ -59,8 +55,8 @@ body::before {
     position: absolute;
     z-index: -1;
     border-radius: 10px;
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
 form{

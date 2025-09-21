@@ -1,4 +1,4 @@
-
+@import url('https://fonts.googleapis.com/css2?family=Varela+Round&display=swap');
 * {
     margin: 0;
     padding: 0;
@@ -6,7 +6,7 @@
 }
 
 body {
-    font-family: 'Courier New', monospace;
+    font-family: "Varela Round", sans-serif;
     background: #1a1a2e;
     min-height: 100vh;
     position: relative;

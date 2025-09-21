@@ -9,14 +9,19 @@
 body {
   font-family: "Varela Round", sans-serif;
   min-height: 100vh;
-  overflow-y: auto; /* ✅ FIX: allow scrolling */
+  overflow: hidden; /* ✅ Default: no scroll on home/timer */
   position: relative;
   background-image: url(https://cdnb.artstation.com/p/assets/images/images/049/953/491/large/diana-baltezar-room2-recuperado2.jpg?1653695448);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
-  padding-top: 60px; /* ✅ leaves room for top nav */
+  padding-top: 60px; /* room for nav bar */
+}
+
+/* ✅ Scrollable pages */
+body.scrollable {
+  overflow-y: auto;
 }
 
 /* Subtle texture overlay */
@@ -34,7 +39,7 @@ body::before {
   z-index: 0;
 }
 
-/* ✅ TOP NAV BAR STYLES (NEW) */
+/* ✅ TOP NAV BAR */
 .top-nav {
   position: fixed;
   top: 0;
@@ -69,17 +74,7 @@ body::before {
   color: #ffd966;
 }
 
-/* Centered container */
-.container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  z-index: 2;
-}
-
-/* Side buttons */
+/* Home arrows */
 .home-arrow {
   text-decoration: none;
   position: fixed;
@@ -100,15 +95,8 @@ body::before {
   white-space: nowrap;
 }
 
-.home-arrow.left {
-  left: 40px;
-  flex-direction: row;
-}
-
-.home-arrow.right {
-  right: 40px;
-  flex-direction: row-reverse;
-}
+.home-arrow.left { left: 40px; flex-direction: row; }
+.home-arrow.right { right: 40px; flex-direction: row-reverse; }
 
 .arrow-icon {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -125,10 +113,7 @@ body::before {
   white-space: nowrap;
 }
 
-.home-arrow:hover{
-    color: rgba(255, 255, 255, 0.9);
-
-}
+.home-arrow:hover { color: rgba(255, 255, 255, 0.9); }
 
 .home-arrow.left:hover {
   transform: translateY(-50%) translateX(15px) scale(1.2);
@@ -140,11 +125,9 @@ body::before {
   box-shadow: 0 15px 50px rgba(192, 102, 234, 0.3);
 }
 
-.home-arrow:hover .arrow-icon {
-  font-size: 2rem;
-}
+.home-arrow:hover .arrow-icon { font-size: 2rem; }
 
-/* Main content areas */
+/* Main content pages */
 .page {
   position: absolute;
   top: 0;
@@ -166,7 +149,7 @@ body::before {
   pointer-events: all;
 }
 
-/* Home page styles */
+/* Home content */
 .home-content {
   text-align: center;
   color: white;
@@ -209,7 +192,7 @@ body::before {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
-/* Timer page styles */
+/* Timer page */
 .timer-content {
   text-align: center;
   color: white;
@@ -253,15 +236,7 @@ body::before {
 }
 
 @media (max-width: 768px) {
-  .title {
-    font-size: 2.5rem;
-  }
-  
-  .timer-display {
-    font-size: 4rem;
-  }
-
-  .home-arrow {
-    display: none;
-  }
+  .title { font-size: 2.5rem; }
+  .timer-display { font-size: 4rem; }
+  .home-arrow { display: none; }
 }

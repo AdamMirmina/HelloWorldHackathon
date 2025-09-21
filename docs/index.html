@@ -127,13 +127,14 @@
     document.getElementById("resetBtn").addEventListener("click", resetTimer);
   </script>
 
-  <!-- ✅ Inject Nav Bar + Icons -->
+  <!-- ✅ Load Lucide first, then render the nav bar -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module">
     import { renderNavBar } from "./src/module/nav.js";
     renderNavBar("index");
   </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
 
+  <!-- Other modules -->
   <script type="module" src="src/module/auth.js"></script>
   <script type="module" src="src/module/match.js"></script>
 </body>

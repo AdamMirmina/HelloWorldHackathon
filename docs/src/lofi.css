@@ -71,7 +71,7 @@ html {
   display: block;
   font-size: 6rem;
   font-weight: 300;
-  margin: 40px 0;
+  margin: 20px 0;
   color: #ffffff;
   text-shadow: 0 0 30px rgba(102, 234, 181, 0.5);
 }
@@ -80,7 +80,7 @@ html {
   display: flex;
   gap: 20px;
   justify-content: center;
-  margin: 40px 0;
+  margin: 20px 0;
 }
 
 .timer-btn {
@@ -102,7 +102,7 @@ html {
 .timer-status {
   font-size: 1.2rem;
   color: #f7dac3;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
 @media (max-width: 768px) {

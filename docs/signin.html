@@ -105,7 +105,9 @@
       import {
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
+        validatePassword,
         sendPasswordResetEmail,
+        getAuth,
       } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
       console.log("✅ auth.js loaded");
@@ -121,29 +123,28 @@
       const redirectTo =
         params.get("redirect") || "/HelloWorldHackathon/index.html";
 
-      // loginBtn.addEventListener("click", async () => {
-      //   if (!emailInput.value || !passwordInput.value) {
-      //     alert("Please enter both email and password.");
-      //     return;
-      //   }
-
-      //   try {
-      //     const status = await validatePassword(getAuth(), passwordFromUser);
-      //     if (!status.isValid) {
-      //       alert("Invalid Password!");
-      //       // the given password. For example:
-      //       const needsLowerCase = status.containsLowercaseLetter !== true;
-      //     }
-      //     await signInWithEmailAndPassword(
-      //       auth,
-      //       emailInput.value,
-      //       passwordInput.value
-      //     );
-      //     window.location.href = redirectTo;
-      //   } catch (err) {
-      //     alert("Login failed: " + err.message);
-      //   }
-      // });
+      loginBtn.addEventListener("click", async () => {
+        if (!emailInput.value || !passwordInput.value) {
+          alert("Please enter a valid email and password.");
+          return;
+        }
+        const status = await validatePassword(getAuth(), passwordInput);
+        console.log("here!");
+        if (!status.isValid) {
+          alert("Invalid password! Please try again.");
+          return;
+        }
+        try {
+          await signInWithEmailAndPassword(
+            auth,
+            emailInput.value,
+            passwordInput.value
+          );
+          window.location.href = redirectTo;
+        } catch (err) {
+          alert("Login failed: " + err.message);
+        }
+      });
 
       signupBtn.addEventListener("click", async () => {
         if (!emailInput.value || !passwordInput.value) {

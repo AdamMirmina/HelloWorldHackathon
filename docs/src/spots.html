@@ -11,20 +11,22 @@
   <link rel="stylesheet" href="spots.css" />
 
   <style>
-    /* Ensure nav bar sits above page content/video maps */
+    /* Keep nav on top and aligned like other pages */
     .top-nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 3000;
+      display: flex;
+      justify-content: flex-end;
     }
     body { margin: 0; }
   </style>
 </head>
 <body>
-  <div class="container" style="margin-top: 10px;">
+  <div class="container">
     <div class="header">
-      <h1 class="title">campus study spots</h1>
-      <p class="subtitle">real-time traffic data from unitime schedules</p>
+      <h1 class="title">Campus Study Spots</h1>
+      <p class="subtitle">Real-Time Traffic Data from UniTime Schedules</p>
     </div>
 
     <div class="campus-map">

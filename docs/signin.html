@@ -121,29 +121,29 @@
       const redirectTo =
         params.get("redirect") || "/HelloWorldHackathon/index.html";
 
-      loginBtn.addEventListener("click", async () => {
-        if (!emailInput.value || !passwordInput.value) {
-          alert("Please enter both email and password.");
-          return;
-        }
+      // loginBtn.addEventListener("click", async () => {
+      //   if (!emailInput.value || !passwordInput.value) {
+      //     alert("Please enter both email and password.");
+      //     return;
+      //   }
 
-        try {
-          const status = await validatePassword(getAuth(), passwordFromUser);
-          if (!status.isValid) {
-            alert("Invalid Password!");
-            // the given password. For example:
-            const needsLowerCase = status.containsLowercaseLetter !== true;
-          }
-          await signInWithEmailAndPassword(
-            auth,
-            emailInput.value,
-            passwordInput.value
-          );
-          window.location.href = redirectTo;
-        } catch (err) {
-          alert("Login failed: " + err.message);
-        }
-      });
+      //   try {
+      //     const status = await validatePassword(getAuth(), passwordFromUser);
+      //     if (!status.isValid) {
+      //       alert("Invalid Password!");
+      //       // the given password. For example:
+      //       const needsLowerCase = status.containsLowercaseLetter !== true;
+      //     }
+      //     await signInWithEmailAndPassword(
+      //       auth,
+      //       emailInput.value,
+      //       passwordInput.value
+      //     );
+      //     window.location.href = redirectTo;
+      //   } catch (err) {
+      //     alert("Login failed: " + err.message);
+      //   }
+      // });
 
       signupBtn.addEventListener("click", async () => {
         if (!emailInput.value || !passwordInput.value) {

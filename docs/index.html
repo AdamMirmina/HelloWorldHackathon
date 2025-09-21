@@ -44,88 +44,6 @@
     <div class="arrow-text">Find Study Buddies</div>
   </div>
 
-  <!-- Timer Script with Persistence -->
-  <script>
-    function showPage(pageName) {
-      document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
-      document.getElementById(pageName + "Page").classList.add("active");
-    }
-
-    let savedState = JSON.parse(localStorage.getItem("timerState"));
-    let timerState = savedState || {
-      minutes: 25,
-      seconds: 0,
-      isRunning: false,
-      totalTime: 1500,
-      currentTime: 1500
-    };
-    let timerInterval;
-
-    function updateTimerDisplay() {
-      document.getElementById("timerDisplay").textContent =
-        `${timerState.minutes.toString().padStart(2,"0")}:${timerState.seconds.toString().padStart(2,"0")}`;
-      document.getElementById("timerStatus").textContent =
-        timerState.isRunning ? "focus mode" :
-        timerState.currentTime === timerState.totalTime ? "ready to focus" : "paused";
-    }
-
-    function saveTimerState() {
-      localStorage.setItem("timerState", JSON.stringify(timerState));
-    }
-
-    function startTimer() {
-      if (!timerState.isRunning && (timerState.minutes > 0 || timerState.seconds > 0)) {
-        timerState.isRunning = true;
-        timerInterval = setInterval(() => {
-          if (timerState.seconds === 0) {
-            if (timerState.minutes === 0) {
-              timerState.isRunning = false;
-              clearInterval(timerInterval);
-              document.getElementById("timerStatus").textContent = "session complete! ✨";
-              saveTimerState();
-              return;
-            }
-            timerState.minutes--;
-            timerState.seconds = 59;
-          } else {
-            timerState.seconds--;
-          }
-          timerState.currentTime = timerState.minutes * 60 + timerState.seconds;
-          updateTimerDisplay();
-          saveTimerState();
-        }, 1000);
-        updateTimerDisplay();
-        saveTimerState();
-      }
-    }
-
-    function pauseTimer() {
-      timerState.isRunning = false;
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-      saveTimerState();
-    }
-
-    function resetTimer() {
-      timerState.isRunning = false;
-      timerState.minutes = 25;
-      timerState.seconds = 0;
-      timerState.currentTime = timerState.totalTime;
-      clearInterval(timerInterval);
-      updateTimerDisplay();
-      saveTimerState();
-    }
-
-    if (timerState.isRunning) {
-      startTimer();
-    } else {
-      updateTimerDisplay();
-    }
-
-    document.getElementById("startBtn").addEventListener("click", startTimer);
-    document.getElementById("pauseBtn").addEventListener("click", pauseTimer);
-    document.getElementById("resetBtn").addEventListener("click", resetTimer);
-  </script>
 
   <!-- ✅ Load Lucide first, then render the nav bar -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -135,6 +53,7 @@
   </script>
 
   <!-- Other modules -->
+  <script type="module" src="src/module/index.js"></script>
   <script type="module" src="src/module/auth.js"></script>
   <script type="module" src="src/module/match.js"></script>
 </body>

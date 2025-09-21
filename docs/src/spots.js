@@ -322,8 +322,8 @@ function renderStudySpots() {
                     ⏰ Next quiet period: ${spot.quietTime}
                 </div>
                 
-                <button class="visit-btn" onclick="visitSpot('${spot.name}', ${spot.id})">
-                    get directions
+                <button style="font-family: 'Varela Round", sans-serif;" class="visit-btn" onclick="visitSpot('${spot.name}', ${spot.id})">
+                    Get Directions
                 </button>
             </div>
         `;

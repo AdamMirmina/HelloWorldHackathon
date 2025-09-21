@@ -97,7 +97,7 @@ body::before {
     position: absolute;
     width: 150%;
     height: 150%;
-    background-image: url(https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_1200,q_75,w_1092/v1/clients/westlafayettein-redesign/Screenshot_2025_06_17_at_8_50_38_AM_c846e929-47d0-4051-9a78-b51b223329e9.png);
+    background-image: url('https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_1200,q_75,w_1092/v1/clients/westlafayettein-redesign/Screenshot_2025_06_17_at_8_50_38_AM_c846e929-47d0-4051-9a78-b51b223329e9.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

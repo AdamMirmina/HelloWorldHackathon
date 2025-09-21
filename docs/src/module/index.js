@@ -90,28 +90,25 @@ class PomodoroTimer {
       .getElementById("resetBtn")
       ?.addEventListener("click", () => this.reset());
 
-    // Settings inputs
+    // Settings input (focus minutes)
     document
       .getElementById("focusTimeInput")
       ?.addEventListener("change", (e) => {
-        this.settings.focusTime = parseInt(e.target.value);
+        const v = parseInt(e.target.value, 10);
+        // clamp to 1–90 and fall back to default if NaN
+        const clamped =
+          Number.isFinite(v) ? Math.max(1, Math.min(90, v)) : this.getDefaultSettings().focusTime;
+        this.settings.focusTime = clamped;
+        e.target.value = clamped; // reflect sanitized value
         this.saveState();
         if (this.state.mode === "focus" && !this.state.isRunning) {
           this.setMode("focus");
         }
       });
 
-    // document.getElementById('shortBreakInput')?.addEventListener('change', (e) => {
-    //   this.settings.shortBreak = parseInt(e.target.value);
-    //   this.saveState();
-    // });
-
-    // document.getElementById('longBreakInput')?.addEventListener('change', (e) => {
-    //   this.settings.longBreak = parseInt(e.target.value);
-    //   this.saveState();
-    // });
-
-    // // Mode switching buttons
+    // // Future: additional inputs/modes
+    // document.getElementById('shortBreakInput')?.addEventListener('change', (e) => { ... });
+    // document.getElementById('longBreakInput')?.addEventListener('change', (e) => { ... });
     // document.getElementById('focusModeBtn')?.addEventListener('click', () => this.setMode('focus'));
     // document.getElementById('shortBreakBtn')?.addEventListener('click', () => this.setMode('shortBreak'));
     // document.getElementById('longBreakBtn')?.addEventListener('click', () => this.setMode('longBreak'));
@@ -146,37 +143,56 @@ class PomodoroTimer {
     this.saveState();
   }
 
-start() {
-  if (this.state.isRunning) return; // Prevent double start
-  this.state.isRunning = true;
-  this.state.isPaused = false;
+  // ✅ Start countdown (fixed)
+  start() {
+    if (this.state.isRunning) return; // Prevent double start
+    this.state.isRunning = true;
+    this.state.isPaused = false;
 
-  if (!this.state.sessionStartTime) {
-    this.state.sessionStartTime = Date.now();
+    if (!this.state.sessionStartTime) {
+      this.state.sessionStartTime = Date.now();
+    }
+
+    // Real countdown logic
+    this.interval = setInterval(() => {
+      if (!this.state.isRunning) return;
+
+      if (this.state.seconds > 0) {
+        this.state.seconds--;
+        this.state.currentTime--;
+      } else if (this.state.minutes > 0) {
+        this.state.minutes--;
+        this.state.seconds = 59;
+        this.state.currentTime--;
+      } else {
+        // Reached 00:00
+        this.completeSession();
+        return;
+      }
+
+      this.updateDisplay();
+      this.saveState();
+    }, 1000);
+
+    this.updateDisplay();
+    this.saveState();
   }
 
-  this.interval = setInterval(() => {
-    // timer logic
-  }, 1000);
-
-  this.updateDisplay();
-  this.saveState();
-}
-
-pause() {
-  this.state.isRunning = false;
-  this.state.isPaused = true;
-  clearInterval(this.interval);
-  this.interval = null;
-  this.updateDisplay();
-  this.saveState();
-}
+  pause() {
+    this.state.isRunning = false;
+    this.state.isPaused = true;
+    clearInterval(this.interval);
+    this.interval = null;
+    this.updateDisplay();
+    this.saveState();
+  }
 
   // Stop timer (used internally)
   stop() {  
     this.state.isRunning = false;
     this.state.isPaused = false;
     clearInterval(this.interval);
+    this.interval = null;
   }
 
   // Reset current session
@@ -202,7 +218,6 @@ pause() {
     this.dailyStats.totalSessions++;
     this.state.sessionStartTime = null;
 
-
     // Show completion message
     this.showCompletionNotification();
 
@@ -214,7 +229,6 @@ pause() {
     const mode = this.state.mode === "focus" ? "Focus session" : "Break";
     const nextMode = this.state.mode === "focus" ? "break" : "focus";
 
-    // You can customize this notification
     if (window.Notification && Notification.permission === "granted") {
       new Notification(`${mode} complete!`, {
         body: `Time for your ${nextMode} session.`,
@@ -222,7 +236,6 @@ pause() {
       });
     }
 
-    // Visual notification in the UI
     const statusElement = document.getElementById("timerStatus");
     if (statusElement) {
       statusElement.textContent = `${mode} complete!`;
@@ -277,13 +290,11 @@ pause() {
 
   // Update statistics display
   updateStatsDisplay() {
-    // Pomodoro counter
     const pomodoroCount = document.getElementById("pomodoroCount");
     if (pomodoroCount) {
       pomodoroCount.textContent = this.dailyStats.completedPomodoros;
     }
 
-    // Total study time (formatted)
     const totalTime = document.getElementById("totalStudyTime");
     if (totalTime) {
       const hours = Math.floor(this.dailyStats.totalStudyTime / 3600);
@@ -292,13 +303,11 @@ pause() {
         hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
     }
 
-    // Current session number
     const sessionCount = document.getElementById("sessionCount");
     if (sessionCount) {
       sessionCount.textContent = this.state.currentPomodoro;
     }
 
-    // Total sessions today
     const totalSessions = document.getElementById("totalSessions");
     if (totalSessions) {
       totalSessions.textContent = this.dailyStats.totalSessions;
@@ -384,5 +393,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Export for external use
 if (typeof module !== "undefined" && module.exports) {
-  module.exports = { PomodoroTimer, showPage };
+  module.exports = { PomodoroTimer };
 }

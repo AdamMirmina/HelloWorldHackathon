@@ -1,3 +1,4 @@
+<!-- docs/about.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,7 +37,7 @@
   </style>
 </head>
 <body>
-  <!-- Nav -->
+  <!-- Top nav -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module">
     import { renderNavBar } from "./src/module/nav.js";
@@ -46,19 +47,45 @@
   <main class="about-card" role="main" aria-label="About Study Companion">
     <h1>About This Project</h1>
     <p>
-      Created for <strong>Hello World Hackathon</strong> by
+      Created for the <strong>Purdue Hello World Hackathon</strong> by
       <strong>Adam Mirmina</strong>, <strong>Bonnie Le</strong>, and <strong>Kyler Yun</strong>.
     </p>
-    <p class="meta">Dates: <strong>9.20.25–9.21.25</strong></p>
-    <p class="meta">Last updated: <strong>9/21</strong></p>
+    <p class="meta">Dates: <strong>Sep 20–21, 2025</strong></p>
+    <p class="meta">Last updated: <strong id="lastUpdated">Sep 21, 2025</strong></p>
+
     <div class="hr"></div>
+
     <p>
       Study Companion is a lightweight, client-first web app for focused study sessions,
-      matching with study buddies, and a future path to private messaging — designed to
-      run on GitHub Pages with Firebase for auth/data.
+      matching with study buddies, <strong>finding study spots on campus</strong>, and
+      <strong>private messaging</strong> (opt-in; available when your profile is public).
+      It runs entirely on GitHub Pages with Firebase for authentication and data.
     </p>
+
     <div class="hr"></div>
+
     <p class="meta">© 2025 Study Companion Team. All rights reserved.</p>
   </main>
+
+  <!-- Auto-update "Last updated" (uses the latest commit touching this file) -->
+  <script>
+    (async () => {
+      const el = document.getElementById('lastUpdated');
+      function fmt(dateLike) {
+        const d = (typeof dateLike === 'string') ? new Date(dateLike) : dateLike;
+        if (isNaN(d)) return el.textContent;
+        return d.toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      try {
+        const res = await fetch('https://api.github.com/repos/KylerMaker/HelloWorldHackathon/commits?path=docs/about.html&per_page=1');
+        if (!res.ok) throw new Error('GitHub API error');
+        const data = await res.json();
+        const latest = data?.[0]?.commit?.committer?.date;
+        el.textContent = fmt(latest || new Date(document.lastModified));
+      } catch {
+        el.textContent = fmt(new Date(document.lastModified));
+      }
+    })();
+  </script>
 </body>
 </html>

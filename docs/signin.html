@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In</title>
 
-  <!-- ✅ Absolute path to CSS from site root -->
-  <link rel="stylesheet" href="/HelloWorldHackathon/index.css" />
+  <!-- ✅ Load shared styles from docs root -->
+  <link rel="stylesheet" href="./index.css" />
 
   <style>
     body {
@@ -19,7 +19,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 80px; /* space for nav bar */
+      padding-top: 80px; /* leave space for nav bar */
       color: white;
     }
 
@@ -95,13 +95,13 @@
   <!-- ✅ Nav bar -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module">
-    import { renderNavBar } from "/HelloWorldHackathon/src/module/nav.js";
+    import { renderNavBar } from "./src/module/nav.js";
     renderNavBar("signin");
   </script>
 
-  <!-- ✅ Firebase Auth Logic -->
+  <!-- ✅ Auth logic -->
   <script type="module">
-    import { auth } from "/HelloWorldHackathon/src/module/auth.js";
+    import { auth } from "./src/module/auth.js";
     import {
       signInWithEmailAndPassword,
       createUserWithEmailAndPassword,
@@ -116,6 +116,7 @@
     const signupBtn = document.getElementById("signupBtn");
     const resetLink = document.getElementById("resetLink");
 
+    // ✅ Always redirect to main index page on success
     const params = new URLSearchParams(window.location.search);
     const redirectTo = params.get("redirect") || "/HelloWorldHackathon/index.html";
 
@@ -152,7 +153,7 @@
       }
       try {
         await sendPasswordResetEmail(auth, emailInput.value);
-        alert("Password reset email sent!");
+        alert("Password reset email sent! (Check spam folder)");
       } catch (err) {
         alert("Error: " + err.message);
       }

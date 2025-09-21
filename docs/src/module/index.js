@@ -1,11 +1,9 @@
-// The timer initializes automatically on page load
-// Access it globally via: pomodoroTimer
-
-// Examples:
+/*
 pomodoroTimer.start();                // Start timer
 pomodoroTimer.setCustomTime(45);      // Set 45-minute custom session
 pomodoroTimer.getStats();             // Get current statistics
-// 
+
+*/
 
 // Enhanced Pomodoro Timer System
 class PomodoroTimer {

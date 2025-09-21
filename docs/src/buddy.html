@@ -1,208 +1,259 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Find Study Buddies</title>
-  <link rel="stylesheet" href="../index.css" />
-  <style>
-    /* Page-specific glass UI for inputs and layout */
-    .buddy-container {
-      margin: 80px auto 40px;
-      max-width: 900px;
-      width: 92%;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      border-radius: 16px;
-      padding: 24px;
-      color: #fff;
-      box-shadow: 0 4px 30px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find Study Buddies</title>
+    <link rel="stylesheet" href="../index.css" />
+    <style>
+      /* Page-specific glass UI for inputs and layout */
+      .buddy-container {
+        margin: 80px auto 40px;
+        max-width: 900px;
+        width: 92%;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        border-radius: 16px;
+        padding: 24px;
+        color: #fff;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+      }
 
-    .buddy-container h1 {
-      text-align: center;
-      margin-bottom: 12px;
-      font-weight: 600;
-    }
+      .buddy-container h1 {
+        text-align: center;
+        margin-bottom: 12px;
+        font-weight: 600;
+      }
 
-    .buddy-sub {
-      text-align: center;
-      color: rgba(255,255,255,0.75);
-      margin-bottom: 20px;
-      font-size: 0.95rem;
-    }
+      .buddy-sub {
+        text-align: center;
+        color: rgba(255, 255, 255, 0.75);
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+      }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-    }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 14px;
+      }
 
-    .col-12 { grid-column: span 12; }
-    .col-6  { grid-column: span 6; }
-    .col-4  { grid-column: span 4; }
-    .col-3  { grid-column: span 3; }
+      .col-12 {
+        grid-column: span 12;
+      }
+      .col-6 {
+        grid-column: span 6;
+      }
+      .col-4 {
+        grid-column: span 4;
+      }
+      .col-3 {
+        grid-column: span 3;
+      }
 
-    @media (max-width: 900px) {
-      .col-6, .col-4, .col-3 { grid-column: span 12; }
-    }
+      @media (max-width: 900px) {
+        .col-6,
+        .col-4,
+        .col-3 {
+          grid-column: span 12;
+        }
+      }
 
-    label {
-      display: block;
-      font-size: 0.95rem;
-      margin-bottom: 6px;
-      color: rgba(255,255,255,0.9);
-    }
+      label {
+        display: block;
+        font-size: 0.95rem;
+        margin-bottom: 6px;
+        color: rgba(255, 255, 255, 0.9);
+      }
 
-    input, select, textarea {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 10px;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: rgba(255,255,255,0.10);
-      color: #fff;
-      outline: none;
-      font-size: 1rem;
-      transition: border-color 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
-    }
-    input::placeholder, textarea::placeholder {
-      color: rgba(255,255,255,0.85);
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: rgba(255,255,255,0.45);
-      background: rgba(255,255,255,0.14);
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.12);
-    }
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 12px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        outline: none;
+        font-size: 1rem;
+        transition: border-color 0.2s ease, background 0.2s ease,
+          box-shadow 0.2s ease;
+      }
+      input::placeholder,
+      textarea::placeholder {
+        color: rgba(255, 255, 255, 0.85);
+      }
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: rgba(255, 255, 255, 0.45);
+        background: rgba(255, 255, 255, 0.14);
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.12);
+      }
 
-    .class-input {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 10px;
-    }
-    @media (max-width: 700px) {
-      .class-input { grid-template-columns: 1fr; }
-    }
+      .class-input {
+        display: grid;
+        grid-template-columns: 1.5fr 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      @media (max-width: 700px) {
+        .class-input {
+          grid-template-columns: 1fr;
+        }
+      }
 
-    .actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 10px;
-    }
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+      }
 
-    .btn {
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: #fff;
-      padding: 12px 16px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.2s ease, transform 0.08s ease;
-      user-select: none;
-    }
-    .btn:hover { background: rgba(255,255,255,0.25); }
-    .btn:active { transform: translateY(1px); }
+      .btn {
+        background: rgba(255, 255, 255, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: #fff;
+        padding: 12px 16px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.2s ease, transform 0.08s ease;
+        user-select: none;
+      }
+      .btn:hover {
+        background: rgba(255, 255, 255, 0.25);
+      }
+      .btn:active {
+        transform: translateY(1px);
+      }
 
-    .primary {
-      background: linear-gradient(135deg, rgba(102,126,234,0.28) 0%, rgba(118,75,162,0.28) 100%);
-      border: 1px solid rgba(255,255,255,0.35);
-    }
-    .primary:hover {
-      background: linear-gradient(135deg, rgba(102,126,234,0.38) 0%, rgba(118,75,162,0.38) 100%);
-    }
+      .primary {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.28) 0%,
+          rgba(118, 75, 162, 0.28) 100%
+        );
+        border: 1px solid rgba(255, 255, 255, 0.35);
+      }
+      .primary:hover {
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.38) 0%,
+          rgba(118, 75, 162, 0.38) 100%
+        );
+      }
 
-    .section-title {
-      margin-top: 18px;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.95);
-    }
+      .section-title {
+        margin-top: 18px;
+        margin-bottom: 8px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.95);
+      }
 
-    #match-result {
-      margin-top: 16px;
-      padding: 14px;
-      border-radius: 10px;
-      background: rgba(0,0,0,0.35);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: rgba(255,255,255,0.95);
-    }
-  </style>
-</head>
+      #match-result {
+        margin-top: 16px;
+        padding: 14px;
+        border-radius: 10px;
+        background: rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: rgba(255, 255, 255, 0.95);
+      }
+    </style>
+  </head>
 
-<!-- ✅ This page should scroll -->
-<body class="scrollable">
-  <div class="buddy-container">
-    <h1>Find Your Study Buddy</h1>
-    <div class="buddy-sub">Match by school, course, and study style. We’ll rank closer matches higher.</div>
-
-    <div class="grid">
-      <!-- Basic Info -->
-      <div class="col-6">
-        <label for="name">Your Name</label>
-        <input type="text" id="name" placeholder="Ada Lovelace">
+  <!-- ✅ This page should scroll -->
+  <body class="scrollable">
+    <div class="buddy-container">
+      <h1>Find Your Study Buddy</h1>
+      <div class="buddy-sub">
+        Match by school, course, and study style. We’ll rank closer matches
+        higher.
       </div>
-      <div class="col-6">
-        <label for="school">Your School</label>
-        <input type="text" id="school" placeholder="Purdue University">
-      </div>
 
-      <!-- Classes -->
-      <div class="col-12">
-        <div class="section-title">Classes</div>
-        <div id="classes-container">
-          <div class="class-input">
-            <input type="text" class="subject" placeholder="Class (e.g., CS180)">
-            <input type="text" class="teacher" placeholder="Teacher (optional)">
-            <input type="text" class="block" placeholder="Block/Period (optional)">
+      <div class="grid">
+        <!-- Basic Info -->
+        <div class="col-6">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" placeholder="Ada Lovelace" />
+        </div>
+        <div class="col-6">
+          <label for="school">Your School</label>
+          <input type="text" id="school" placeholder="Purdue University" />
+        </div>
+
+        <!-- Classes -->
+        <div class="col-12">
+          <div class="section-title">Classes</div>
+          <div id="classes-container">
+            <div class="class-input">
+              <input
+                type="text"
+                class="subject"
+                placeholder="Class (e.g., CS180)"
+              />
+              <input
+                type="text"
+                class="teacher"
+                placeholder="Teacher (optional)"
+              />
+              <input
+                type="text"
+                class="block"
+                placeholder="Block/Period (optional)"
+              />
+            </div>
+          </div>
+          <div class="actions">
+            <button type="button" id="add-class" class="btn">
+              + Add Another Class
+            </button>
           </div>
         </div>
-        <div class="actions">
-          <button type="button" id="add-class" class="btn">+ Add Another Class</button>
-        </div>
-      </div>
 
-      <!-- Preferences -->
-      <div class="col-6">
-        <label for="studyStyle">Study Style</label>
-        <select id="studyStyle">
-          <option value="">Select Study Style</option>
-          <option value="quiet">Quiet</option>
-          <option value="group">Group</option>
-          <option value="music">With Music</option>
-          <option value="late-night">Late Night</option>
-        </select>
-      </div>
-      <div class="col-6">
-        <label for="timePreference">Best Time</label>
-        <select id="timePreference">
-          <option value="">Choose a Time</option>
-          <option value="morning">Morning</option>
-          <option value="afternoon">Afternoon</option>
-          <option value="night">Night</option>
-        </select>
-      </div>
-
-      <!-- Submit -->
-      <div class="col-12">
-        <div class="actions">
-          <button type="button" id="submit-preferences" class="btn primary">Find My Buddy</button>
+        <!-- Preferences -->
+        <div class="col-6">
+          <label for="studyStyle">Study Style</label>
+          <select id="studyStyle">
+            <option value="">Select Study Style</option>
+            <option value="quiet">Quiet</option>
+            <option value="group">Group</option>
+            <option value="music">With Music</option>
+            <option value="late-night">Late Night</option>
+          </select>
         </div>
-        <div id="match-result"></div>
+        <div class="col-6">
+          <label for="timePreference">Best Time</label>
+          <select id="timePreference">
+            <option value="">Choose a Time</option>
+            <option value="morning">Morning</option>
+            <option value="afternoon">Afternoon</option>
+            <option value="night">Night</option>
+          </select>
+        </div>
+
+        <!-- Submit -->
+        <div class="col-12">
+          <div class="actions">
+            <button type="button" id="submit-preferences" class="btn primary">
+              Find My Buddy
+            </button>
+          </div>
+          <div id="match-result"></div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- ✅ Load Lucide first, then inject nav -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script type="module">
-    import { renderNavBar } from "./module/nav.js";
-    renderNavBar("buddy");
-  </script>
+    <!-- ✅ Load Lucide first, then inject nav -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+      import { renderNavBar } from "./module/nav.js";
+      renderNavBar("buddy");
+    </script>
 
-  <!-- Your existing matching logic -->
-  <script type="module" src="./module/match.js"></script>
-</body>
+    <!-- Your existing matching logic -->
+    <script type="module" src="./module/match.js"></script>
+  </body>
 </html>

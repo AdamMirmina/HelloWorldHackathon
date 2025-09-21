@@ -1,4 +1,3 @@
-// docs/src/module/nav.js
 import { auth } from "./auth.js";
 
 function renderNavBar(currentPage) {
@@ -8,13 +7,10 @@ function renderNavBar(currentPage) {
   const navIcons = document.createElement("div");
   navIcons.classList.add("nav-icons");
 
-  // --- Determine base path ---
-  // If we're in docs/src/, use "./"
-  // If we're in docs/, use "src/"
   const inSrcFolder = window.location.pathname.includes("/src/");
   const basePath = inSrcFolder ? "./" : "./src/";
 
-  // --- Back arrow ---
+  // --- Back arrow (not on home page) ---
   if (currentPage !== "index") {
     const backBtn = document.createElement("span");
     backBtn.classList.add("nav-icon");
@@ -32,9 +28,10 @@ function renderNavBar(currentPage) {
   homeBtn.onclick = () => (window.location.href = inSrcFolder ? "../index.html" : "./index.html");
   navIcons.appendChild(homeBtn);
 
-  // Helper for redirecting to signin with redirect param
+  // --- Helper for redirecting to signin with redirect param ---
   const goToSignIn = (target) => {
-    window.location.href = `${basePath}signin.html?redirect=${encodeURIComponent(target)}`;
+    // ✅ Always use absolute path so redirect works from any folder
+    window.location.href = `/HelloWorldHackathon/signin.html?redirect=${encodeURIComponent(target)}`;
   };
 
   // --- Messages ---
@@ -44,7 +41,7 @@ function renderNavBar(currentPage) {
   msgBtn.title = "Messages";
   msgBtn.onclick = () => {
     const target = `${basePath}messages.html`;
-    if (!auth.currentUser) goToSignIn(`${basePath}messages.html`);
+    if (!auth.currentUser) goToSignIn(target);
     else window.location.href = target;
   };
   navIcons.appendChild(msgBtn);
@@ -80,7 +77,7 @@ function renderNavBar(currentPage) {
   topNav.appendChild(navIcons);
   document.body.prepend(topNav);
 
-  // Activate Lucide icons
+  // Activate Lucide icons after injecting them
   if (window.lucide) lucide.createIcons();
 }
 

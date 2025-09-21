@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In</title>
 
-  <!-- ✅ Correct path to CSS -->
-  <link rel="stylesheet" href="./index.css" />
+  <!-- ✅ Absolute path to CSS from site root -->
+  <link rel="stylesheet" href="/HelloWorldHackathon/index.css" />
 
   <style>
     body {
@@ -19,7 +19,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 80px; /* ✅ leaves space for nav bar */
+      padding-top: 80px; /* space for nav bar */
       color: white;
     }
 
@@ -92,16 +92,16 @@
     <span class="small-link" id="resetLink">Forgot your password?</span>
   </div>
 
-  <!-- ✅ Load nav bar with correct path -->
+  <!-- ✅ Nav bar -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module">
-    import { renderNavBar } from "./src/module/nav.js";
+    import { renderNavBar } from "/HelloWorldHackathon/src/module/nav.js";
     renderNavBar("signin");
   </script>
 
-  <!-- ✅ Correct path to auth.js -->
+  <!-- ✅ Firebase Auth Logic -->
   <script type="module">
-    import { auth } from "./src/module/auth.js";
+    import { auth } from "/HelloWorldHackathon/src/module/auth.js";
     import {
       signInWithEmailAndPassword,
       createUserWithEmailAndPassword,
@@ -117,7 +117,7 @@
     const resetLink = document.getElementById("resetLink");
 
     const params = new URLSearchParams(window.location.search);
-    const redirectTo = params.get("redirect") || "index.html";
+    const redirectTo = params.get("redirect") || "/HelloWorldHackathon/index.html";
 
     loginBtn.addEventListener("click", async () => {
       if (!emailInput.value || !passwordInput.value) {

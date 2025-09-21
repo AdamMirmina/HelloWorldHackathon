@@ -97,7 +97,7 @@ body::before {
     position: absolute;
     width: 150%;
     height: 150%;
-    background-image: url('https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,h_1200,q_75,w_1092/v1/clients/westlafayettein-redesign/Screenshot_2025_06_17_at_8_50_38_AM_c846e929-47d0-4051-9a78-b51b223329e9.png');
+    background-image: url('https://maps.googleapis.com/maps/api/staticmap?center=40.4259,-86.9181&zoom=15&size=800x500&maptype=roadmap&style=element:geometry%7Ccolor:0x212121&style=element:labels.icon%7Cvisibility:off&style=element:labels.text.fill%7Ccolor:0x757575&style=element:labels.text.stroke%7Ccolor:0x212121&style=feature:administrative%7Celement:geometry%7Ccolor:0x757575&style=feature:administrative.country%7Celement:labels.text.fill%7Ccolor:0x9e9e9e&style=feature:administrative.locality%7Celement:labels.text.fill%7Ccolor:0xbdbdbd&style=feature:poi%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:poi.park%7Celement:geometry%7Ccolor:0x181818&style=feature:poi.park%7Celement:labels.text.fill%7Ccolor:0x616161&style=feature:road%7Celement:geometry.fill%7Ccolor:0x2c2c2c&style=feature:road%7Celement:labels.text.fill%7Ccolor:0x8a8a8a&style=feature:road.arterial%7Celement:geometry%7Ccolor:0x373737&style=feature:road.highway%7Celement:geometry%7Ccolor:0x3c3c3c&style=feature:road.highway.controlled_access%7Celement:geometry%7Ccolor:0x4e4e4e&style=feature:road.local%7Celement:labels.text.fill%7Ccolor:0x616161&style=feature:transit%7Celement:labels.text.fill%7Ccolor:0x757575&style=feature:water%7Celement:geometry%7Ccolor:0x000000&style=feature:water%7Celement:labels.text.fill%7Ccolor:0x3d3d3d&key=AIzaSyBk7JGSYeTPc4OL6pL2HnJUlwDHKIJw8pU');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -112,7 +112,7 @@ body::before {
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("https://api.mapbox.com/styles/v1/mapbox/dark-v10/static/-86.9181,40.4259,15/1200x750?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw");
+    background-image: url("");
     background-size: cover;
     background-position: center;
     z-index: 1;
@@ -354,7 +354,7 @@ body::before {
 }
 
 .visit-btn {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a08d 100%);
+    background: linear-gradient(135deg, #005743 0%, #398979 100%);
     border: none;
     color: white;
     padding: 12px 24px;

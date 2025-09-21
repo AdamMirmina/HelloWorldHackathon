@@ -1,13 +1,8 @@
 // docs/src/module/nav.js
 import { auth } from "./auth.js";
-import {
-  onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { db } from "../config/firebase.js";
-import {
-  doc,
-  getDoc,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /**
  * Compute a repo-aware base so links work from BOTH:
@@ -33,15 +28,7 @@ function renderNavBar(currentPage) {
   const navIcons = document.createElement("div");
   navIcons.classList.add("nav-icons");
 
-  // Back (hide on home)
-  if (currentPage !== "index") {
-    const backBtn = document.createElement("span");
-    backBtn.classList.add("nav-icon");
-    backBtn.innerHTML = `<i data-lucide="arrow-left"></i>`;
-    backBtn.title = "Back";
-    backBtn.onclick = () => window.history.back();
-    navIcons.appendChild(backBtn);
-  }
+  // ========= NO BACK BUTTON =========
 
   // Home
   const homeBtn = document.createElement("span");
@@ -76,7 +63,7 @@ function renderNavBar(currentPage) {
           window.location.href = URLS.messages;
         } else {
           alert("Your profile must be Public to use Messages.");
-          // Nudge them to Profile where they can toggle Public & get prompted
+          // Nudge them to Profile where they can toggle Public
           window.location.href = `${URLS.profile}?from=messages`;
         }
       } catch (e) {
@@ -86,7 +73,7 @@ function renderNavBar(currentPage) {
     });
   }
 
-  // Messages (always visible)
+  // Messages
   const msgBtn = document.createElement("span");
   msgBtn.classList.add("nav-icon");
   msgBtn.innerHTML = `<i data-lucide="message-circle"></i>`;
@@ -94,7 +81,7 @@ function renderNavBar(currentPage) {
   msgBtn.onclick = goMessagesGuarded;
   navIcons.appendChild(msgBtn);
 
-  // Settings (hide on settings page)
+  // Settings (hide icon if already on settings page)
   if (currentPage !== "settings") {
     const settingsBtn = document.createElement("span");
     settingsBtn.classList.add("nav-icon");
@@ -104,7 +91,7 @@ function renderNavBar(currentPage) {
     navIcons.appendChild(settingsBtn);
   }
 
-  // Profile (hide on profile page per earlier request)
+  // Profile (hide icon if already on profile page)
   if (currentPage !== "profile") {
     const profileBtn = document.createElement("span");
     profileBtn.classList.add("nav-icon");

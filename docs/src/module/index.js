@@ -417,13 +417,8 @@ document.addEventListener('DOMContentLoaded', function() {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { PomodoroTimer, showPage };
 }
+
 /*
-// Page navigation
-function showPage(pageName) {
-  // Hide all pages
-  document.querySelectorAll(".page").forEach((page) => {
-    page.classList.remove("active");
-  });
 
   // Show selected page
   if (pageName === "home") {

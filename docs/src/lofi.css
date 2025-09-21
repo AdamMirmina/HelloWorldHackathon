@@ -17,6 +17,9 @@ html {
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
+* {
+  font-family: "Varela Round", sans-serif;
+}
 
 .video-container {
   position: relative;

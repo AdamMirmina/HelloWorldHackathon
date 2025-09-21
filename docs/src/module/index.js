@@ -387,6 +387,7 @@ class PomodoroTimer {
   }
 }
 
+
 // Page navigation function (cleaned up)
 function showPage(pageName) {
   document.querySelectorAll('.page').forEach(page => {
@@ -399,6 +400,7 @@ function showPage(pageName) {
     console.log(`Navigated to ${pageName} page`); //console log to check if the right page is being loaded
   }
 }
+
 
 // Initialize timer when DOM is ready
 let pomodoroTimer;

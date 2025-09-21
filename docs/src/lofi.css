@@ -102,7 +102,7 @@ html {
 .timer-status {
   font-size: 1.2rem;
   color: #f7dac3;
-  margin-top: 10px;
+  text-shadow: rgba(1, 35, 31, 0.3);
 }
 
 @media (max-width: 768px) {
@@ -190,12 +190,17 @@ button.mode:hover {
 } */
 
 .styled-input {
-  background: linear-gradient(135deg, rgba(4, 39, 27, 0.2) 0%, rgba(30, 95, 23, 0.2) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(4, 39, 27, 0.2) 0%,
+    rgba(30, 95, 23, 0.2) 100%
+  );
   color: #f7dac3;
-  padding: 20px 40px;
-  font-size: 1rem;
+  padding: 30px;
+  width: 135px;
+  height: 56px;
+  font-size: 40px;
   border-radius: 10px;
-  border: none;
   cursor: text;
   transition: all 0.3s ease;
   backdrop-filter: blur(5px);
@@ -214,12 +219,16 @@ button.mode:hover {
   border: 1px solid rgba(255, 255, 255, 0.4);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
+  padding: 20px 40px;
+  font-size: 20px;
 }
 
 #input[type="number"].styled-input::placeholder {
   color: #f7dac3;
   opacity: 0.7;
   letter-spacing: 1px;
+  padding: 20px 40px;
+  font-size: 1rem;
 }
 
 span {

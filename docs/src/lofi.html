@@ -1,106 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lofi Overlay Video Page</title>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Lofi Overlay Video Page</title>
 
-    <!-- Global site styles (includes top-nav styles) -->
-    <link rel="stylesheet" href="../index.css" />
-    <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
-    <!-- Page-specific styles -->
-    <link rel="stylesheet" href="lofi.css" />
+  <!-- Global site styles (includes top-nav styles) -->
+  <link rel="stylesheet" href="../index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet"/>
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="./lofi.css" />
+</head>
+<body>
+  <!-- Background video + UI -->
+  <div class="video-container">
+    <video autoplay muted loop id="bg-video" playsinline>
+      <source src="../wallpapers/aesthetic.mp4" type="video/mp4" />
+      Your browser does not support HTML5 video.
+    </video>
 
-    <style>
-      /* Ensure the top nav sits above the fullscreen video and matches global look */
-      .top-nav {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        z-index: 3000;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end; /* ✅ right-aligned like other pages */
-        padding: 10px 20px;
-        background: rgba(0, 0, 0, 0.4);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-      }
-      .nav-icons {
-        gap: 20px;
-      }
-      #bg-video {
-        position: fixed;
-        z-index: 0;
-      }
-      body {
-        margin: 0;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="video-container">
-      <video autoplay muted loop id="bg-video">
-        <source src="../wallpapers/aesthetic.mp4" type="video/mp4" />
-        Your browser does not support HTML5 video.
-      </video>
+    <!-- Click-to-start overlay -->
+    <button id="intro" class="intro-btn" aria-label="Start">
+      Click to get started.
+    </button>
 
-      <button id="intro" onclick="showPage('timer')">
-        Click to get started.
-      </button>
+    <!-- Background audio (starts on user interaction) -->
+    <audio
+      id="backgroundMusic"
+      src="../audio/3-AM-Study-Session-lofi-hip-hop.mp3"
+      preload="auto"
+      loop
+    ></audio>
 
-      <audio
-        id="backgroundMusic"
-        src="../audio/3-AM-Study-Session-lofi-hip-hop.mp3"
-        preload="auto"
-        loop
-      ></audio>
+    <!-- Timer page -->
+    <div class="page" id="timerPage" aria-live="polite">
+      <!-- Timer Display -->
+      <div class="timer-display" id="timerDisplay">25:00</div>
+      <div class="timer-status" id="timerStatus">Ready to Focus</div>
 
-      <div class="page" id="timerPage">
-        <!-- Timer Display -->
-        <div class="timer-display" id="timerDisplay">25:00</div>
-        <div class="timer-status" id="timerStatus">Ready to Focus</div>
+      <!-- Controls -->
+      <div class="timer-controls">
+        <button class="controls" id="startBtn" type="button">Start</button>
+        <button class="controls" id="pauseBtn" type="button">Pause</button>
+        <button class="controls" id="resetBtn" type="button">Reset</button>
+      </div>
 
-        <!-- Controls -->
-        <div class="timer-controls">
-          <button class="controls" id="startBtn">Start</button>
-          <button class="controls" id="pauseBtn">Pause</button>
-          <button class="controls" id="resetBtn">Reset</button>
-        </div>
-
-        <!-- Settings -->
-        <div class="-settings">
-          <input
-            class="styled-input"
-            type="number"
-            id="focusTimeInput"
-            min="1"
-            max="90"
-            value="25"
-          />
-          <button class="controls" id="muteBtn">Mute</button>
-        </div>
-
-        <!-- Stats Display -->
-        <!-- <div class="timer-stats">
-          <span id="pomodoroCount">0</span>
-          <span id="totalStudyTime">0m</span>
-          <span id="sessionCount">1</span>
-          <span id="totalSessions">0</span>
-        </div> -->
+      <!-- Settings -->
+      <div class="settings">
+        <input
+          class="styled-input"
+          type="number"
+          id="focusTimeInput"
+          min="1"
+          max="90"
+          value="25"
+          aria-label="Focus minutes"/>
+        <button class="controls styled-input" id="muteBtn" type="button" aria-pressed="false">Mute</button>
       </div>
     </div>
+  </div>
 
-    <!-- Icons, then nav -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module">
-      import { renderNavBar } from "./module/nav.js?v=6"; /* cache-bust */
-      renderNavBar("lofi");
-    </script>
+  <!-- Icons, then nav -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module">
+    import { renderNavBar } from "./module/nav.js";
+    renderNavBar("lofi"); // nav highlights the lofi tab
+  </script>
 
-    <!-- Page logic -->
-    <script type="module" src="./module/index.js"></script>
-    <script src="./module/lofi.js"></script>
-  </body>
+  <!-- Page logic -->
+  <script type="module" src="./module/lofi.js"></script>
+</body>
 </html>

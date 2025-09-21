@@ -16,13 +16,12 @@ import {
 /* ------------------ Auth Init + Persistence ------------------ */
 const auth = getAuth(app);
 
-// Try for durable sign-in; gracefully fall back if the browser blocks it
 async function ensurePersistence() {
   try {
-    await setPersistence(auth, browserLocalPersistence);      // survives reloads
+    await setPersistence(auth, browserLocalPersistence);      // survive reloads
   } catch {
     try {
-      await setPersistence(auth, browserSessionPersistence);  // survives tab
+      await setPersistence(auth, browserSessionPersistence);  // survive tab
     } catch {
       await setPersistence(auth, inMemoryPersistence);        // last resort
       console.warn("Using in-memory auth (private mode or storage blocked).");
@@ -31,8 +30,22 @@ async function ensurePersistence() {
 }
 ensurePersistence();
 
-/* ------------------ Exports ------------------ */
+/* ------------------ Export ------------------ */
 export { auth };
+
+/* ------------------ Demo chat storage helpers ------------------ */
+/** Wipes any demo chat caches regardless of user (used on logout). */
+function clearDemoChatStorage() {
+  try {
+    const PREFIX = "sc_demo_threads_";
+    for (let i = localStorage.length - 1; i >= 0; i--) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(PREFIX)) localStorage.removeItem(k);
+    }
+  } catch (e) {
+    console.warn("Couldn't clear demo chat storage", e);
+  }
+}
 
 /* ------------------ DOM ------------------ */
 const $ = (id) => document.getElementById(id);
@@ -47,35 +60,31 @@ const currentUserDisplay = $("current-user");
 function normEmail(raw) {
   return (raw || "").trim().toLowerCase();
 }
-
-// We *disallow* leading/trailing spaces to prevent “created with a space, can’t log in later”
 function getPasswordOrWarn() {
   const pwd = (passInput?.value ?? "");
   if (/^\s|\s$/.test(pwd)) {
-    alert("Your password has a space at the beginning or end. Please remove it.");
-    throw new Error("password-has-edge-space");
+    alert("Password cannot start or end with a space.");
+    throw Object.assign(new Error("password-has-edge-space"), { code: "password-has-edge-space" });
   }
   if (pwd.length < 6) {
     alert("Password must be at least 6 characters.");
-    throw new Error("password-too-short");
+    throw Object.assign(new Error("password-too-short"), { code: "password-too-short" });
   }
   return pwd;
 }
-
 function showAuthError(err, context) {
-  // Map common Firebase v11 errors to helpful messages
   const code = err?.code || "";
-  const messages = {
+  const map = {
     "auth/invalid-credential": "Email or password is incorrect.",
     "auth/wrong-password": "Email or password is incorrect.",
     "auth/user-not-found": "No account with that email.",
-    "auth/too-many-requests": "Too many attempts. Try again in a minute or reset your password.",
-    "auth/email-already-in-use": "That email is already registered. Try logging in instead.",
+    "auth/email-already-in-use": "That email is already registered.",
     "auth/invalid-email": "That email address looks invalid.",
+    "auth/too-many-requests": "Too many attempts. Try again later.",
     "password-has-edge-space": "Password has spaces at the edges.",
     "password-too-short": "Password must be at least 6 characters.",
   };
-  const msg = messages[code] || `Unexpected error during ${context}.`;
+  const msg = map[code] || `Unexpected error during ${context}.`;
   alert(`❌ ${msg}`);
   console.error(`[${context}]`, code, err);
 }
@@ -104,7 +113,6 @@ if (loginBtn) {
       const password = getPasswordOrWarn();
       await signInWithEmailAndPassword(auth, email, password);
       alert("✅ Logged in successfully!");
-      // Optional redirect support: ?redirect=...
       const u = new URL(window.location.href);
       const to = u.searchParams.get("redirect");
       if (to) window.location.href = to;
@@ -115,15 +123,12 @@ if (loginBtn) {
 }
 
 /* ------------------ Password Reset (optional) ------------------ */
-const resetBtn = $("reset"); // if you have a "Forgot password" button with id="reset"
+const resetBtn = $("reset");
 if (resetBtn) {
   resetBtn.addEventListener("click", async () => {
     try {
       const email = normEmail(emailInput?.value);
-      if (!email) {
-        alert("Enter your email first, then click Reset.");
-        return;
-      }
+      if (!email) return alert("Enter your email first, then click Reset.");
       await sendPasswordResetEmail(auth, email);
       alert("📧 Password reset email sent.");
     } catch (err) {
@@ -137,6 +142,7 @@ if (logoutBtn) {
   logoutBtn.addEventListener("click", async () => {
     try {
       await signOut(auth);
+      clearDemoChatStorage();          // wipe demo chat immediately on logout
       alert("👋 Logged out successfully.");
     } catch (err) {
       console.error("Logout failed:", err);
@@ -151,6 +157,8 @@ onAuthStateChanged(auth, (user) => {
       currentUserDisplay.textContent = `Logged in as: ${user.email}`;
       if (logoutBtn) logoutBtn.style.display = "inline-block";
     } else {
+      // also wipe if auth becomes null for any reason (token expiry, etc.)
+      clearDemoChatStorage();
       currentUserDisplay.textContent = "";
       if (logoutBtn) logoutBtn.style.display = "none";
     }

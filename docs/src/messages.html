@@ -14,268 +14,128 @@
       --bubble-out: rgba(0,0,0,0.40);
       --pill: rgba(255,255,255,0.22);
     }
-
-    /* Page */
     body{
       font-family: "Varela Round", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-      min-height: 100vh;
-      margin: 0;
-      color: #fff;
+      min-height: 100vh; margin: 0; color: #fff;
       background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
         no-repeat center/cover fixed;
-      padding: 80px 16px 24px; /* top space for fixed nav */
-      display: grid;
-      place-items: start center;
+      padding: 80px 16px 24px;
+      display: grid; place-items: start center;
     }
-
-    /* Frame */
     .shell{
       width: min(1100px, 96vw);
       height: min(72vh, 760px);
-      display: grid;
-      grid-template-columns: 300px 1fr;
-      gap: 12px;
+      display: grid; grid-template-columns: 300px 1fr; gap: 12px;
       background: transparent;
     }
-
-    @media (max-width: 900px){
-      .shell{ grid-template-columns: 1fr; height: auto; }
-    }
-
+    @media (max-width: 900px){ .shell{ grid-template-columns: 1fr; height: auto; } }
     .panel{
       background: var(--glass-bg);
       border: 1px solid var(--glass-stroke);
       border-radius: 16px;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      min-height: 320px;
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      overflow: hidden; display: flex; flex-direction: column; min-height: 320px;
     }
-
     .header{
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.18);
+      display: flex; align-items: center; gap: 10px;
+      padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.18);
       background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(255,255,255,0.06));
     }
-    .header h2, .header h3{
-      margin: 0;
-      font-size: 16px;
-      letter-spacing: .2px;
-    }
-    .badge{
-      font-size: 11px;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: var(--pill);
-      border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    /* Sidebar */
-    .search{
-      padding: 12px 12px 0;
-    }
+    .header h2, .header h3{ margin: 0; font-size: 16px; letter-spacing: .2px; }
+    .badge{ font-size: 11px; padding: 2px 8px; border-radius: 999px; background: var(--pill); border: 1px solid rgba(255,255,255,0.25); }
+    .search{ padding: 12px 12px 0; }
     .search input{
-      width: 100%;
-      border: 1px solid rgba(255,255,255,0.28);
-      background: rgba(255,255,255,0.14);
-      color: #fff;
-      border-radius: 10px;
-      padding: 10px 12px;
-      outline: none;
+      width: 100%; border: 1px solid rgba(255,255,255,0.28); background: rgba(255,255,255,0.14);
+      color: #fff; border-radius: 10px; padding: 10px 12px; outline: none;
     }
-    .threads{
-      overflow-y: auto;
-      padding: 8px;
-    }
+    .threads{ overflow-y: auto; padding: 8px; }
     .thread{
-      display: grid;
-      grid-template-columns: 40px 1fr auto;
-      gap: 10px;
-      align-items: center;
-      padding: 10px;
-      border-radius: 12px;
-      cursor: pointer;
-      border: 1px solid transparent;
+      display: grid; grid-template-columns: 40px 1fr auto; gap: 10px; align-items: center;
+      padding: 10px; border-radius: 12px; cursor: pointer; border: 1px solid transparent;
     }
     .thread:hover{ background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.15); }
     .avatar{
-      width: 40px; height: 40px;
-      border-radius: 12px;
-      display: grid; place-items: center;
-      background: rgba(255,255,255,0.18);
-      border: 1px solid rgba(255,255,255,0.25);
+      width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center;
+      background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25);
       font-weight: 600; font-size: 13px;
     }
     .t-name{ font-size: 14px; margin: 0 0 2px 0; }
     .t-last{ font-size: 12px; opacity: 0.85; margin: 0; }
-    .t-meta{
-      display: grid; gap: 6px; align-items: end; justify-items: end;
-    }
-    .dot{
-      width: 8px; height: 8px; border-radius: 999px;
-      background: #4ade80; /* green */
-      box-shadow: 0 0 0 2px rgba(74,222,128,0.3);
-    }
+    .t-meta{ display: grid; gap: 6px; align-items: end; justify-items: end; }
+    .dot{ width: 8px; height: 8px; border-radius: 999px; background: #4ade80; box-shadow: 0 0 0 2px rgba(74,222,128,0.3); }
     .t-time{ font-size: 11px; opacity: 0.8; }
-
-    /* Chat area */
-    .chat{
-      display: grid;
-      grid-template-rows: auto 1fr auto;
-      height: 100%;
-    }
-    .chat-body{
-      overflow-y: auto;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
+    .chat{ display: grid; grid-template-rows: auto 1fr auto; height: 100%; }
+    .chat-body{ overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 8px; }
     .msg{
-      max-width: 72%;
-      padding: 10px 12px;
-      line-height: 1.35;
-      border-radius: 14px;
-      font-size: 14px;
-      border: 1px solid rgba(255,255,255,0.18);
-      position: relative;
-      word-wrap: break-word;
-      white-space: pre-wrap;
+      max-width: 72%; padding: 10px 12px; line-height: 1.35; border-radius: 14px; font-size: 14px;
+      border: 1px solid rgba(255,255,255,0.18); position: relative; word-wrap: break-word; white-space: pre-wrap;
     }
     .in{ align-self: flex-start; background: var(--bubble-in); }
-    .out{
-      align-self: flex-end;
-      background: var(--bubble-out);
-      border-color: rgba(0,0,0,0.45);
-    }
-    .meta{
-      margin-top: 2px;
-      font-size: 11px;
-      opacity: 0.75;
-      display: flex; align-items: center; gap: 6px;
-    }
+    .out{ align-self: flex-end; background: var(--bubble-out); border-color: rgba(0,0,0,0.45); }
+    .meta{ margin-top: 2px; font-size: 11px; opacity: 0.75; display: flex; align-items: center; gap: 6px; }
     .checks{ display: inline-flex; translate: 0 2px; }
-
-    .typing{
-      align-self: flex-start;
-      background: var(--bubble-in);
-      border-radius: 14px;
-      padding: 8px 10px;
-      display: inline-flex; gap: 6px;
-      border: 1px solid rgba(255,255,255,0.18);
-    }
+    .typing{ align-self: flex-start; background: var(--bubble-in); border-radius: 14px; padding: 8px 10px; display: inline-flex; gap: 6px; border: 1px solid rgba(255,255,255,0.18); }
     .dotty{ width: 6px; height: 6px; border-radius: 999px; background: rgba(255,255,255,0.8); opacity: 0.6; }
-    .dotty:nth-child(1){ animation: blink 1s infinite .0s; }
-    .dotty:nth-child(2){ animation: blink 1s infinite .15s; }
-    .dotty:nth-child(3){ animation: blink 1s infinite .30s; }
+    .dotty:nth-child(1){ animation: blink 1s infinite .0s; } .dotty:nth-child(2){ animation: blink 1s infinite .15s; } .dotty:nth-child(3){ animation: blink 1s infinite .30s; }
     @keyframes blink{ 0%, 80%, 100%{ opacity: .3 } 40%{ opacity: 1 } }
-
-    .composer{
-      display: grid;
-      grid-template-columns: 1fr auto;
-      gap: 8px;
-      padding: 12px;
-      border-top: 1px solid rgba(255,255,255,0.18);
-      background: linear-gradient(0deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05));
-    }
-    .composer input{
-      border: 1px solid rgba(255,255,255,0.28);
-      background: rgba(255,255,255,0.14);
-      color: #fff; border-radius: 12px; padding: 12px;
-      outline: none;
-    }
-    .composer button{
-      padding: 12px 16px;
-      border: none; border-radius: 12px;
-      background: rgba(255,255,255,0.24);
-      color: #fff; cursor: pointer;
-      display: inline-flex; align-items: center; gap: 8px;
-    }
+    .composer{ display: grid; grid-template-columns: 1fr auto; gap: 8px; padding: 12px; border-top: 1px solid rgba(255,255,255,0.18); background: linear-gradient(0deg, rgba(255,255,255,0.10), rgba(255,255,255,0.05)); }
+    .composer input{ border: 1px solid rgba(255,255,255,0.28); background: rgba(255,255,255,0.14); color: #fff; border-radius: 12px; padding: 12px; outline: none; }
+    .composer button{ padding: 12px 16px; border: none; border-radius: 12px; background: rgba(255,255,255,0.24); color: #fff; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
     .composer button:disabled{ opacity: .6; cursor: not-allowed; }
-
-    /* Demo banner */
-    .demo{
-      position: absolute; top: 84px; left: 50%; transform: translateX(-50%);
-      font-size: 11px; letter-spacing: .3px;
-      padding: 4px 10px; border-radius: 999px;
-      background: var(--pill); border: 1px solid var(--glass-stroke);
-    }
+    .demo{ position: absolute; top: 84px; left: 50%; transform: translateX(-50%); font-size: 11px; letter-spacing: .3px; padding: 4px 10px; border-radius: 999px; background: var(--pill); border: 1px solid var(--glass-stroke); }
   </style>
 </head>
 <body>
-  <!-- Top nav (repo-aware in nav.js) -->
+  <!-- Top nav -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module">
-    import { renderNavBar } from "./module/nav.js";  /* correct path from /src page */
+    import { renderNavBar } from "./module/nav.js";  /* path is correct from /src */
     renderNavBar("messages");
   </script>
 
   <div class="demo">Demo UI (local-only)</div>
 
   <section class="shell">
-    <!-- Sidebar: conversations -->
+    <!-- Sidebar -->
     <aside class="panel">
       <div class="header">
         <h2>Conversations</h2>
-        <span class="badge">3</span>
+        <span class="badge" id="threadCount">—</span>
       </div>
-      <div class="search">
-        <input id="search" type="text" placeholder="Search people or classes…"/>
-      </div>
+      <div class="search"><input id="search" type="text" placeholder="Search people or classes…"/></div>
       <div id="threads" class="threads"></div>
     </aside>
 
-    <!-- Chat panel -->
+    <!-- Chat -->
     <section class="panel chat">
       <div class="header" id="chatHeader">
         <h3 id="peerName">Select a conversation</h3>
         <span class="badge" id="peerMeta">—</span>
       </div>
-
-      <div id="chatBody" class="chat-body">
-        <div class="msg in">
-          Hey! This is a demo chat. It looks real, but it’s running locally.
-          <div class="meta">Today · 3:10 PM</div>
-        </div>
-        <div class="msg out">
-          Perfect — that’s exactly what we need for the hackathon!
-          <div class="meta">3:11 PM <span class="checks" aria-label="Delivered">
-            <i data-lucide="check"></i><i data-lucide="check"></i>
-          </span></div>
-        </div>
-      </div>
-
+      <div id="chatBody" class="chat-body"></div>
       <div class="composer">
         <input id="composerInput" placeholder="Type a message… (demo)"/>
-        <button id="sendBtn">
-          <i data-lucide="send"></i> Send
-        </button>
+        <button id="sendBtn"><i data-lucide="send"></i> Send</button>
       </div>
     </section>
   </section>
 
   <script type="module">
-    /* ---------- DEMO DATA (stored in localStorage for realism) ---------- */
-    const DEMO_THREADS_KEY = "sc_demo_threads_v1";
-    const nowStr = () => new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'});
+    import { auth } from "./module/auth.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
+    /* ---------- Demo data ---------- */
     const defaultThreads = [
       {
         id: "t1",
         name: "Emily Chen · CS 180",
         initials: "EC",
-        active: true,
         online: true,
         last: "Want to review loops after lab?",
         time: "2:54 PM",
+        active: true,
         messages: [
-          {dir:"in",  text:"Hey Adam! Want to review loops after lab?", ts:"2:54 PM"},
+          {dir:"in",  text:"Hey! Want to review loops after lab?", ts:"2:54 PM"},
           {dir:"out", text:"Yes — 7:30 at WALC? (quiet side)", ts:"2:55 PM"},
           {dir:"in",  text:"Perfect. I’ll grab a table.", ts:"2:56 PM"},
         ]
@@ -284,10 +144,10 @@
         id: "t2",
         name: "Jordan Patel · MA 261",
         initials: "JP",
-        active: false,
         online: false,
         last: "Do you have the vector proj formula?",
         time: "Yesterday",
+        active: false,
         messages: [
           {dir:"in", text:"Do you have the vector proj formula?", ts:"Yesterday"},
           {dir:"out", text:"proj_u(v) = (v·u / ||u||²) u", ts:"Yesterday"},
@@ -297,90 +157,96 @@
         id: "t3",
         name: "Study Group · Lofi Room",
         initials: "SG",
-        active: false,
         online: true,
         last: "Timer set 50/10. See you at 8.",
         time: "Today",
+        active: false,
         messages: [
           {dir:"in", text:"Timer set 50/10. See you at 8.", ts:"Today"},
         ]
       }
     ];
 
-    let threads = JSON.parse(localStorage.getItem(DEMO_THREADS_KEY) || "null") || defaultThreads;
+    /* ---------- Per-user storage (bumped version to refresh seeds) ---------- */
+    const KEY_PREFIX = "sc_demo_threads_v2";  // <- bumping version resets old cached threads
+    const keyFor = (uid) => `${KEY_PREFIX}_${uid || "guest"}`;
 
-    /* ---------- DOM ---------- */
-    const threadsEl = document.getElementById("threads");
-    const searchEl = document.getElementById("search");
-    const chatBody = document.getElementById("chatBody");
-    const peerName = document.getElementById("peerName");
-    const peerMeta = document.getElementById("peerMeta");
-    const inputEl = document.getElementById("composerInput");
-    const sendBtn = document.getElementById("sendBtn");
+    let STORAGE_KEY = keyFor(auth.currentUser?.uid);
+    let threads = null;
 
-    lucide.createIcons(); // initial render
+    const $ = (id) => document.getElementById(id);
+    const threadsEl = $("threads");
+    const searchEl = $("search");
+    const chatBody = $("chatBody");
+    const peerName = $("peerName");
+    const peerMeta = $("peerMeta");
+    const inputEl = $("composerInput");
+    const sendBtn = $("sendBtn");
+    const threadCount = $("threadCount");
 
-    /* ---------- RENDER THREAD LIST ---------- */
-    function renderThreads(filter=""){
-      threadsEl.innerHTML = "";
-      threads
-        .filter(t => t.name.toLowerCase().includes(filter.toLowerCase()))
-        .forEach(t => {
-          const row = document.createElement("div");
-          row.className = "thread";
-          row.dataset.id = t.id;
-          row.innerHTML = `
-            <div class="avatar">${t.initials}</div>
-            <div>
-              <p class="t-name">${t.name}</p>
-              <p class="t-last">${t.last}</p>
-            </div>
-            <div class="t-meta">
-              ${t.online ? '<span class="dot" title="Online"></span>' : ""}
-              <span class="t-time">${t.time}</span>
-            </div>
-          `;
-          row.addEventListener("click", () => openThread(t.id));
-          threadsEl.appendChild(row);
-        });
+    function clone(obj){ return JSON.parse(JSON.stringify(obj)); }
+    function loadThreads(){
+      try { const raw = localStorage.getItem(STORAGE_KEY); return raw ? JSON.parse(raw) : null; }
+      catch { return null; }
+    }
+    function saveThreads(data){
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); } catch {}
     }
 
-    /* ---------- OPEN A THREAD ---------- */
+    function renderThreads(filter=""){
+      threadsEl.innerHTML = "";
+      const list = threads.filter(t => t.name.toLowerCase().includes(filter.toLowerCase()));
+      threadCount.textContent = String(threads.length);
+      list.forEach(t => {
+        const row = document.createElement("div");
+        row.className = "thread";
+        row.dataset.id = t.id;
+        row.innerHTML = `
+          <div class="avatar">${t.initials}</div>
+          <div>
+            <p class="t-name">${t.name}</p>
+            <p class="t-last">${t.last}</p>
+          </div>
+          <div class="t-meta">
+            ${t.online ? '<span class="dot" title="Online"></span>' : ""}
+            <span class="t-time">${t.time}</span>
+          </div>
+        `;
+        row.addEventListener("click", () => openThread(t.id));
+        threadsEl.appendChild(row);
+      });
+    }
+
     function openThread(id){
       threads = threads.map(t => ({...t, active: t.id === id}));
       const t = threads.find(x => x.id === id) || threads[0];
       peerName.textContent = t.name;
       peerMeta.textContent = t.online ? "Online" : "Last seen recently";
       chatBody.innerHTML = "";
-
       t.messages.forEach(m => {
         const bubble = document.createElement("div");
         bubble.className = `msg ${m.dir === "out" ? "out" : "in"}`;
-        bubble.innerHTML = `
-          ${m.text}
-          <div class="meta">${m.ts}${m.dir === "out" ? ` <span class="checks"><i data-lucide="check"></i><i data-lucide="check"></i></span>` : ""}</div>
-        `;
+        bubble.innerHTML = `${m.text}<div class="meta">${m.ts}${m.dir === "out" ? ` <span class="checks"><i data-lucide="check"></i><i data-lucide="check"></i></span>` : ""}</div>`;
         chatBody.appendChild(bubble);
       });
       chatBody.scrollTop = chatBody.scrollHeight;
-      localStorage.setItem(DEMO_THREADS_KEY, JSON.stringify(threads));
+      saveThreads(threads);
       lucide.createIcons();
     }
 
-    /* ---------- SEND (LOCAL ONLY) ---------- */
+    function nowStr(){ return new Date().toLocaleTimeString([], {hour:'numeric', minute:'2-digit'}); }
+
     function sendMessage(){
       const t = threads.find(x => x.active) || threads[0];
       if (!t) return;
-      const text = inputEl.value.trim();
+      const text = (inputEl.value || "").trim();
       if (!text) return;
 
-      // push outgoing
       const out = {dir:"out", text, ts: nowStr()};
       t.messages.push(out);
       t.last = text;
       t.time = out.ts;
 
-      // render outgoing
       const bubble = document.createElement("div");
       bubble.className = "msg out";
       bubble.innerHTML = `${out.text}<div class="meta">${out.ts} <span class="checks"><i data-lucide="check"></i><i data-lucide="check"></i></span></div>`;
@@ -388,7 +254,7 @@
       chatBody.scrollTop = chatBody.scrollHeight;
       inputEl.value = "";
 
-      // fake typing + auto-reply
+      // fake typing + reply
       const typing = document.createElement("div");
       typing.className = "typing";
       typing.innerHTML = `<span class="dotty"></span><span class="dotty"></span><span class="dotty"></span>`;
@@ -408,23 +274,35 @@
         chatBody.appendChild(inBubble);
         chatBody.scrollTop = chatBody.scrollHeight;
 
-        localStorage.setItem(DEMO_THREADS_KEY, JSON.stringify(threads));
+        saveThreads(threads);
       }, 900);
 
-      localStorage.setItem(DEMO_THREADS_KEY, JSON.stringify(threads));
+      saveThreads(threads);
       lucide.createIcons();
     }
 
-    /* ---------- EVENTS ---------- */
+    function initDemoThreads(){
+      threads = loadThreads() || clone(defaultThreads);
+      renderThreads();
+      openThread(threads.find(t => t.active)?.id || threads[0].id);
+      saveThreads(threads);
+    }
+
+    // Events
     searchEl.addEventListener("input", e => renderThreads(e.target.value));
     sendBtn.addEventListener("click", sendMessage);
-    inputEl.addEventListener("keydown", e => {
-      if (e.key === "Enter") sendMessage();
+    inputEl.addEventListener("keydown", e => { if (e.key === "Enter") sendMessage(); });
+
+    // Auth-aware storage namespace
+    onAuthStateChanged(auth, (user) => {
+      STORAGE_KEY = keyFor(user?.uid);
+      threads = null;         // switch namespace
+      initDemoThreads();      // re-seed defaults for new user/guest
     });
 
-    /* ---------- INIT ---------- */
-    renderThreads();
-    openThread(threads.find(t => t.active)?.id || threads[0].id);
+    // First paint
+    lucide.createIcons();
+    initDemoThreads();
   </script>
 </body>
 </html>

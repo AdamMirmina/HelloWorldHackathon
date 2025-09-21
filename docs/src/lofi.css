@@ -103,7 +103,7 @@ html {
 
 .timer-status {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #f7dac3;
   margin-top: 20px;
 }
 
@@ -152,10 +152,10 @@ button.controls, button.modes{
   color: #f7dac3;
   padding: 20px 40px;
   font-size: 1rem;
-  border-radius: 50px;
+  border-radius: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(5px);
   letter-spacing: 1px;
 }
 

@@ -4,20 +4,20 @@
 
 const MOTTOS = [
   // — Core rotation (no emojis)
-  "It's time to lock in.",
+  "Lock in.",
   "One pomodoro at a time.",
-  "Small steps, sharp focus.",
-  "Deep work, light mind.",
+  "Keep your focus sharp!",
+  "Pencil ready?",
   "Make the next minute count.",
-  "Win the next five minutes.",
-  "Quiet mind, loud results.",
-  "Study now, thank yourself later.",
+  "Who's the final boss this time?",
+  "Study hard, game later.",
+  "Focus!",
   "Progress loves consistency.",
   "Notes today, mastery tomorrow.",
   "Less scroll, more soul (into notes).",
   "Build the habit, keep the promise.",
   "Learn like you mean it.",
-  "Focus is a muscle—train it.",
+  "Don't you dare lift that phone.",
   "The hard part is starting. Begin.",
   "Be where your feet are.",
   "You don’t need more time, just more focus.",
@@ -33,7 +33,7 @@ const MOTTOS = [
   "Take notes you’ll actually read.",
   "Questions first, answers second.",
   "Read, recall, refine, repeat.",
-  "Depth over speed.",
+  "Don't you dare skim that reading.",
   "Show up for the boring parts.",
   "Turn effort into momentum.",
   "Make it make sense (to you).",
@@ -52,15 +52,15 @@ const MOTTOS = [
   "Don’t count the minutes; make the minutes count.",
   "You already beat procrastination by opening this.",
   "When in doubt, write it out.",
-  "Mastery is many quiet victories.",
-  "The library in your head is open.",
+  "⌒(o＾▽＾o)ノ",
+  "So. How long have you doomscrolled today?",
 
   // — Light easter eggs (kept subtle, still no emojis)
   "Hidden boss: the next paragraph. Defeat it.",
   "ACHIEVEMENT UNLOCKED: Refreshing Like a Maniac.",
   "What will Prof. Turkstra rant about today?",
   "べんきょうをしましょう！",
-  "Wow! This message was a 1/55 chance!"
+  "Wow! This message was a 1/55 chance!",
 ];
 
 const STORAGE_KEY = "lastMottoIndex";

@@ -4,11 +4,30 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lofi Overlay Video Page</title>
+
+    <!-- Global site styles (includes top-nav styles) -->
+    <link rel="stylesheet" href="../index.css" />
+    <!-- Page-specific styles -->
     <link rel="stylesheet" href="lofi.css" />
+
     <style>
-      /* Make sure the nav sits above the video */
-      .top-nav { position: fixed; z-index: 2000; }
+      /* Make sure the nav sits above the video and looks like a bar */
+      .top-nav {
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        z-index: 3000;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start; /* override global right alignment */
+        padding: 10px 20px;
+        background: rgba(0, 0, 0, 0.4);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
+      }
+      .nav-icons { gap: 20px; } /* ensure spacing */
+      /* Keep the video underneath everything */
       #bg-video { position: fixed; z-index: 0; }
+      body { margin: 0; }
     </style>
   </head>
   <body>
@@ -61,10 +80,10 @@
       </div>
     </div>
 
-    <!-- ✅ Load Lucide first, then render the nav bar -->
+    <!-- Icons, then nav -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module">
-      import { renderNavBar } from "./module/nav.js?v=3"; // cache-bust & correct path
+      import { renderNavBar } from "./module/nav.js?v=5"; // cache-bust & correct path
       renderNavBar("lofi");
     </script>
 

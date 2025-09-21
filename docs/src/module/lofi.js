@@ -30,6 +30,5 @@ function showPage(pageName) {
   const targetPage = document.getElementById(pageName + 'Page');
   if (targetPage) {
     targetPage.classList.add('active');
-    console.log(`Navigated to ${pageName} page`); //console log to check if the right page is being loaded
   }
 }

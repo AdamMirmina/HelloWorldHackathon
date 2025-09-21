@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-  const myButton = document.getElementById('myButton');
+  const myButton = document.getElementById('intro');
 
   myButton.addEventListener('click', function() {
     myButton.classList.add('fade-out'); // Add the fade-out class

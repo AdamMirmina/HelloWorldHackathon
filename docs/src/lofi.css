@@ -30,7 +30,7 @@ html {
   font-size: 75px;
 } */
 
-.intro {
+#intro {
   position: absolute;
   color: #f7dac3;
   width: 100%;
@@ -41,7 +41,7 @@ html {
   transition: opacity 0.5s ease-out;
 }
 
-.intro.fade-out{
+#intro.fade-out {
   opacity: 0; /* Target opacity for fading out */
   pointer-events: none; /* Prevent clicks during fade-out */
 }

@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sign In</title>
 
-  <!-- ✅ Correct path to CSS (signin.html and index.css are both in /docs/) -->
+  <!-- ✅ Correct path to CSS -->
   <link rel="stylesheet" href="./index.css" />
-  
+
   <style>
     body {
       margin: 0;
@@ -19,7 +19,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      padding-top: 80px;
+      padding-top: 80px; /* ✅ leaves space for nav bar */
       color: white;
     }
 
@@ -92,13 +92,14 @@
     <span class="small-link" id="resetLink">Forgot your password?</span>
   </div>
 
+  <!-- ✅ Load nav bar with correct path -->
   <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module">
     import { renderNavBar } from "./src/module/nav.js";
     renderNavBar("signin");
   </script>
 
-  <!-- ✅ Corrected path to auth.js -->
+  <!-- ✅ Correct path to auth.js -->
   <script type="module">
     import { auth } from "./src/module/auth.js";
     import {
@@ -107,7 +108,7 @@
       sendPasswordResetEmail
     } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    console.log("✅ signin.js loaded"); // debug
+    console.log("✅ signin.js loaded");
 
     const emailInput = document.getElementById("email");
     const passwordInput = document.getElementById("password");
@@ -119,6 +120,10 @@
     const redirectTo = params.get("redirect") || "index.html";
 
     loginBtn.addEventListener("click", async () => {
+      if (!emailInput.value || !passwordInput.value) {
+        alert("Please enter both email and password.");
+        return;
+      }
       try {
         await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
         window.location.href = redirectTo;
@@ -128,6 +133,10 @@
     });
 
     signupBtn.addEventListener("click", async () => {
+      if (!emailInput.value || !passwordInput.value) {
+        alert("Please enter both email and password.");
+        return;
+      }
       try {
         await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
         window.location.href = redirectTo;

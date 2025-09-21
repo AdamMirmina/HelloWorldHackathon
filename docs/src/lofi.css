@@ -43,6 +43,7 @@ html {
   font-size: 50px;
   opacity: 1;
   transition: opacity 0.5s ease-out;
+  border: none;
 }
 
 #intro.fade-out {
@@ -139,4 +140,8 @@ html {
   opacity: 1;
   transform: translateY(0);
   pointer-events: all;
+}
+
+#timer-page {
+  
 }

@@ -27,7 +27,7 @@ const MOTTOS = [
   "Curiosity is your superpower.",
   "Drafts first, polish later.",
   "Study what future-you wishes you knew.",
-  "One page more than yesterday.",
+  "(Hopefully) One page more than yesterday.",
   "Be precise. Be patient.",
   "Build a streak you’re proud of.",
   "Take notes you’ll actually read.",
@@ -56,7 +56,7 @@ const MOTTOS = [
   "So. How long have you doomscrolled today?",
 
   // — Light easter eggs (kept subtle, still no emojis)
-  "Hidden boss: the next paragraph. Defeat it.",
+  "Bet you didn't know that there were 55 randomized greetings!",
   "ACHIEVEMENT UNLOCKED: Refreshing Like a Maniac.",
   "What will Prof. Turkstra rant about today?",
   "べんきょうをしましょう！",

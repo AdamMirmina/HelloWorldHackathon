@@ -11,21 +11,20 @@
     <link rel="stylesheet" href="lofi.css" />
 
     <style>
-      /* Make sure the nav sits above the video and looks like a bar */
+      /* Ensure the top nav sits above the fullscreen video and matches global look */
       .top-nav {
         position: fixed;
         top: 0; left: 0; right: 0;
         z-index: 3000;
         display: flex;
         align-items: center;
-        justify-content: flex-start; /* override global right alignment */
+        justify-content: flex-end; /* ✅ right-aligned like other pages */
         padding: 10px 20px;
         background: rgba(0, 0, 0, 0.4);
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
       }
-      .nav-icons { gap: 20px; } /* ensure spacing */
-      /* Keep the video underneath everything */
+      .nav-icons { gap: 20px; }
       #bg-video { position: fixed; z-index: 0; }
       body { margin: 0; }
     </style>
@@ -83,7 +82,7 @@
     <!-- Icons, then nav -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module">
-      import { renderNavBar } from "./module/nav.js?v=5"; // cache-bust & correct path
+      import { renderNavBar } from "./module/nav.js?v=6"; /* cache-bust */
       renderNavBar("lofi");
     </script>
 

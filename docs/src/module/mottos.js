@@ -60,7 +60,7 @@ const MOTTOS = [
   "Achievement unlocked: Focus Mode. Now earn it.",
   "Konami code does nothing here; studying does.",
   "Secret tip: left arrow isn’t a secret—use it.",
-  "You found the rare line. Now make a common habit."
+  "Wow! This message was a 1/55 chance!"
 ];
 
 const STORAGE_KEY = "lastMottoIndex";

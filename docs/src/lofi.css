@@ -25,7 +25,6 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
-  
 }
 
 /* .overlay {
@@ -64,7 +63,6 @@ html {
   object-fit: cover;
 }
 
-
 /* Timer page */
 .timer-content {
   z-index: 0;
@@ -73,11 +71,12 @@ html {
 }
 
 .timer-display {
+  display: block;
   font-size: 6rem;
   font-weight: 300;
   margin: 40px 0;
-  color: #667eea;
-  text-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+  color: #ffffff;
+  text-shadow: 0 0 30px rgba(102, 234, 181, 0.5);
 }
 
 .timer-controls {
@@ -110,7 +109,34 @@ html {
 }
 
 @media (max-width: 768px) {
-  .title { font-size: 2.5rem; }
-  .timer-display { font-size: 4rem; }
-  .home-arrow { display: none; }
+  .title {
+    font-size: 2.5rem;
+  }
+  .timer-display {
+    font-size: 4rem;
+  }
+  .home-arrow {
+    display: none;
+  }
+}
+
+.page {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.5s ease;
+  pointer-events: none;
+}
+
+.page.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
 }

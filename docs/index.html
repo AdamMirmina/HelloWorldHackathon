@@ -18,20 +18,44 @@
   </div>
 
   <!-- Timer Page -->
-  <div class="page" id="timerPage">
-    <div class="timer-content">
-      <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
-        focus session
-      </h2>
-      <div class="timer-display" id="timerDisplay">25:00</div>
-      <div class="timer-status" id="timerStatus">ready to focus</div>
-      <div class="timer-controls">
-        <button class="timer-btn" id="startBtn">start</button>
-        <button class="timer-btn" id="pauseBtn">pause</button>
-        <button class="timer-btn" id="resetBtn">reset</button>
-      </div>
-    </div>
+<div class="page" id="timerPage">
+
+    <!-- Timer Display -->
+  <div class="timer-display" id="timerDisplay">25:00</div>
+  <div class="timer-status" id="timerStatus">Ready to Focus</div>
+
+  <!-- Controls -->
+  <div class="timer-controls">  
+    <button id="startBtn">Start</button>
+    <button id="pauseBtn">Pause</button>
+    <button id="resetBtn">Reset</button>
   </div>
+
+  <!-- Mode Buttons -->
+  <div class="timer-modes">  
+    <button id="focusModeBtn">Focus</button>
+    <button id="shortBreakBtn">Short Break</button>
+    <button id="longBreakBtn">Long Break</button>
+  </div>
+
+  <!-- Settings -->
+  <div class="timer-settings">
+    <input type="number" id="focusTimeInput" min="1" max="60" value="25">
+    <input type="number" id="shortBreakInput" min="1" max="30" value="5">
+    <input type="number" id="longBreakInput" min="1" max="60" value="15">
+  </div>
+
+  <!-- Stats Display -->
+  <div class="timer-stats">
+    <span id="pomodoroCount">0</span>
+    <span id="totalStudyTime">0m</span>
+    <span id="sessionCount">1</span>
+    <span id="totalSessions">0</span>
+  </div>
+</div>
+
+
+  
 
   <!-- Side Arrows -->
   <div class="home-arrow left" onclick="window.location.href='src/spots.html'">

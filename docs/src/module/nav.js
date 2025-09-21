@@ -138,15 +138,17 @@ function renderNavBar(currentPage) {
   topNav.appendChild(navIcons);
   document.body.prepend(topNav);
 
-  // Add the About pill (once per page)
-  injectAboutStylesOnce();
-  if (!document.querySelector(".about-tag")) {
-    const about = document.createElement("a");
-    about.className = "about-tag";
-    about.href = URLS.about;
-    about.setAttribute("aria-label", "About this project");
-    about.textContent = "About";
-    document.body.appendChild(about);
+  // ✅ Only show the About pill on the main (index) screen
+  if (currentPage === "index") {
+    injectAboutStylesOnce();
+    if (!document.querySelector(".about-tag")) {
+      const about = document.createElement("a");
+      about.className = "about-tag";
+      about.href = URLS.about;
+      about.setAttribute("aria-label", "About this project");
+      about.textContent = "About";
+      document.body.appendChild(about);
+    }
   }
 
   if (window.lucide) lucide.createIcons();

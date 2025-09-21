@@ -146,3 +146,22 @@ html {
   align-items: center;    /* (Optional) Center them horizontally */
   gap: 1rem;              /* (Optional) Space between sections */
 }
+
+button.controls, button.modes{
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+  color: #f7dac3;
+  padding: 20px 40px;
+  font-size: 1rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  letter-spacing: 1px;
+}
+
+button.controls:hover, button.modes:hover{
+  background: linear-gradient(135deg, rgba(102, 234, 186, 0.3) 0%, rgba(217, 233, 126, 0.3) 100%);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}

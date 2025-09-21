@@ -130,11 +130,11 @@
           return;
         }
         const status = await validatePassword(getAuth(), passwordInput);
-        console.log("here!");
-        if (!status.isValid) {
-          alert("Invalid password! Please try again.");
-          return;
-        }
+        // console.log("here!");
+        // if (!status.isValid) {
+        //   alert("Invalid password! Please try again.");
+        //   return;
+        // }
         try {
           await signInWithEmailAndPassword(
             auth,

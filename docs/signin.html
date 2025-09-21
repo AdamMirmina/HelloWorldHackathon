@@ -170,7 +170,7 @@
         }
         try {
           await sendPasswordResetEmail(auth, emailInput.value);
-          alert("Password reset email sent! (Check spam folder)");
+          alert("Reset link sent! Please check your spam.");
         } catch (err) {
           alert("Error: " + err.message);
         }

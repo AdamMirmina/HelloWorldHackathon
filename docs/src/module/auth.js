@@ -27,7 +27,11 @@ const currentUserDisplay = document.getElementById("current-user");
 if (signupBtn) {
   signupBtn.addEventListener("click", async () => {
     try {
-      await createUserWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
+      await createUserWithEmailAndPassword(
+        auth,
+        emailInput.value,
+        passwordInput.value
+      );
       alert("✅ Account created! You are now signed in.");
     } catch (error) {
       alert("❌ Sign-up failed: " + error.message);
@@ -40,8 +44,17 @@ if (signupBtn) {
 if (loginBtn) {
   loginBtn.addEventListener("click", async () => {
     try {
-      await signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value);
-      alert("✅ Logged in successfully!");
+      const status = await validatePassword(getAuth(), passwordFromUser);
+      if (!status.isValid) {
+        alert("Invalid Password!");
+      } else {
+        await signInWithEmailAndPassword(
+          auth,
+          emailInput.value,
+          passwordInput.value
+        );
+        alert("✅ Logged in successfully!");
+      }
     } catch (error) {
       alert("❌ Login failed: " + error.message);
       console.error(error);

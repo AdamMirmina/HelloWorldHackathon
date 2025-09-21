@@ -1,45 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Study Spots Finder - Lofi Study</title>
-    <link rel="stylesheet" href="spots.css"">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Spots Finder • Study Companion</title>
+
+  <!-- Global site styles (includes top-nav) -->
+  <link rel="stylesheet" href="../index.css" />
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="spots.css" />
+
+  <style>
+    /* Ensure nav bar sits above page content/video maps */
+    .top-nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 3000;
+    }
+    body { margin: 0; }
+  </style>
 </head>
 <body>
-    <!-- Back Arrow -->
-    <button class="home-link" onclick="window.history.back()">← Back</button>
-
-    <div class="container">
-        <div class="header">
-            <h1 class="title">campus study spots</h1>
-            <p class="subtitle">real-time traffic data from unitime schedules</p>
-        </div>
-
-        <div class="campus-map">
-            <div class="live-data-header">
-                <h3 style="color: rgba(255,255,255,0.9);">📍 Live Campus Map</h3>
-                <div class="live-indicator">
-                    <div class="live-dot"></div>
-                    <span>Live Data</span>
-                </div>
-            </div>
-            
-            <div class="map-container" id="campusMap">
-                <!-- Building markers will be dynamically positioned -->
-            </div>
-        </div>
-
-        <div class="spots-grid" id="spotsGrid">
-            <!-- Study spots will be populated by JavaScript -->
-        </div>
+  <div class="container" style="margin-top: 10px;">
+    <div class="header">
+      <h1 class="title">campus study spots</h1>
+      <p class="subtitle">real-time traffic data from unitime schedules</p>
     </div>
-    <!-- ✅ Load Lucide first, then render the nav bar -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script type="module">
-      import { renderNavBar } from "./src/module/nav.js";
-      renderNavBar("index");
-    </script>
-<script type="module" src="spots.js"></script>
+
+    <div class="campus-map">
+      <div class="live-data-header">
+        <h3 style="color: rgba(255,255,255,0.9);">Live Campus Map</h3>
+        <div class="live-indicator">
+          <div class="live-dot"></div>
+          <span>Live Data</span>
+        </div>
+      </div>
+
+      <div class="map-container" id="campusMap">
+        <!-- Building markers will be dynamically positioned -->
+      </div>
+    </div>
+
+    <div class="spots-grid" id="spotsGrid">
+      <!-- Study spots will be populated by JavaScript -->
+    </div>
+  </div>
+
+  <!-- Icons, then nav -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module">
+    import { renderNavBar } from "./module/nav.js";
+    renderNavBar("spots");
+  </script>
+
+  <!-- Page logic -->
+  <script type="module" src="spots.js"></script>
 </body>
 </html>

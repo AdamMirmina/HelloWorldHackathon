@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", function () {
-const myButton = document.getElementById("intro");
-const backgroundMusic = document.getElementById("backgroundMusic");
+  const myButton = document.getElementById("intro");
+  const backgroundMusic = document.getElementById("backgroundMusic");
 
-myButton.addEventListener("click", function () {
+  myButton.addEventListener("click", function () {
     backgroundMusic.play();
     console.log("play!");
 
@@ -10,25 +10,36 @@ myButton.addEventListener("click", function () {
 
     // Optionally, remove the button from the DOM after the animation completes
     myButton.addEventListener(
-    "transitionend",
-    function () {
+      "transitionend",
+      function () {
         myButton.remove(); // Removes the button element
         console.log("play!");
-    },
-    { once: true }
+      },
+      { once: true }
     ); // Ensures the event listener is removed after one use
+  });
 });
+var isPaused = false;
+
+muteBtn.addEventListener("click", function () {
+  if (isPaused == true) {
+    backgroundMusic.play();
+    console.log("play!");
+    isPaused = false;
+  } else {
+    backgroundMusic.pause();
+    isPaused = true;
+    console.log("pause!");
+  }
 });
 
-
-    
 function showPage(pageName) {
-  document.querySelectorAll('.page').forEach(page => {
-    page.classList.remove('active');
+  document.querySelectorAll(".page").forEach((page) => {
+    page.classList.remove("active");
   });
 
-  const targetPage = document.getElementById(pageName + 'Page');
+  const targetPage = document.getElementById(pageName + "Page");
   if (targetPage) {
-    targetPage.classList.add('active');
+    targetPage.classList.add("active");
   }
 }

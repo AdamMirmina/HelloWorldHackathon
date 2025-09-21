@@ -43,9 +43,9 @@ if (signupBtn) {
 // --- Log In ---
 if (loginBtn) {
   loginBtn.addEventListener("click", async () => {
+    console.log("here!");
     try {
       const status = await validatePassword(getAuth(), passwordFromUser);
-      console.log("here!");
       if (!status.isValid) {
         alert("Invalid Password!");
       } else {

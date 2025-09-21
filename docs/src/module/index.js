@@ -282,9 +282,9 @@ class PomodoroTimer {
       if (this.state.isRunning) {
         const modeText = this.state.mode === 'focus' ? 'Focus Mode' : 
                         this.state.mode === 'shortBreak' ? 'Short Break' : 'Long Break';
-        status.textContent = `${modeText} - 🎯 Focus Mode 🎯`;
+        status.textContent = `${modeText} - Focus Mode`;
       } else if (this.state.isPaused) {
-        status.textContent = '⏸️ Timer Paused ⏸️';
+        status.textContent = 'Timer Paused';
       } else {
         const modeText = this.state.mode === 'focus' ? 'Ready to Focus' : 
                         this.state.mode === 'shortBreak' ? 'Short Break Ready' : 'Long Break Ready';

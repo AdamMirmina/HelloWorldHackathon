@@ -41,26 +41,21 @@ if (signupBtn) {
 }
 
 // --- Log In ---
-// if (loginBtn) {
-//   loginBtn.addEventListener("click", async () => {
-//     try {
-//       const status = await validatePassword(getAuth(), passwordFromUser);
-//       if (!status.isValid) {
-//         alert("Invalid Passwod!")
-//       } else {
-//         await signInWithEmailAndPassword(
-//           auth,
-//           emailInput.value,
-//           passwordInput.value
-//         );
-//         alert("✅ Logged in successfully!");
-//       }
-//     } catch (error) {
-//       alert("❌ Login failed: " + error.message);
-//       console.error(error);
-//     }
-//   });
-// }
+if (loginBtn) {
+  loginBtn.addEventListener("click", async () => {
+    try {
+      await signInWithEmailAndPassword(
+        auth,
+        emailInput.value,
+        passwordInput.value
+      );
+      alert("✅ Logged in successfully!");
+    } catch (error) {
+      alert("❌ Login failed: " + error.message);
+      console.error(error);
+    }
+  });
+}
 
 // --- Log Out ---
 if (logoutBtn) {

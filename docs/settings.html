@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Settings</title>
-  <base href=".">
-  <link rel="stylesheet" href="../index.css" />
+
+  <!-- Correct: settings is in /docs/, so CSS is ./index.css -->
+  <link rel="stylesheet" href="./index.css" />
+
   <style>
     body {
       margin: 0;
@@ -46,13 +48,8 @@
       margin: 15px 0;
     }
 
-    .setting label {
-      font-size: 1.1rem;
-    }
-
-    .setting input[type="checkbox"] {
-      transform: scale(1.5);
-    }
+    .setting label { font-size: 1.1rem; }
+    .setting input[type="checkbox"] { transform: scale(1.5); }
 
     .save-btn {
       margin-top: 20px;
@@ -65,31 +62,21 @@
       padding: 10px 16px;
       transition: background 0.2s ease;
     }
+    .save-btn:hover { background: rgba(255, 255, 255, 0.3); }
 
-    .save-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    /* ✅ Optional "Redirecting..." overlay */
+    /* Optional UX: show why we're bouncing to sign-in */
     .redirect-overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.75);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-      z-index: 2000;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      justify-content: center; align-items: center;
+      font-size: 1.1rem; font-weight: 600; z-index: 2000;
     }
   </style>
 </head>
 
 <body>
-  <div id="redirectMessage" class="redirect-overlay" style="display:none;">
-    Redirecting you to sign in...
-  </div>
+  <div id="redirectMessage" class="redirect-overlay">Redirecting you to sign in…</div>
 
   <div class="settings-container">
     <h1>Settings</h1>
@@ -117,57 +104,70 @@
     <button class="save-btn" id="saveSettingsBtn">Save Settings</button>
   </div>
 
-  <!-- ✅ Inject Nav Bar -->
-  <script type="module">
-    import { renderNavBar } from "../module/nav.js";
-    renderNavBar("settings");
-  </script>
+  <!-- Load icons first -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
+  <!-- Nav bar (settings is in /docs/, so nav is ./src/module/nav.js) -->
   <script type="module">
-    import { auth } from "../module/auth.js";
-    import { db } from "../config/firebase.js";
-    import { doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { renderNavBar } from "./src/module/nav.js";
+    renderNavBar("settings");
+  </script>
 
-    const publicToggle = document.getElementById("publicProfileToggle");
-    const showEmailToggle = document.getElementById("showEmailToggle");
-    const allowDMsToggle = document.getElementById("allowDMsToggle");
-    const showRequestsToggle = document.getElementById("showRequestsToggle");
-    const saveBtn = document.getElementById("saveSettingsBtn");
+  <!-- Auth + Firestore (correct absolute paths from /docs/) -->
+  <script type="module">
+    import { auth } from "./src/module/auth.js";
+    import { db } from "./src/config/firebase.js";
+    import {
+      doc, getDoc, setDoc
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import {
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
-    auth.onAuthStateChanged(async (user) => {
+    const publicToggle      = document.getElementById("publicProfileToggle");
+    const showEmailToggle   = document.getElementById("showEmailToggle");
+    const allowDMsToggle    = document.getElementById("allowDMsToggle");
+    const showRequestsToggle= document.getElementById("showRequestsToggle");
+    const saveBtn           = document.getElementById("saveSettingsBtn");
+    const redirectEl        = document.getElementById("redirectMessage");
+
+    // These URLs reflect: settings in /docs/, signin in /docs/
+    const SETTINGS_URL = "./settings.html";
+    const SIGNIN_URL   = "./signin.html";
+
+    onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        document.getElementById("redirectMessage").style.display = "flex";
+        redirectEl.style.display = "flex";
         setTimeout(() => {
-          window.location.href = `../signin.html?redirect=${encodeURIComponent("../settings.html")}`;
-        }, 500);
+          window.location.href = `${SIGNIN_URL}?redirect=${encodeURIComponent(SETTINGS_URL)}`;
+        }, 400);
         return;
       }
 
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
+      try {
+        const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
+        if (snap.exists()) {
+          const data = snap.data();
+          publicToggle.checked       = !!data.public;
+          showEmailToggle.checked    = !!data.showEmail;
+          allowDMsToggle.checked     = data.allowDMs !== false;
+          showRequestsToggle.checked = data.showRequests !== false;
+        }
 
-      if (snap.exists()) {
-        const data = snap.data();
-        publicToggle.checked = !!data.public;
-        showEmailToggle.checked = !!data.showEmail;
-        allowDMsToggle.checked = data.allowDMs !== false;
-        showRequestsToggle.checked = data.showRequests !== false;
-      }
-
-      saveBtn.addEventListener("click", async () => {
-        await setDoc(
-          userRef,
-          {
+        saveBtn.addEventListener("click", async () => {
+          await setDoc(userRef, {
             public: publicToggle.checked,
             showEmail: showEmailToggle.checked,
             allowDMs: allowDMsToggle.checked,
             showRequests: showRequestsToggle.checked,
-          },
-          { merge: true }
-        );
-        alert("Settings saved!");
-      });
+          }, { merge: true });
+          alert("Settings saved!");
+        });
+      } catch (e) {
+        console.error(e);
+        alert("Error loading settings. See console for details.");
+      }
     });
   </script>
 </body>

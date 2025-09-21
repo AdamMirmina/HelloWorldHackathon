@@ -1,46 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Lofi Study Room</title>
-  <link rel="stylesheet" href="index.css" />
-  <base href=".">
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lofi Study Room</title>
+    <link rel="stylesheet" href="index.css" />
+    <base href="." />
+  </head>
 
-<body>
-  <!-- Home Page -->
-  <div class="page active" id="homePage">
-    <div class="home-content">
-      <h1 class="title">Study<br>Companion</h1>
-      <p class="subtitle">It's time to lock in.</p>
-      <button class="main-timer-btn" onclick="showPage('timer')"><a style="text-decoration: none; color: white;" href="src/lofi.html">Go to Study Room</a></button>
+  <body>
+    <!-- Home Page -->
+    <div class="page active" id="homePage">
+      <div class="home-content">
+        <h1 class="title">Study<br />Companion</h1>
+        <p class="subtitle">It's time to lock in.</p>
+        <button class="main-timer-btn" onclick="showPage('timer')">
+          <a style="text-decoration: none; color: white" href="src/lofi.html"
+            >Go to Study Room</a
+          >
+        </button>
+      </div>
     </div>
-  </div>
 
+    <!-- Side Arrows -->
+    <div
+      class="home-arrow left"
+      onclick="window.location.href='src/spots.html'"
+    >
+      <div class="arrow-icon">&lt;</div>
+      <div class="arrow-text">Discover Study Spots</div>
+    </div>
 
-  <!-- Side Arrows -->
-  <div class="home-arrow left" onclick="window.location.href=''">
-    <div class="arrow-icon">&lt;</div>
-    <div class="arrow-text">Discover Study Spots</div>
-  </div>
+    <div
+      class="home-arrow right"
+      onclick="window.location.href='src/buddy.html'"
+    >
+      <div class="arrow-icon">&gt;</div>
+      <div class="arrow-text">Find Study Buddies</div>
+    </div>
 
-  <div class="home-arrow right" onclick="window.location.href='src/buddy.html'">
-    <div class="arrow-icon">&gt;</div>
-    <div class="arrow-text">Find Study Buddies</div>
-  </div>
+    <!-- ✅ Load Lucide first, then render the nav bar -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+      import { renderNavBar } from "./src/module/nav.js";
+      renderNavBar("index");
+    </script>
 
-
-  <!-- ✅ Load Lucide first, then render the nav bar -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script type="module">
-    import { renderNavBar } from "./src/module/nav.js";
-    renderNavBar("index");
-  </script>
-
-  <!-- Other modules -->
-  <script type="module" src="src/module/index.js"></script>
-  <script type="module" src="src/module/auth.js"></script>
-  <script type="module" src="src/module/match.js"></script>
-</body>
+    <!-- Other modules -->
+    <script type="module" src="src/module/index.js"></script>
+    <script type="module" src="src/module/auth.js"></script>
+    <script type="module" src="src/module/match.js"></script>
+  </body>
 </html>

@@ -8,63 +8,148 @@
   <style>
     body {
       margin: 0;
-      font-family: "Space Mono", monospace;
+      font-family: "Varela Round", sans-serif;
       min-height: 100vh;
-      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
+      background: url(https://cdnb.artstation.com/p/assets/images/images/049/953/491/large/diana-baltezar-room2-recuperado2.jpg?1653695448)
         no-repeat center center fixed;
       background-size: cover;
       color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       padding: 20px;
     }
 
     .messages-container {
-      max-width: 700px;
-      width: 90%;
+      margin-top: 80px;
+      max-width: 800px;
+      width: 95%;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
       padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
       text-align: center;
+      margin-bottom: 20px;
     }
 
-    .messages-container h1 {
-      margin-bottom: 10px;
+    .message-thread {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      transition: background 0.2s ease;
     }
 
-    .messages-container p {
-      opacity: 0.8;
-      font-size: 1.1rem;
+    .message-thread:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .message-thread h3 {
+      margin: 0;
+      font-size: 1.2rem;
+    }
+
+    .message-thread p {
+      margin: 5px 0 0;
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .prompt {
+      text-align: center;
+      margin-top: 10px;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
     }
   </style>
 </head>
 
 <body>
-  <div class="messages-container">
-    <h1>📨 Messages</h1>
-    <p>Messaging is coming soon! Once implemented, you’ll be able to chat with your matches and study buddies right here.</p>
+  <div class="messages-container" id="messagesContainer">
+    <h1>Your Messages</h1>
+
+    <div class="prompt" id="publicPrompt">
+      <p>Your profile must be public to use messaging.</p>
+      <button id="makePublicBtn">Make Public & Continue</button>
+    </div>
+
+    <!-- Placeholder for message threads -->
+    <div id="threadsList"></div>
   </div>
 
+  <!-- ✅ Inject Nav Bar -->
   <script type="module">
     import { renderNavBar } from "../module/nav.js";
     renderNavBar("messages");
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
+  <script type="module">
     import { auth } from "../module/auth.js";
+    import { db } from "../config/firebase.js";
+    import { doc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    auth.onAuthStateChanged((user) => {
+    const threadsList = document.getElementById("threadsList");
+    const publicPrompt = document.getElementById("publicPrompt");
+    const makePublicBtn = document.getElementById("makePublicBtn");
+
+    auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        // ✅ redirect with ?redirect so user comes back here after login
         window.location.href = `../signin.html?redirect=${encodeURIComponent("src/messages.html")}`;
+        return;
       }
+
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+
+      if (!snap.exists() || !snap.data().public) {
+        publicPrompt.style.display = "block";
+        return;
+      }
+
+      // Fetch message threads for this user (placeholder)
+      // TODO: Replace with actual message retrieval logic later
+      const q = query(collection(db, "messages"), where("participants", "array-contains", user.uid));
+      const snapshot = await getDocs(q);
+
+      if (snapshot.empty) {
+        threadsList.innerHTML = "<p>No messages yet.</p>";
+        return;
+      }
+
+      snapshot.forEach((docSnap) => {
+        const thread = docSnap.data();
+        const div = document.createElement("div");
+        div.classList.add("message-thread");
+        div.innerHTML = `
+          <h3>${thread.otherUserName || "Unknown User"}</h3>
+          <p>${thread.lastMessage || "No messages yet"}</p>
+        `;
+        div.addEventListener("click", () => {
+          // TODO: open message thread UI later
+          alert("Open chat with " + (thread.otherUserName || "Unknown User"));
+        });
+        threadsList.appendChild(div);
+      });
+    });
+
+    makePublicBtn.addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if (!user) return;
+      const userRef = doc(db, "users", user.uid);
+      await updateDoc(userRef, { public: true });
+      publicPrompt.style.display = "none";
+      window.location.reload();
     });
   </script>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
 </body>
 </html>

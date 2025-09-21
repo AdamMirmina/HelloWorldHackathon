@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>User Profile</title>
+  <title>Your Profile</title>
   <link rel="stylesheet" href="../index.css" />
   <style>
     body {
       margin: 0;
-      font-family: "Space Mono", monospace;
+      font-family: "Varela Round", sans-serif;
       min-height: 100vh;
-      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
+      background: url(https://cdnb.artstation.com/p/assets/images/images/049/953/491/large/diana-baltezar-room2-recuperado2.jpg?1653695448)
         no-repeat center center fixed;
       background-size: cover;
       color: white;
@@ -33,51 +33,34 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .profile-info p {
-      margin: 8px 0;
-      font-size: 1rem;
-    }
-
-    input, textarea {
-      width: 100%;
-      margin-top: 5px;
-      padding: 8px;
-      border-radius: 8px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      background: rgba(255, 255, 255, 0.1);
-      color: white;
-      font-size: 1rem;
-    }
-
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-
-    textarea::placeholder, input::placeholder {
-      color: rgba(255, 255, 255, 0.8);
-    }
-
-    .save-btn {
-      margin-top: 15px;
-      padding: 10px 15px;
-      background: rgba(255, 255, 255, 0.15);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
-      color: white;
-      font-size: 1rem;
-      cursor: pointer;
-      width: 100%;
-    }
-
-    .save-btn:hover {
-      background: rgba(255, 255, 255, 0.3);
-    }
-
-    .private-message {
+    .profile-container h1 {
       text-align: center;
-      font-size: 1.2rem;
-      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .toggle-container {
+      margin: 20px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .toggle-container input[type="checkbox"] {
+      transform: scale(1.5);
+    }
+
+    .profile-info p {
+      margin: 6px 0;
+      font-size: 1rem;
+    }
+
+    .message-prompt {
+      display: none;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 10px;
+      margin-top: 15px;
+      border-radius: 8px;
+      text-align: center;
     }
   </style>
 </head>
@@ -85,41 +68,47 @@
 <body>
   <div class="profile-container" id="profileContainer">
     <h1 id="profileTitle">Your Profile</h1>
+
+    <div class="toggle-container">
+      <label for="publicProfileToggle">Public Profile</label>
+      <input type="checkbox" id="publicProfileToggle" />
+    </div>
+
     <div class="profile-info">
       <p><strong>Email:</strong> <span id="userEmail">Loading...</span></p>
-      <p><strong>Name:</strong> <input id="nameInput" placeholder="Your name" /></p>
-      <p><strong>School:</strong> <input id="schoolInput" placeholder="Your school" /></p>
-      <p><strong>Description:</strong></p>
-      <textarea id="descriptionInput" placeholder="Tell others about your study habits, favorite subjects, etc."></textarea>
-      <div style="margin-top:10px;">
-        <label><input type="checkbox" id="publicProfileToggle" /> Public Profile</label>
-      </div>
-      <button class="save-btn" id="saveProfileBtn">Save Changes</button>
+      <p><strong>Name:</strong> <span id="userName">Loading...</span></p>
+      <p><strong>School:</strong> <span id="userSchool">Loading...</span></p>
+    </div>
+
+    <div class="message-prompt" id="messagePrompt">
+      <p>Your profile must be public to use messaging.</p>
+      <button onclick="makePublicAndContinue()">Make Public & Continue</button>
     </div>
   </div>
 
+  <!-- ✅ Inject Nav Bar + Icons -->
   <script type="module">
     import { renderNavBar } from "../module/nav.js";
     renderNavBar("profile");
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
+  <script type="module">
     import { auth } from "../module/auth.js";
     import { db } from "../config/firebase.js";
     import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const profileTitle = document.getElementById("profileTitle");
-    const nameInput = document.getElementById("nameInput");
-    const schoolInput = document.getElementById("schoolInput");
-    const descriptionInput = document.getElementById("descriptionInput");
     const publicToggle = document.getElementById("publicProfileToggle");
-    const saveBtn = document.getElementById("saveProfileBtn");
     const userEmail = document.getElementById("userEmail");
-    const profileContainer = document.getElementById("profileContainer");
+    const userName = document.getElementById("userName");
+    const userSchool = document.getElementById("userSchool");
+    const messagePrompt = document.getElementById("messagePrompt");
+
     const params = new URLSearchParams(window.location.search);
     const viewedUid = params.get("uid");
 
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        // Redirect with return path so user goes back to profile after signing in
         window.location.href = `../signin.html?redirect=${encodeURIComponent("src/profile.html")}`;
         return;
       }
@@ -132,7 +121,8 @@
         if (isOwnProfile) {
           await setDoc(userRef, { public: false, name: "", school: "", description: "" });
         } else {
-          profileContainer.innerHTML = "<div class='private-message'>This profile is private.</div>";
+          document.getElementById("profileContainer").innerHTML =
+            "<div class='private-message'>This profile is private.</div>";
           return;
         }
       }
@@ -141,10 +131,11 @@
 
       if (!isOwnProfile) {
         if (!data.public) {
-          profileContainer.innerHTML = "<div class='private-message'>This profile is private.</div>";
+          document.getElementById("profileContainer").innerHTML =
+            "<div class='private-message'>This profile is private.</div>";
           return;
         }
-        profileContainer.innerHTML = `
+        document.getElementById("profileContainer").innerHTML = `
           <h2>${data.name || "Unknown User"}</h2>
           <p><strong>School:</strong> ${data.school || "(not set)"}</p>
           <p><strong>Description:</strong> ${data.description || "(no description provided)"}</p>
@@ -153,23 +144,25 @@
       }
 
       userEmail.textContent = user.email;
-      nameInput.value = data.name || "";
-      schoolInput.value = data.school || "";
-      descriptionInput.value = data.description || "";
+      userName.textContent = data.name || "(not set)";
+      userSchool.textContent = data.school || "(not set)";
       publicToggle.checked = !!data.public;
 
-      saveBtn.addEventListener("click", async () => {
-        await updateDoc(userRef, {
-          name: nameInput.value,
-          school: schoolInput.value,
-          description: descriptionInput.value,
-          public: publicToggle.checked
-        });
-        alert("Profile updated!");
+      publicToggle.addEventListener("change", async () => {
+        await updateDoc(userRef, { public: publicToggle.checked });
       });
     });
-  </script>
 
-  <script src="https://unpkg.com/lucide@latest"></script>
+    async function makePublicAndContinue() {
+      const user = auth.currentUser;
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        await updateDoc(userRef, { public: true });
+        publicToggle.checked = true;
+        messagePrompt.style.display = "none";
+        window.location.href = "messages.html";
+      }
+    }
+  </script>
 </body>
 </html>

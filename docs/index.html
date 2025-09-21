@@ -4,25 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lofi Study Room</title>
-  <base href="./" />
   <link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
-  <!-- Nav bar will be injected dynamically -->
-
   <!-- Home Page -->
   <div class="page active" id="homePage">
-    <div class="home-content" style="margin-top: 60px">
+    <div class="home-content">
       <h1 class="title">Study Room</h1>
-      <p class="subtitle">It's time to lock in.</p>
+      <p class="subtitle">It's time to lock in</p>
       <button class="main-timer-btn" onclick="showPage('timer')">Go To Timer</button>
     </div>
   </div>
 
   <!-- Timer Page -->
   <div class="page" id="timerPage">
-    <div class="timer-content" style="margin-top: 60px">
+    <div class="timer-content">
       <h2 style="font-size: 2rem; margin-bottom: 20px; color: rgba(255,255,255,0.8);">
         focus session
       </h2>
@@ -36,18 +33,18 @@
     </div>
   </div>
 
-  <!-- Navigation Arrows -->
+  <!-- Side Arrows -->
   <div class="home-arrow left" onclick="window.location.href='src/spots.html'">
     <div class="arrow-icon">&lt;</div>
     <div class="arrow-text">Discover Study Spots</div>
   </div>
 
   <div class="home-arrow right" onclick="window.location.href='src/buddy.html'">
+    <div class="arrow-icon">&gt;</div>
     <div class="arrow-text">Find Study Buddies</div>
-    <div class="arrow-icon">&gt;</div>  
   </div>
 
-  <!-- Timer Script -->
+  <!-- Timer Script with Persistence -->
   <script>
     function showPage(pageName) {
       document.querySelectorAll(".page").forEach(page => page.classList.remove("active"));
@@ -55,7 +52,13 @@
     }
 
     let savedState = JSON.parse(localStorage.getItem("timerState"));
-    let timerState = savedState || { minutes: 25, seconds: 0, isRunning: false, totalTime: 1500, currentTime: 1500 };
+    let timerState = savedState || {
+      minutes: 25,
+      seconds: 0,
+      isRunning: false,
+      totalTime: 1500,
+      currentTime: 1500
+    };
     let timerInterval;
 
     function updateTimerDisplay() {
@@ -124,14 +127,14 @@
     document.getElementById("resetBtn").addEventListener("click", resetTimer);
   </script>
 
-  <!-- Shared Navigation Bar -->
+  <!-- ✅ Inject Nav Bar + Icons -->
   <script type="module">
     import { renderNavBar } from "./src/module/nav.js";
     renderNavBar("index");
   </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
   <script type="module" src="src/module/auth.js"></script>
   <script type="module" src="src/module/match.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
 </body>
 </html>

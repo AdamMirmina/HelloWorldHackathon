@@ -8,9 +8,9 @@
   <style>
     body {
       margin: 0;
-      font-family: "Space Mono", monospace;
+      font-family: "Varela Round", sans-serif;
       min-height: 100vh;
-      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
+      background: url(https://cdnb.artstation.com/p/assets/images/images/049/953/491/large/diana-baltezar-room2-recuperado2.jpg?1653695448)
         no-repeat center center fixed;
       background-size: cover;
       color: white;
@@ -33,32 +33,39 @@
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
-    .setting-item {
+    .settings-container h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .setting {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin: 15px 0;
+    }
+
+    .setting label {
       font-size: 1.1rem;
     }
 
-    .setting-item input[type="checkbox"] {
-      transform: scale(1.4);
+    .setting input[type="checkbox"] {
+      transform: scale(1.5);
     }
 
-    button {
-      margin-top: 15px;
-      padding: 10px 15px;
+    .save-btn {
+      margin-top: 20px;
       background: rgba(255, 255, 255, 0.15);
       border: 1px solid rgba(255, 255, 255, 0.3);
       border-radius: 8px;
       color: white;
       font-size: 1rem;
       cursor: pointer;
-      width: 100%;
+      padding: 10px 16px;
       transition: background 0.2s ease;
     }
 
-    button:hover {
+    .save-btn:hover {
       background: rgba(255, 255, 255, 0.3);
     }
   </style>
@@ -66,52 +73,51 @@
 
 <body>
   <div class="settings-container">
-    <h1 style="text-align:center;">Settings</h1>
+    <h1>Settings</h1>
 
-    <div class="setting-item">
-      <span>Public Profile</span>
+    <div class="setting">
+      <label for="publicProfileToggle">Public Profile</label>
       <input type="checkbox" id="publicProfileToggle" />
     </div>
 
-    <div class="setting-item">
-      <span>Show Email on Profile</span>
+    <div class="setting">
+      <label for="showEmailToggle">Show Email on Profile</label>
       <input type="checkbox" id="showEmailToggle" />
     </div>
 
-    <div class="setting-item">
-      <span>Allow Direct Messages</span>
+    <div class="setting">
+      <label for="allowDMsToggle">Allow Direct Messages</label>
       <input type="checkbox" id="allowDMsToggle" />
     </div>
 
-    <div class="setting-item">
-      <span>Show Message Requests</span>
+    <div class="setting">
+      <label for="showRequestsToggle">Show Message Requests</label>
       <input type="checkbox" id="showRequestsToggle" />
     </div>
 
-    <hr style="margin: 20px 0; border-color: rgba(255, 255, 255, 0.3);" />
-
-    <button id="editProfileBtn">Edit Profile</button>
-    <button id="changePasswordBtn">Change Password</button>
-    <button id="logoutBtn">Log Out</button>
+    <button class="save-btn" id="saveSettingsBtn">Save Settings</button>
   </div>
 
+  <!-- ✅ Inject Nav Bar -->
   <script type="module">
     import { renderNavBar } from "../module/nav.js";
     renderNavBar("settings");
+  </script>
+  <script src="https://unpkg.com/lucide@latest"></script>
 
+  <script type="module">
     import { auth } from "../module/auth.js";
     import { db } from "../config/firebase.js";
-    import { doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-    import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { doc, getDoc, updateDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const publicToggle = document.getElementById("publicProfileToggle");
     const showEmailToggle = document.getElementById("showEmailToggle");
     const allowDMsToggle = document.getElementById("allowDMsToggle");
     const showRequestsToggle = document.getElementById("showRequestsToggle");
+    const saveBtn = document.getElementById("saveSettingsBtn");
 
     auth.onAuthStateChanged(async (user) => {
       if (!user) {
-        // ✅ redirect with ?redirect so they return to settings after sign in
         window.location.href = `../signin.html?redirect=${encodeURIComponent("src/settings.html")}`;
         return;
       }
@@ -127,38 +133,20 @@
         showRequestsToggle.checked = data.showRequests !== false;
       }
 
-      publicToggle.addEventListener("change", async () => {
-        await updateDoc(userRef, { public: publicToggle.checked });
-      });
-
-      showEmailToggle.addEventListener("change", async () => {
-        await updateDoc(userRef, { showEmail: showEmailToggle.checked });
-      });
-
-      allowDMsToggle.addEventListener("change", async () => {
-        await updateDoc(userRef, { allowDMs: allowDMsToggle.checked });
-      });
-
-      showRequestsToggle.addEventListener("change", async () => {
-        await updateDoc(userRef, { showRequests: showRequestsToggle.checked });
-      });
-
-      document.getElementById("logoutBtn").addEventListener("click", async () => {
-        await auth.signOut();
-        window.location.href = "../index.html";
-      });
-
-      document.getElementById("changePasswordBtn").addEventListener("click", async () => {
-        await sendPasswordResetEmail(auth, user.email);
-        alert("Password reset link sent to " + user.email);
-      });
-
-      document.getElementById("editProfileBtn").addEventListener("click", () => {
-        window.location.href = "profile.html";
+      saveBtn.addEventListener("click", async () => {
+        await setDoc(
+          userRef,
+          {
+            public: publicToggle.checked,
+            showEmail: showEmailToggle.checked,
+            allowDMs: allowDMsToggle.checked,
+            showRequests: showRequestsToggle.checked,
+          },
+          { merge: true }
+        );
+        alert("Settings saved!");
       });
     });
   </script>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
 </body>
 </html>

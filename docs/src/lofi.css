@@ -29,16 +29,16 @@ html {
   color: #f7dac3;
   font-size: 75px;
 } */
-.block {
+#getStarted {
   position: absolute;
   display: block;
-  width: 100%;
-  border: none;
   background-color: #f7dac3;
-  padding: 14px 28px;
   font-size: 75;
-  cursor: pointer;
-  text-align: center;
+  background-color: #bbb;
+  display: block;
+  margin: 10px 0;
+  padding: 10px;
+  width: 100%;
 }
 
 #bg-video {

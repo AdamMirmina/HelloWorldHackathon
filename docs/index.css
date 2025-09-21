@@ -167,7 +167,7 @@ body::before {
 
 .subtitle {
   font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(255, 255, 255, 0.8);
   margin-bottom: 60px;
   font-weight: 300;
 }

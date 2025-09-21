@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lofi Overlay Video Page</title>
     <link rel="stylesheet" href="lofi.css" />
+    <style>
+      /* Make sure the nav sits above the video */
+      .top-nav { position: fixed; z-index: 2000; }
+      #bg-video { position: fixed; z-index: 0; }
+    </style>
   </head>
   <body>
     <div class="video-container">
@@ -12,13 +17,16 @@
         <source src="../wallpapers/aesthetic.mp4" type="video/mp4" />
         Your browser does not support HTML5 video.
       </video>
+
       <button id="intro" onclick="showPage('timer')">Click to get started.</button>
+
       <audio
         id="backgroundMusic"
         src="../audio/3-AM-Study-Session-lofi-hip-hop.mp3"
         preload="auto"
         loop
       ></audio>
+
       <div class="page" id="timerPage">
         <!-- Timer Display -->
         <div class="timer-display" id="timerDisplay">25:00</div>
@@ -34,33 +42,13 @@
         <!-- Mode Buttons -->
         <div class="timer-modes">
           <button id="focusModeBtn">Focus</button>
-          <button id="shortBreakBtn">Short Break</button>
-          <button id="longBreakBtn">Long Break</button>
+          <button id="breakBtn">Break</button>
         </div>
 
         <!-- Settings -->
         <div class="timer-settings">
-          <input
-            type="number"
-            id="focusTimeInput"
-            min="1"
-            max="60"
-            value="25"
-          />
-          <input
-            type="number"
-            id="shortBreakInput"
-            min="1"
-            max="30"
-            value="5"
-          />
-          <input
-            type="number"
-            id="longBreakInput"
-            min="1"
-            max="60"
-            value="15"
-          />
+          <input type="number" id="focusTimeInput" min="1" max="60" value="25" />
+          <input type="number" id="breakInput" min="1" max="30" value="5" />
         </div>
 
         <!-- Stats Display -->
@@ -73,14 +61,14 @@
       </div>
     </div>
 
-    <!-- Timer Page -->
-
     <!-- ✅ Load Lucide first, then render the nav bar -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <script type="module">
-      import { renderNavBar } from "./src/module/nav.js";
-      renderNavBar("index");
+      import { renderNavBar } from "./module/nav.js?v=3"; // cache-bust & correct path
+      renderNavBar("lofi");
     </script>
+
+    <!-- Page logic -->
     <script type="module" src="./module/index.js"></script>
     <script src="./module/lofi.js"></script>
   </body>

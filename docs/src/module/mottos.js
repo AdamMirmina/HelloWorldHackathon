@@ -57,9 +57,9 @@ const MOTTOS = [
 
   // — Light easter eggs (kept subtle, still no emojis)
   "Hidden boss: the next paragraph. Defeat it.",
-  "Achievement unlocked: Focus Mode. Now earn it.",
-  "Konami code does nothing here; studying does.",
-  "Secret tip: left arrow isn’t a secret—use it.",
+  "ACHIEVEMENT UNLOCKED: Refreshing Like a Maniac.",
+  "What will Prof. Turkstra rant about today?",
+  "べんきょうをしましょう！",
   "Wow! This message was a 1/55 chance!"
 ];
 

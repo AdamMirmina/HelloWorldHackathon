@@ -7,149 +7,74 @@
   <link rel="stylesheet" href="../index.css" />
   <style>
     body {
-      margin: 0;
       font-family: "Varela Round", sans-serif;
-      min-height: 100vh;
-      background: url(https://cdnb.artstation.com/p/assets/images/images/049/953/491/large/diana-baltezar-room2-recuperado2.jpg?1653695448)
-        no-repeat center center fixed;
-      background-size: cover;
-      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 20px;
+      justify-content: flex-start;
+      min-height: 100vh;
+      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
+        no-repeat center center fixed;
+      background-size: cover;
+      padding-top: 80px;
+      color: white;
     }
 
-    .messages-container {
-      margin-top: 80px;
-      max-width: 800px;
-      width: 95%;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
+    .chat-container {
+      width: 90%;
+      max-width: 700px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
       padding: 20px;
       backdrop-filter: blur(10px);
       -webkit-backdrop-filter: blur(10px);
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
+    .messages {
+      flex: 1;
+      overflow-y: auto;
+      max-height: 400px;
+      margin-bottom: 10px;
     }
 
-    .message-thread {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 15px;
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-
-    .message-thread:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    .message-thread h3 {
-      margin: 0;
-      font-size: 1.2rem;
-    }
-
-    .message-thread p {
-      margin: 5px 0 0;
-      font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.7);
-    }
-
-    .prompt {
-      text-align: center;
-      margin-top: 10px;
-      background: rgba(0, 0, 0, 0.6);
-      padding: 10px;
+    .message {
+      padding: 8px 12px;
+      background: rgba(0,0,0,0.4);
       border-radius: 8px;
-      display: none;
+      margin-bottom: 6px;
+    }
+
+    button {
+      padding: 10px;
+      border: none;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      cursor: pointer;
     }
   </style>
 </head>
-
 <body>
-  <div class="messages-container" id="messagesContainer">
-    <h1>Your Messages</h1>
-
-    <div class="prompt" id="publicPrompt">
-      <p>Your profile must be public to use messaging.</p>
-      <button id="makePublicBtn">Make Public & Continue</button>
+  <div class="chat-container">
+    <h2>Messages</h2>
+    <div class="messages" id="messageList">
+      <p>No messages yet.</p>
     </div>
-
-    <!-- Placeholder for message threads -->
-    <div id="threadsList"></div>
+    <button id="startChatBtn">Start Test Chat</button>
   </div>
 
-  <!-- ✅ Inject Nav Bar -->
+  <!-- Load nav bar + lucide -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script type="module">
     import { renderNavBar } from "../module/nav.js";
     renderNavBar("messages");
   </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
 
-  <script type="module">
-    import { auth } from "../module/auth.js";
-    import { db } from "../config/firebase.js";
-    import { doc, getDoc, updateDoc, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
-
-    const threadsList = document.getElementById("threadsList");
-    const publicPrompt = document.getElementById("publicPrompt");
-    const makePublicBtn = document.getElementById("makePublicBtn");
-
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        window.location.href = `../signin.html?redirect=${encodeURIComponent("src/messages.html")}`;
-        return;
-      }
-
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
-
-      if (!snap.exists() || !snap.data().public) {
-        publicPrompt.style.display = "block";
-        return;
-      }
-
-      // Fetch message threads for this user (placeholder)
-      // TODO: Replace with actual message retrieval logic later
-      const q = query(collection(db, "messages"), where("participants", "array-contains", user.uid));
-      const snapshot = await getDocs(q);
-
-      if (snapshot.empty) {
-        threadsList.innerHTML = "<p>No messages yet.</p>";
-        return;
-      }
-
-      snapshot.forEach((docSnap) => {
-        const thread = docSnap.data();
-        const div = document.createElement("div");
-        div.classList.add("message-thread");
-        div.innerHTML = `
-          <h3>${thread.otherUserName || "Unknown User"}</h3>
-          <p>${thread.lastMessage || "No messages yet"}</p>
-        `;
-        div.addEventListener("click", () => {
-          // TODO: open message thread UI later
-          alert("Open chat with " + (thread.otherUserName || "Unknown User"));
-        });
-        threadsList.appendChild(div);
-      });
-    });
-
-    makePublicBtn.addEventListener("click", async () => {
-      const user = auth.currentUser;
-      if (!user) return;
-      const userRef = doc(db, "users", user.uid);
-      await updateDoc(userRef, { public: true });
-      publicPrompt.style.display = "none";
-      window.location.reload();
-    });
-  </script>
+  <!-- Load messaging logic -->
+  <script type="module" src="./module/messages.js"></script>
 </body>
 </html>

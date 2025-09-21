@@ -6,7 +6,7 @@
     <link href='https://fonts.googleapis.com/css?family=Varela Round' rel='stylesheet'>
     <title>Sign In</title>
 
-    <!-- ✅ Load shared styles from docs root -->
+    <!-- ✅ Shared styles from docs root -->
     <link rel="stylesheet" href="./index.css" />
 
     <style>
@@ -23,7 +23,6 @@
         padding-top: 80px; /* leave space for nav bar */
         color: white;
       }
-
       .signin-container {
         width: 100%;
         max-width: 400px;
@@ -36,11 +35,7 @@
         border: 1px solid rgba(255, 255, 255, 0.2);
         text-align: center;
       }
-
-      .signin-container h1 {
-        margin-bottom: 20px;
-      }
-
+      .signin-container h1 { margin-bottom: 20px; }
       input {
         width: 100%;
         margin: 10px 0;
@@ -51,11 +46,7 @@
         color: white;
         font-size: 1rem;
       }
-
-      input::placeholder {
-        color: rgba(255, 255, 255, 0.8);
-      }
-
+      input::placeholder { color: rgba(255, 255, 255, 0.8); }
       button {
         width: 100%;
         margin-top: 10px;
@@ -68,11 +59,7 @@
         cursor: pointer;
         transition: background 0.2s ease;
       }
-
-      button:hover {
-        background: rgba(255, 255, 255, 0.3);
-      }
-
+      button:hover { background: rgba(255, 255, 255, 0.3); }
       .small-link {
         margin-top: 15px;
         font-size: 0.9rem;
@@ -86,11 +73,11 @@
   <body class="scrollable">
     <div class="signin-container">
       <h1>Sign In</h1>
-      <input type="email" id="email" placeholder="Email" />
-      <input type="password" id="password" placeholder="Password" />
-      <button id="loginBtn">Log In</button>
-      <button id="signupBtn">Sign Up</button>
-      <span class="small-link" id="resetLink">Forgot your password?</span>
+      <input type="email" id="email" placeholder="Email" autocomplete="username"/>
+      <input type="password" id="password" placeholder="Password" autocomplete="current-password"/>
+      <button id="loginBtn" type="button">Log In</button>
+      <button id="signupBtn" type="button">Sign Up</button>
+      <span class="small-link" id="resetLink" role="button" tabindex="0">Forgot your password?</span>
     </div>
 
     <!-- ✅ Nav bar -->
@@ -106,12 +93,10 @@
       import {
         signInWithEmailAndPassword,
         createUserWithEmailAndPassword,
-        validatePassword,
         sendPasswordResetEmail,
-        getAuth,
+        // Optional: only use validatePassword for SIGN-UP strength checks
+        validatePassword,
       } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-
-      console.log("✅ auth.js loaded");
 
       const emailInput = document.getElementById("email");
       const passwordInput = document.getElementById("password");
@@ -119,63 +104,92 @@
       const signupBtn = document.getElementById("signupBtn");
       const resetLink = document.getElementById("resetLink");
 
-      // ✅ Always redirect to main index page on success
+      // ✅ Redirect target (GitHub Pages-aware)
       const params = new URLSearchParams(window.location.search);
-      const redirectTo =
-        params.get("redirect") || "/HelloWorldHackathon/index.html";
+      const redirectTo = params.get("redirect") || "/HelloWorldHackathon/index.html";
 
+      /* ------------ Helpers ------------ */
+      const normEmail = (s) => (s || "").trim().toLowerCase();
+      function getPasswordOrWarn() {
+        const pwd = passwordInput.value ?? "";
+        if (/^\s|\s$/.test(pwd)) {
+          alert("Your password starts or ends with a space. Please re-enter without spaces.");
+          throw new Error("edge-space");
+        }
+        if (!pwd) {
+          alert("Please enter your password.");
+          throw new Error("empty-password");
+        }
+        return pwd;
+      }
+      function showAuthError(err, action){
+        const code = err?.code || "";
+        const map = {
+          "auth/invalid-credential": "Email or password is incorrect.",
+          "auth/wrong-password": "Email or password is incorrect.",
+          "auth/user-not-found": "No account found with that email.",
+          "auth/email-already-in-use": "That email is already registered.",
+          "auth/invalid-email": "That email address looks invalid.",
+          "auth/too-many-requests": "Too many attempts—try again later or reset your password.",
+        };
+        alert(map[code] || `Unexpected error during ${action}.`);
+        console.error(`[${action}]`, code, err);
+      }
+
+      /* ------------ Login ------------ */
       loginBtn.addEventListener("click", async () => {
-        if (!emailInput.value || !passwordInput.value) {
-          alert("Please enter a valid email and password.");
-          return;
-        }
-        const status = await validatePassword(getAuth(), passwordInput);
-        console.log("here!");
-        if (!status.isValid) {
-          alert("Invalid password! Please try again.");
-          return;
-        }
         try {
-          await signInWithEmailAndPassword(
-            auth,
-            emailInput.value,
-            passwordInput.value
-          );
+          const email = normEmail(emailInput.value);
+          if (!email) { alert("Please enter your email."); return; }
+          const password = getPasswordOrWarn();
+
+          // ❌ DO NOT call validatePassword here — it checks policy, not correctness.
+          await signInWithEmailAndPassword(auth, email, password);
           window.location.href = redirectTo;
         } catch (err) {
-          alert("Login failed: " + err.message);
+          showAuthError(err, "login");
         }
       });
 
+      /* ------------ Sign Up ------------ */
       signupBtn.addEventListener("click", async () => {
-        if (!emailInput.value || !passwordInput.value) {
-          alert("Please enter both email and password.");
-          return;
-        }
         try {
-          await createUserWithEmailAndPassword(
-            auth,
-            emailInput.value,
-            passwordInput.value
-          );
+          const email = normEmail(emailInput.value);
+          if (!email) { alert("Please enter your email."); return; }
+          const password = getPasswordOrWarn();
+
+          // (Optional) policy check for new accounts
+          try {
+            const policy = await validatePassword(auth, password); // pass the STRING
+            if (!policy.isValid) {
+              // You could present policy.feedback here if you want details
+              alert("Password doesn't meet the strength policy. Try a longer/stronger password.");
+              return;
+            }
+          } catch {
+            // If validatePassword is unavailable for your project, we silently continue.
+          }
+
+          await createUserWithEmailAndPassword(auth, email, password);
           window.location.href = redirectTo;
         } catch (err) {
-          alert("Signup failed: " + err.message);
+          showAuthError(err, "sign-up");
         }
       });
 
-      resetLink.addEventListener("click", async () => {
-        if (!emailInput.value) {
-          alert("Enter your email first.");
-          return;
-        }
+      /* ------------ Reset Password ------------ */
+      async function doReset(){
+        const email = normEmail(emailInput.value);
+        if (!email) { alert("Enter your email first."); return; }
         try {
-          await sendPasswordResetEmail(auth, emailInput.value);
-          alert("Reset link sent! Please check your spam.");
+          await sendPasswordResetEmail(auth, email);
+          alert("Reset link sent! Check your inbox (and spam).");
         } catch (err) {
-          alert("Error: " + err.message);
+          showAuthError(err, "password-reset");
         }
-      });
+      }
+      resetLink.addEventListener("click", doReset);
+      resetLink.addEventListener("keypress", (e)=>{ if(e.key==="Enter") doReset(); });
     </script>
   </body>
 </html>

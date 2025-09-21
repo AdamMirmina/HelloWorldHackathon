@@ -19,14 +19,14 @@ class PomodoroTimer {
   }
 
   // Load timer state from localStorage
-  loadTimerState() {
+  loadTimerState() {  
     const saved = localStorage.getItem("pomodoroTimer");
     const dailyStats = localStorage.getItem("dailyStats");
 
     this.settings =
       JSON.parse(localStorage.getItem("timerSettings")) ||
       this.getDefaultSettings();
-
+    
     if (saved) {
       this.state = JSON.parse(saved);
     } else {
@@ -70,7 +70,7 @@ class PomodoroTimer {
       seconds: 0,
       isRunning: false,
       isPaused: false,
-      mode: "focus", // 'focus', 'shortBreak', 'longBreak'
+      mode: "focus", 
       currentPomodoro: 1,
       totalTime: this.settings.focusTime * 60,
       currentTime: this.settings.focusTime * 60,
@@ -146,49 +146,34 @@ class PomodoroTimer {
     this.saveState();
   }
 
-  // Start timer
-  start() {
-    if (this.state.isPaused || !this.state.isRunning) {
-      this.state.isRunning = true;
-      this.state.isPaused = false;
+start() {
+  if (this.state.isRunning) return; // Prevent double start
+  this.state.isRunning = true;
+  this.state.isPaused = false;
 
-      if (!this.state.sessionStartTime) {
-        this.state.sessionStartTime = Date.now();
-      }
-
-      this.interval = setInterval(() => {
-        if (this.state.seconds === 0) {
-          if (this.state.minutes === 0) {
-            this.completeSession();
-            return;
-          }
-          this.state.minutes--;
-          this.state.seconds = 59;
-        } else {
-          this.state.seconds--;
-        }
-
-        this.state.currentTime = this.state.minutes * 60 + this.state.seconds;
-        this.updateDisplay();
-        this.saveState();
-      }, 1000);
-
-      this.updateDisplay();
-      this.saveState();
-    }
+  if (!this.state.sessionStartTime) {
+    this.state.sessionStartTime = Date.now();
   }
 
-  // Pause timer
-  pause() {
-    this.state.isRunning = false;
-    this.state.isPaused = true;
-    clearInterval(this.interval);
-    this.updateDisplay();
-    this.saveState();
-  }
+  this.interval = setInterval(() => {
+    // timer logic
+  }, 1000);
+
+  this.updateDisplay();
+  this.saveState();
+}
+
+pause() {
+  this.state.isRunning = false;
+  this.state.isPaused = true;
+  clearInterval(this.interval);
+  this.interval = null;
+  this.updateDisplay();
+  this.saveState();
+}
 
   // Stop timer (used internally)
-  stop() {
+  stop() {  
     this.state.isRunning = false;
     this.state.isPaused = false;
     clearInterval(this.interval);
@@ -217,19 +202,6 @@ class PomodoroTimer {
     this.dailyStats.totalSessions++;
     this.state.sessionStartTime = null;
 
-    // Auto-switch to next mode
-    if (this.state.mode === "focus") {
-      // After focus, switch to break
-      if (this.state.currentPomodoro % this.settings.longBreakInterval === 0) {
-        this.setMode("longBreak");
-      } else {
-        this.setMode("shortBreak");
-      }
-      this.state.currentPomodoro++;
-    } else {
-      // After break, switch to focus
-      this.setMode("focus");
-    }
 
     // Show completion message
     this.showCompletionNotification();
@@ -253,7 +225,7 @@ class PomodoroTimer {
     // Visual notification in the UI
     const statusElement = document.getElementById("timerStatus");
     if (statusElement) {
-      statusElement.textContent = `${mode} complete! ✨ Starting ${nextMode}...`;
+      statusElement.textContent = `${mode} complete!`;
       setTimeout(() => this.updateDisplay(), 3000);
     }
   }

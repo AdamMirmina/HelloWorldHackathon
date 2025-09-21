@@ -10,44 +10,44 @@
 
 </head>
 <body>
-    <a href="index.html" class="home-link">
-        <span>←</span>
-        <span>home</span>
-    </a>
+<a href="index.html" class="home-link">
+    <span>←</span>
+    <span>home</span>
+</a>
 
-    <div class="container">
-        <div class="header">
-            <h1 class="title">campus study spots</h1>
-            <p class="subtitle">real-time traffic data from unitime schedules</p>
-        </div>
+<div class="container">
+    <div class="header">
+        <h1 class="title">campus study spots</h1>
+        <p class="subtitle">real-time traffic data from unitime schedules</p>
+    </div>
 
-        <div class="campus-map">
-            <div class="live-data-header">
-                <h3 style="color: rgba(255,255,255,0.9);">📍 Live Campus Map</h3>
-                <div class="live-indicator">
-                    <div class="live-dot"></div>
-                    <span>Live Data</span>
-                </div>
-            </div>
-            
-            <div class="map-container" id="mapContainer">
-                <div class="map-background" id="mapBackground">
-                    <div id="mapPins">
-                        <!-- Pins will be positioned here -->
-                    </div>
-                </div>
-                <div class="map-controls">
-                    <button class="map-control-btn" id="resetMapBtn" title="Reset Map Position">🎯</button>
-                    <button class="map-control-btn" id="centerMapBtn" title="Center Map">📍</button>
-                </div>
+    <div class="campus-map">
+        <div class="live-data-header">
+            <h3 style="color: rgba(255,255,255,0.9);">📍 Live Campus Map</h3>
+            <div class="live-indicator">
+                <div class="live-dot"></div>
+                <span>Live Data</span>
             </div>
         </div>
-
-        <div class="spots-grid" id="spotsGrid">
-            <!-- Study spots will be populated by JavaScript -->
+        
+        <div class="map-container" id="mapContainer">
+            <div class="map-background" id="mapBackground">
+                <div id="mapPins">
+                    <!-- Pins will be positioned here -->
+                </div>
+            </div>
+            <div class="map-controls">
+                <button class="map-control-btn" id="resetMapBtn" title="Reset Map Position">🎯</button>
+                <button class="map-control-btn" id="centerMapBtn" title="Center Map">📍</button>
+            </div>
         </div>
     </div>
 
-<script src="spots.js"></script>
+    <div class="spots-grid" id="spotsGrid">
+        <!-- Study spots will be populated by JavaScript -->
+    </div>
+</div>
+
+<script type="module" src="spots.js"></script>
 </body>
 </html>

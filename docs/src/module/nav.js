@@ -5,9 +5,9 @@ import { db } from "../config/firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /**
- * Compute a repo-aware base so links work from BOTH:
- * - GitHub Pages:   /HelloWorldHackathon/...
- * - Local dev (serve docs): /
+ * Works on both:
+ *  - GitHub Pages: /HelloWorldHackathon/...
+ *  - Local dev (serving /docs): /
  */
 const REPO = "HelloWorldHackathon";
 const BASE = window.location.pathname.includes(`/${REPO}/`) ? `/${REPO}` : "";
@@ -19,7 +19,42 @@ const URLS = {
   profile:  `${BASE}/profile.html`,
   settings: `${BASE}/settings.html`,
   messages: `${BASE}/src/messages.html`, // messages stays under /src/
+  about:    `${BASE}/about.html`,
 };
+
+// Inject once-per-page styles for the About pill
+function injectAboutStylesOnce() {
+  if (document.getElementById("about-pill-styles")) return;
+  const style = document.createElement("style");
+  style.id = "about-pill-styles";
+  style.textContent = `
+    .about-tag {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 2500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.92);
+      text-decoration: none;
+      background: rgba(0,0,0,0.45);
+      border: 1px solid rgba(255,255,255,0.2);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      transition: background 0.2s ease, transform 0.08s ease, border-color 0.2s ease;
+    }
+    .about-tag:hover {
+      background: rgba(0,0,0,0.60);
+      border-color: rgba(255,255,255,0.35);
+      transform: translateY(-1px);
+    }
+  `;
+  document.head.appendChild(style);
+}
 
 function renderNavBar(currentPage) {
   const topNav = document.createElement("div");
@@ -28,7 +63,7 @@ function renderNavBar(currentPage) {
   const navIcons = document.createElement("div");
   navIcons.classList.add("nav-icons");
 
-  // ========= NO BACK BUTTON =========
+  // ── No back button ──
 
   // Home
   const homeBtn = document.createElement("span");
@@ -38,7 +73,7 @@ function renderNavBar(currentPage) {
   homeBtn.onclick = () => (window.location.href = URLS.home);
   navIcons.appendChild(homeBtn);
 
-  // Helper: protected navigation (auth required)
+  // Helper: auth required
   function goProtected(targetUrl) {
     onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -49,7 +84,7 @@ function renderNavBar(currentPage) {
     });
   }
 
-  // Helper: Messages requires BOTH auth + public profile
+  // Messages requires auth + public profile
   function goMessagesGuarded() {
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
@@ -63,7 +98,6 @@ function renderNavBar(currentPage) {
           window.location.href = URLS.messages;
         } else {
           alert("Your profile must be Public to use Messages.");
-          // Nudge them to Profile where they can toggle Public
           window.location.href = `${URLS.profile}?from=messages`;
         }
       } catch (e) {
@@ -81,7 +115,7 @@ function renderNavBar(currentPage) {
   msgBtn.onclick = goMessagesGuarded;
   navIcons.appendChild(msgBtn);
 
-  // Settings (hide icon if already on settings page)
+  // Settings (hide when already there)
   if (currentPage !== "settings") {
     const settingsBtn = document.createElement("span");
     settingsBtn.classList.add("nav-icon");
@@ -91,7 +125,7 @@ function renderNavBar(currentPage) {
     navIcons.appendChild(settingsBtn);
   }
 
-  // Profile (hide icon if already on profile page)
+  // Profile (hide when already there)
   if (currentPage !== "profile") {
     const profileBtn = document.createElement("span");
     profileBtn.classList.add("nav-icon");
@@ -103,6 +137,17 @@ function renderNavBar(currentPage) {
 
   topNav.appendChild(navIcons);
   document.body.prepend(topNav);
+
+  // Add the About pill (once per page)
+  injectAboutStylesOnce();
+  if (!document.querySelector(".about-tag")) {
+    const about = document.createElement("a");
+    about.className = "about-tag";
+    about.href = URLS.about;
+    about.setAttribute("aria-label", "About this project");
+    about.textContent = "About";
+    document.body.appendChild(about);
+  }
 
   if (window.lucide) lucide.createIcons();
 }

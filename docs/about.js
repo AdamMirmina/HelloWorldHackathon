@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About • Study Companion</title>
+  <link rel="stylesheet" href="./index.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: "Varela Round", sans-serif;
+      min-height: 100vh;
+      background: url(https://cdnb.artstation.com/p/assets/images/images/049/953/491/large/diana-baltezar-room2-recuperado2.jpg?1653695448)
+        no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 16px;
+    }
+    .about-card {
+      width: min(720px, 92vw);
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+    .about-card h1 {
+      margin: 0 0 8px 0;
+      font-size: 1.6rem;
+      color: rgba(255,255,255,0.95);
+    }
+    .about-card p {
+      margin: 6px 0;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.6;
+    }
+    .hr {
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 1px;
+      margin: 14px 0;
+    }
+    .meta {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.85);
+    }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module">
+    import { renderNavBar } from "./src/module/nav.js";
+    renderNavBar("about");
+  </script>
+
+  <main class="about-card" role="main" aria-label="About Study Companion">
+    <h1>About This Project</h1>
+    <p>
+      Created for <strong>Hello World Hackathon</strong> by
+      <strong>Adam Mirmina</strong>, <strong>Bonnie Le</strong>, and <strong>Kyler Yun</strong>.
+    </p>
+    <p class="meta">Dates: <strong>9.20.25–9.21.25</strong></p>
+    <p class="meta">Last updated: <strong>9/21</strong></p>
+
+    <div class="hr"></div>
+
+    <p>
+      Study Companion is a lightweight, client-first web app for focused study sessions,
+      matching with study buddies, and a future path to private messaging — designed to
+      run on GitHub Pages with Firebase for auth/data.
+    </p>
+
+    <div class="hr"></div>
+
+    <p class="meta">© 2025 Study Companion Team. All rights reserved.</p>
+  </main>
+</body>
+</html>

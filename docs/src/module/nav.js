@@ -1,4 +1,5 @@
 import { auth } from "./auth.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 
 function renderNavBar(currentPage) {
   const topNav = document.createElement("div");
@@ -7,7 +8,7 @@ function renderNavBar(currentPage) {
   const navIcons = document.createElement("div");
   navIcons.classList.add("nav-icons");
 
-  // --- Back arrow (not on home page) ---
+  // --- Back arrow ---
   if (currentPage !== "index") {
     const backBtn = document.createElement("span");
     backBtn.classList.add("nav-icon");
@@ -25,21 +26,23 @@ function renderNavBar(currentPage) {
   homeBtn.onclick = () => (window.location.href = "./index.html");
   navIcons.appendChild(homeBtn);
 
-  // --- Helper for redirecting to signin ---
-  const goToSignIn = (target) => {
-    window.location.href = `./signin.html?redirect=${encodeURIComponent(target)}`;
-  };
+  // --- Helper for secure navigation ---
+  function handleProtectedRoute(target) {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        window.location.href = target;
+      } else {
+        window.location.href = `./signin.html?redirect=${encodeURIComponent(target)}`;
+      }
+    });
+  }
 
   // --- Messages ---
   const msgBtn = document.createElement("span");
   msgBtn.classList.add("nav-icon");
   msgBtn.innerHTML = `<i data-lucide="message-circle"></i>`;
   msgBtn.title = "Messages";
-  msgBtn.onclick = () => {
-    const target = "./src/messages.html"; // messages still in src
-    if (!auth.currentUser) goToSignIn(target);
-    else window.location.href = target;
-  };
+  msgBtn.onclick = () => handleProtectedRoute("./src/messages.html");
   navIcons.appendChild(msgBtn);
 
   // --- Settings ---
@@ -48,11 +51,7 @@ function renderNavBar(currentPage) {
     settingsBtn.classList.add("nav-icon");
     settingsBtn.innerHTML = `<i data-lucide="settings"></i>`;
     settingsBtn.title = "Settings";
-    settingsBtn.onclick = () => {
-      const target = "./settings.html"; // ✅ now points to docs/settings.html
-      if (!auth.currentUser) goToSignIn(target);
-      else window.location.href = target;
-    };
+    settingsBtn.onclick = () => handleProtectedRoute("./settings.html");
     navIcons.appendChild(settingsBtn);
   }
 
@@ -62,18 +61,13 @@ function renderNavBar(currentPage) {
     profileBtn.classList.add("nav-icon");
     profileBtn.innerHTML = `<i data-lucide="user"></i>`;
     profileBtn.title = "Profile";
-    profileBtn.onclick = () => {
-      const target = "./profile.html"; // ✅ now points to docs/profile.html
-      if (!auth.currentUser) goToSignIn(target);
-      else window.location.href = target;
-    };
+    profileBtn.onclick = () => handleProtectedRoute("./profile.html");
     navIcons.appendChild(profileBtn);
   }
 
   topNav.appendChild(navIcons);
   document.body.prepend(topNav);
 
-  // Activate Lucide icons after injecting them
   if (window.lucide) lucide.createIcons();
 }
 

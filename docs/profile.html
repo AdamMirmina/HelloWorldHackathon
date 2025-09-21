@@ -4,13 +4,13 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Your Profile</title>
-  <link rel="stylesheet" href="../index.css" />
+  <link rel="stylesheet" href="index.css" />
   <style>
     body {
       margin: 0;
       font-family: "Varela Round", sans-serif;
       min-height: 100vh;
-      background: url(https://i.pinimg.com/1200x/7d/66/04/7d6604111a2fb44b73a4bc8b643e479d.jpg)
+      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
         no-repeat center center fixed;
       background-size: cover;
       color: white;
@@ -19,7 +19,6 @@
       align-items: center;
       padding: 20px;
     }
-
     .profile-container {
       margin-top: 80px;
       max-width: 700px;
@@ -32,28 +31,22 @@
       -webkit-backdrop-filter: blur(10px);
       border: 1px solid rgba(255, 255, 255, 0.2);
     }
-
-    .profile-container h1 {
-      text-align: center;
-      margin-bottom: 20px;
+    .profile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-
+    .profile-header h1 { margin: 0; }
     .toggle-container {
       margin: 20px 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-
     .toggle-container input[type="checkbox"] {
       transform: scale(1.5);
     }
-
-    .profile-info p {
-      margin: 6px 0;
-      font-size: 1rem;
-    }
-
+    .profile-info p { margin: 6px 0; }
     .message-prompt {
       display: none;
       background: rgba(0, 0, 0, 0.6);
@@ -64,10 +57,18 @@
     }
   </style>
 </head>
-
 <body>
-  <div class="profile-container" id="profileContainer">
-    <h1 id="profileTitle">Your Profile</h1>
+  <!-- ✅ Nav Bar -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script type="module">
+    import { renderNavBar } from "./src/module/nav.js";
+    renderNavBar("profile");
+  </script>
+
+  <div class="profile-container">
+    <div class="profile-header">
+      <h1>Your Profile</h1>
+    </div>
 
     <div class="toggle-container">
       <label for="publicProfileToggle">Public Profile</label>
@@ -86,16 +87,10 @@
     </div>
   </div>
 
-  <!-- ✅ Inject Nav Bar + Icons -->
   <script type="module">
-    import { renderNavBar } from "../module/nav.js";
-    renderNavBar("profile");
-  </script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-
-  <script type="module">
-    import { auth } from "../module/auth.js";
-    import { db } from "../config/firebase.js";
+    import { auth } from "./src/module/auth.js";
+    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { db } from "./src/config/firebase.js";
     import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
     const publicToggle = document.getElementById("publicProfileToggle");
@@ -104,49 +99,27 @@
     const userSchool = document.getElementById("userSchool");
     const messagePrompt = document.getElementById("messagePrompt");
 
-    const params = new URLSearchParams(window.location.search);
-    const viewedUid = params.get("uid");
-
-    auth.onAuthStateChanged(async (user) => {
+    // ✅ Guard: redirect if not signed in
+    onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = `../signin.html?redirect=${encodeURIComponent("src/profile.html")}`;
-        return;
-      }
-
-      const isOwnProfile = !viewedUid || viewedUid === user.uid;
-      const userRef = doc(db, "users", viewedUid || user.uid);
-      const snap = await getDoc(userRef);
-
-      if (!snap.exists()) {
-        if (isOwnProfile) {
-          await setDoc(userRef, { public: false, name: "", school: "", description: "" });
-        } else {
-          document.getElementById("profileContainer").innerHTML =
-            "<div class='private-message'>This profile is private.</div>";
-          return;
-        }
-      }
-
-      const data = (await getDoc(userRef)).data();
-
-      if (!isOwnProfile) {
-        if (!data.public) {
-          document.getElementById("profileContainer").innerHTML =
-            "<div class='private-message'>This profile is private.</div>";
-          return;
-        }
-        document.getElementById("profileContainer").innerHTML = `
-          <h2>${data.name || "Unknown User"}</h2>
-          <p><strong>School:</strong> ${data.school || "(not set)"}</p>
-          <p><strong>Description:</strong> ${data.description || "(no description provided)"}</p>
-        `;
+        window.location.href = `./signin.html?redirect=./profile.html`;
         return;
       }
 
       userEmail.textContent = user.email;
-      userName.textContent = data.name || "(not set)";
-      userSchool.textContent = data.school || "(not set)";
-      publicToggle.checked = !!data.public;
+
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+
+      if (snap.exists()) {
+        const data = snap.data();
+        userName.textContent = data.name || "(not set)";
+        userSchool.textContent = data.school || "(not set)";
+        publicToggle.checked = !!data.public;
+      } else {
+        await setDoc(userRef, { public: false });
+        publicToggle.checked = false;
+      }
 
       publicToggle.addEventListener("change", async () => {
         await updateDoc(userRef, { public: publicToggle.checked });
@@ -160,7 +133,7 @@
         await updateDoc(userRef, { public: true });
         publicToggle.checked = true;
         messagePrompt.style.display = "none";
-        window.location.href = "messages.html";
+        window.location.href = "./src/messages.html";
       }
     }
   </script>

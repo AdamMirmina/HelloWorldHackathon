@@ -14,7 +14,9 @@
       /* Ensure the top nav sits above the fullscreen video and matches global look */
       .top-nav {
         position: fixed;
-        top: 0; left: 0; right: 0;
+        top: 0;
+        left: 0;
+        right: 0;
         z-index: 3000;
         display: flex;
         align-items: center;
@@ -24,9 +26,16 @@
         backdrop-filter: blur(6px);
         -webkit-backdrop-filter: blur(6px);
       }
-      .nav-icons { gap: 20px; }
-      #bg-video { position: fixed; z-index: 0; }
-      body { margin: 0; }
+      .nav-icons {
+        gap: 20px;
+      }
+      #bg-video {
+        position: fixed;
+        z-index: 0;
+      }
+      body {
+        margin: 0;
+      }
     </style>
   </head>
   <body>
@@ -36,7 +45,9 @@
         Your browser does not support HTML5 video.
       </video>
 
-      <button id="intro" onclick="showPage('timer')">Click to get started.</button>
+      <button id="intro" onclick="showPage('timer')">
+        Click to get started.
+      </button>
 
       <audio
         id="backgroundMusic"
@@ -52,41 +63,36 @@
 
         <!-- Controls -->
         <div class="timer-controls">
-          <button class= "controls" id="startBtn">Start</button>
-          <button class= "controls" id="pauseBtn">Pause</button>
-          <button class= "controls" id="resetBtn">Reset</button>
+          <button class="controls" id="startBtn">Start</button>
+          <button class="controls" id="pauseBtn">Pause</button>
+          <button class="controls" id="resetBtn">Reset</button>
         </div>
 
         <!-- Mode Buttons -->
-        <div class="timer-modes">
+        <!-- <div class="timer-modes">
           <button class= "mode" id="focusModeBtn">Focus</button>
           <button class= "mode" id="breakBtn">Break</button>
-        </div>
+        </div> -->
 
         <!-- Settings -->
-        <div class="timer-settings">
-          <input 
-          class="styled-input" 
-          type="number" id="focusTimeInput" 
-          min="1" 
-          max="60" 
-          value="25" />
-          <input 
-          class="styled-input" 
-          type="number" 
-          id="breakInput" 
-          min="1" 
-          max="30" 
-          value="5" />
+        <div class="-settings">
+          <input
+            class="styled-input"
+            type="number"
+            id="focusTimeInput"
+            min="1"
+            max="60"
+            value="25"
+          />
         </div>
 
         <!-- Stats Display -->
-        <div class="timer-stats">
+        <!-- <div class="timer-stats">
           <span id="pomodoroCount">0</span>
           <span id="totalStudyTime">0m</span>
           <span id="sessionCount">1</span>
           <span id="totalSessions">0</span>
-        </div>
+        </div> -->
       </div>
     </div>
 

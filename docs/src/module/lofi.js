@@ -19,17 +19,20 @@ document.addEventListener("DOMContentLoaded", function () {
     ); // Ensures the event listener is removed after one use
   });
 });
-var isPaused = false;
 
+var isPaused = false;
+var elem = document.getElementById("muteBtn");
 muteBtn.addEventListener("click", function () {
   if (isPaused == true) {
     backgroundMusic.play();
     console.log("play!");
     isPaused = false;
+    elem.value = "Mute";
   } else {
     backgroundMusic.pause();
     isPaused = true;
     console.log("pause!");
+    elem.value = "Unmute";
   }
 });
 

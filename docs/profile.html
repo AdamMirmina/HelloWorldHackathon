@@ -1,260 +1,298 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Profile</title>
-  <link rel="stylesheet" href="./index.css" />
-  <style>
-    body {
-      margin: 0;
-      font-family: "Varela Round", sans-serif;
-      min-height: 100vh;
-      background: url(https://images.pexels.com/photos/15971283/pexels-photo-15971283/free-photo-of-traditional-houses-in-city-at-night.png)
-        no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-    }
-
-    .profile-container {
-      margin-top: 80px;
-      max-width: 760px;
-      width: 92%;
-      padding: 20px;
-      background: rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .profile-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .profile-header h1 {
-      margin: 0;
-      font-size: 1.6rem;
-    }
-
-    .profile-grid {
-      display: grid;
-      grid-template-columns: 1fr 260px;
-      gap: 16px;
-    }
-
-    @media (max-width: 780px) {
-      .profile-grid {
-        grid-template-columns: 1fr;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Your Profile</title>
+    <link rel="stylesheet" href="./index.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Varela Round"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        font-family: "Varela Round", sans-serif;
+        min-height: 100vh;
+        background: url(https://prod.liveshare.vsengsaas.visualstudio.com/join?D28CF6BC9849D173D6C4D61BA313BB456B94)
+          no-repeat center center fixed;
+        background-size: cover;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
       }
-    }
 
-    /* Left column */
-    .panel {
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 14px;
-      backdrop-filter: blur(10px);
-    }
+      .profile-container {
+        margin-top: 80px;
+        max-width: 760px;
+        width: 92%;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 16px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+      }
 
-    .panel h2 {
-      font-size: 1.05rem;
-      margin: 0 0 10px 0;
-      color: rgba(255,255,255,0.9);
-    }
+      .profile-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
 
-    .row { margin: 8px 0; }
-    .row strong { display: inline-block; min-width: 90px; }
+      .profile-header h1 {
+        margin: 0;
+        font-size: 1.6rem;
+      }
 
-    .toggle-line {
-      display: flex; justify-content: space-between; align-items: center;
-      margin: 8px 0 2px;
-    }
-    .toggle-line input[type="checkbox"] { transform: scale(1.3); }
+      .profile-grid {
+        display: grid;
+        grid-template-columns: 1fr 260px;
+        gap: 16px;
+      }
 
-    /* Right column actions */
-    .actions {
-      position: sticky; top: 84px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-radius: 12px;
-      padding: 10px;
-      backdrop-filter: blur(10px);
-      display: flex; flex-direction: column; gap: 8px;
-    }
+      @media (max-width: 780px) {
+        .profile-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
-    .action-btn {
-      width: 100%;
-      text-align: left;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.18);
-      color: #fff;
-      border-radius: 10px;
-      padding: 10px 12px;
-      cursor: pointer;
-      font-size: 0.98rem;
-      transition: background 0.15s ease, transform 0.05s ease;
-    }
-    .action-btn:hover { background: rgba(255,255,255,0.16); }
-    .action-btn:active { transform: translateY(1px); }
+      /* Left column */
+      .panel {
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 14px;
+        backdrop-filter: blur(10px);
+      }
 
-    .danger {
-      background: rgba(205, 46, 59, 0.12);
-      border-color: rgba(205, 46, 59, 0.4);
-      color: #ffd6da;
-    }
-    .danger:hover {
-      background: rgba(205, 46, 59, 0.18);
-    }
+      .panel h2 {
+        font-size: 1.05rem;
+        margin: 0 0 10px 0;
+        color: rgba(255, 255, 255, 0.9);
+      }
 
-    /* Inline prompt for messaging when private */
-    .message-prompt {
-      display: none;
-      background: rgba(0, 0, 0, 0.55);
-      padding: 10px;
-      margin-top: 10px;
-      border-radius: 8px;
-      text-align: center;
-    }
-  </style>
-</head>
-<body>
-  <!-- Icons + Nav -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <script type="module">
-    import { renderNavBar } from "./src/module/nav.js";
-    renderNavBar("profile");
-  </script>
+      .row {
+        margin: 8px 0;
+      }
+      .row strong {
+        display: inline-block;
+        min-width: 90px;
+      }
 
-  <div class="profile-container">
-    <div class="profile-header">
-      <h1>Your Profile</h1>
-    </div>
+      .toggle-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin: 8px 0 2px;
+      }
+      .toggle-line input[type="checkbox"] {
+        transform: scale(1.3);
+      }
 
-    <div class="profile-grid">
-      <!-- Left: profile info -->
-      <div>
-        <div class="panel">
-          <h2>Visibility</h2>
-          <div class="toggle-line">
-            <span>Public Profile</span>
-            <input type="checkbox" id="publicProfileToggle" />
+      /* Right column actions */
+      .actions {
+        position: sticky;
+        top: 84px;
+        background: rgba(255, 255, 255, 0.06);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 12px;
+        padding: 10px;
+        backdrop-filter: blur(10px);
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .action-btn {
+        width: 100%;
+        text-align: left;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        color: #fff;
+        border-radius: 10px;
+        padding: 10px 12px;
+        cursor: pointer;
+        font-size: 0.98rem;
+        transition: background 0.15s ease, transform 0.05s ease;
+      }
+      .action-btn:hover {
+        background: rgba(255, 255, 255, 0.16);
+      }
+      .action-btn:active {
+        transform: translateY(1px);
+      }
+
+      .danger {
+        background: rgba(205, 46, 59, 0.12);
+        border-color: rgba(205, 46, 59, 0.4);
+        color: #ffd6da;
+      }
+      .danger:hover {
+        background: rgba(205, 46, 59, 0.18);
+      }
+
+      /* Inline prompt for messaging when private */
+      .message-prompt {
+        display: none;
+        background: rgba(0, 0, 0, 0.55);
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 8px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Icons + Nav -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script type="module">
+      import { renderNavBar } from "./src/module/nav.js";
+      renderNavBar("profile");
+    </script>
+
+    <div class="profile-container">
+      <div class="profile-header">
+        <h1>Your Profile</h1>
+      </div>
+
+      <div class="profile-grid">
+        <!-- Left: profile info -->
+        <div>
+          <div class="panel">
+            <h2>Visibility</h2>
+            <div class="toggle-line">
+              <span>Public Profile</span>
+              <input type="checkbox" id="publicProfileToggle" />
+            </div>
           </div>
-        </div>
 
-        <div class="panel">
-          <h2>Account</h2>
-          <div class="row"><strong>Email:</strong> <span id="userEmail">Loading...</span></div>
-          <div class="row"><strong>Name:</strong> <span id="userName">Loading...</span></div>
-          <div class="row"><strong>School:</strong> <span id="userSchool">Loading...</span></div>
-          <div id="messagePrompt" class="message-prompt">
-            Your profile must be public to use messaging.
-            <div style="margin-top:8px;">
-              <button id="makePublicBtn" class="action-btn">Make Public & Continue</button>
+          <div class="panel">
+            <h2>Account</h2>
+            <div class="row">
+              <strong>Email:</strong> <span id="userEmail">Loading...</span>
+            </div>
+            <div class="row">
+              <strong>Name:</strong> <span id="userName">Loading...</span>
+            </div>
+            <div class="row">
+              <strong>School:</strong> <span id="userSchool">Loading...</span>
+            </div>
+            <div id="messagePrompt" class="message-prompt">
+              Your profile must be public to use messaging.
+              <div style="margin-top: 8px">
+                <button id="makePublicBtn" class="action-btn">
+                  Make Public & Continue
+                </button>
+              </div>
             </div>
           </div>
         </div>
+
+        <!-- Right: actions -->
+        <aside class="actions">
+          <button id="openMessages" class="action-btn">Messages</button>
+          <button id="openSettings" class="action-btn">Settings</button>
+
+          <!-- Sign out anchored at the bottom -->
+          <div style="height: 4px"></div>
+          <button id="signOutBtn" class="action-btn danger">Sign out</button>
+        </aside>
       </div>
-
-      <!-- Right: actions -->
-      <aside class="actions">
-        <button id="openMessages" class="action-btn">Messages</button>
-        <button id="openSettings" class="action-btn">Settings</button>
-
-        <!-- Sign out anchored at the bottom -->
-        <div style="height: 4px;"></div>
-        <button id="signOutBtn" class="action-btn danger">Sign out</button>
-      </aside>
     </div>
-  </div>
 
-  <script type="module">
-    import { auth } from "./src/module/auth.js";
-    import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { db } from "./src/config/firebase.js";
-    import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    <script type="module">
+      import { auth } from "./src/module/auth.js";
+      import {
+        onAuthStateChanged,
+        signOut,
+      } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+      import { db } from "./src/config/firebase.js";
+      import {
+        doc,
+        getDoc,
+        setDoc,
+        updateDoc,
+      } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
-    const publicToggle   = document.getElementById("publicProfileToggle");
-    const userEmailEl    = document.getElementById("userEmail");
-    const userNameEl     = document.getElementById("userName");
-    const userSchoolEl   = document.getElementById("userSchool");
-    const messagePrompt  = document.getElementById("messagePrompt");
-    const makePublicBtn  = document.getElementById("makePublicBtn");
+      const publicToggle = document.getElementById("publicProfileToggle");
+      const userEmailEl = document.getElementById("userEmail");
+      const userNameEl = document.getElementById("userName");
+      const userSchoolEl = document.getElementById("userSchool");
+      const messagePrompt = document.getElementById("messagePrompt");
+      const makePublicBtn = document.getElementById("makePublicBtn");
 
-    const openMessages   = document.getElementById("openMessages");
-    const openSettings   = document.getElementById("openSettings");
-    const signOutBtn     = document.getElementById("signOutBtn");
+      const openMessages = document.getElementById("openMessages");
+      const openSettings = document.getElementById("openSettings");
+      const signOutBtn = document.getElementById("signOutBtn");
 
-    // Guard: require sign-in
-    onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        window.location.href = `./signin.html?redirect=${encodeURIComponent("./profile.html")}`;
-        return;
-      }
+      // Guard: require sign-in
+      onAuthStateChanged(auth, async (user) => {
+        if (!user) {
+          window.location.href = `./signin.html?redirect=${encodeURIComponent(
+            "./profile.html"
+          )}`;
+          return;
+        }
 
-      userEmailEl.textContent = user.email;
+        userEmailEl.textContent = user.email;
 
-      const userRef = doc(db, "users", user.uid);
-      const snap = await getDoc(userRef);
+        const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
 
-      if (snap.exists()) {
-        const data = snap.data();
-        userNameEl.textContent   = data.name || "(not set)";
-        userSchoolEl.textContent = data.school || "(not set)";
-        publicToggle.checked     = !!data.public;
-      } else {
-        // Create a starter profile document if none exists
-        await setDoc(userRef, { public: false });
-        publicToggle.checked = false;
-      }
-
-      // Toggle public flag
-      publicToggle.addEventListener("change", async () => {
-        await updateDoc(userRef, { public: publicToggle.checked });
-      });
-
-      // Messages & Settings actions
-      openMessages.addEventListener("click", async () => {
-        if (!publicToggle.checked) {
-          messagePrompt.style.display = "block";
+        if (snap.exists()) {
+          const data = snap.data();
+          userNameEl.textContent = data.name || "(not set)";
+          userSchoolEl.textContent = data.school || "(not set)";
+          publicToggle.checked = !!data.public;
         } else {
+          // Create a starter profile document if none exists
+          await setDoc(userRef, { public: false });
+          publicToggle.checked = false;
+        }
+
+        // Toggle public flag
+        publicToggle.addEventListener("change", async () => {
+          await updateDoc(userRef, { public: publicToggle.checked });
+        });
+
+        // Messages & Settings actions
+        openMessages.addEventListener("click", async () => {
+          if (!publicToggle.checked) {
+            messagePrompt.style.display = "block";
+          } else {
+            window.location.href = "./src/messages.html";
+          }
+        });
+
+        openSettings.addEventListener("click", () => {
+          window.location.href = "./settings.html";
+        });
+
+        // Make public & continue to messages
+        makePublicBtn?.addEventListener("click", async () => {
+          await updateDoc(userRef, { public: true });
+          publicToggle.checked = true;
+          messagePrompt.style.display = "none";
           window.location.href = "./src/messages.html";
-        }
-      });
+        });
 
-      openSettings.addEventListener("click", () => {
-        window.location.href = "./settings.html";
+        // Sign out anchored at bottom (red)
+        signOutBtn.addEventListener("click", async () => {
+          try {
+            await signOut(auth);
+            window.location.href = "./index.html";
+          } catch (e) {
+            alert("Sign out failed: " + e.message);
+          }
+        });
       });
-
-      // Make public & continue to messages
-      makePublicBtn?.addEventListener("click", async () => {
-        await updateDoc(userRef, { public: true });
-        publicToggle.checked = true;
-        messagePrompt.style.display = "none";
-        window.location.href = "./src/messages.html";
-      });
-
-      // Sign out anchored at bottom (red)
-      signOutBtn.addEventListener("click", async () => {
-        try {
-          await signOut(auth);
-          window.location.href = "./index.html";
-        } catch (e) {
-          alert("Sign out failed: " + e.message);
-        }
-      });
-    });
-  </script>
-</body>
+    </script>
+  </body>
 </html>

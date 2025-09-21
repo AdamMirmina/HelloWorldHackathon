@@ -16,7 +16,6 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: flex-end; /* right-aligned like other pages */
-  padding: 10px 20px;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
@@ -25,7 +24,7 @@ html, body {
 .video-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
   display: flex;
   justify-content: center;

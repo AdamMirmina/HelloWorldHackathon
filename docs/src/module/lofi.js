@@ -8,11 +8,7 @@ const timerDisplay = document.getElementById("timerDisplay");
 const timerStatus  = document.getElementById("timerStatus");
 
 const startBtn = document.getElementById("startBtn");
-document.getElementById("startBtn").addEventListener("keydown", function(event) {
-  if (event.key === "Enter") {
-    document.getElementById("startBtn").click();
-  }
-});
+
 const pauseBtn = document.getElementById("pauseBtn");
 const resetBtn = document.getElementById("resetBtn");
 

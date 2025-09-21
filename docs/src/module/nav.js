@@ -7,9 +7,6 @@ function renderNavBar(currentPage) {
   const navIcons = document.createElement("div");
   navIcons.classList.add("nav-icons");
 
-  const inSrcFolder = window.location.pathname.includes("/src/");
-  const basePath = inSrcFolder ? "./" : "./src/";
-
   // --- Back arrow (not on home page) ---
   if (currentPage !== "index") {
     const backBtn = document.createElement("span");
@@ -25,13 +22,12 @@ function renderNavBar(currentPage) {
   homeBtn.classList.add("nav-icon");
   homeBtn.innerHTML = `<i data-lucide="home"></i>`;
   homeBtn.title = "Home";
-  homeBtn.onclick = () => (window.location.href = inSrcFolder ? "../index.html" : "./index.html");
+  homeBtn.onclick = () => (window.location.href = "./index.html");
   navIcons.appendChild(homeBtn);
 
-  // --- Helper for redirecting to signin with redirect param ---
+  // --- Helper for redirecting to signin ---
   const goToSignIn = (target) => {
-    // ✅ Always use absolute path so redirect works from any folder
-    window.location.href = `/HelloWorldHackathon/signin.html?redirect=${encodeURIComponent(target)}`;
+    window.location.href = `./signin.html?redirect=${encodeURIComponent(target)}`;
   };
 
   // --- Messages ---
@@ -40,34 +36,34 @@ function renderNavBar(currentPage) {
   msgBtn.innerHTML = `<i data-lucide="message-circle"></i>`;
   msgBtn.title = "Messages";
   msgBtn.onclick = () => {
-    const target = `${basePath}messages.html`;
+    const target = "./src/messages.html"; // messages still in src
     if (!auth.currentUser) goToSignIn(target);
     else window.location.href = target;
   };
   navIcons.appendChild(msgBtn);
 
-  // --- Settings (hidden if already on settings page) ---
+  // --- Settings ---
   if (currentPage !== "settings") {
     const settingsBtn = document.createElement("span");
     settingsBtn.classList.add("nav-icon");
     settingsBtn.innerHTML = `<i data-lucide="settings"></i>`;
     settingsBtn.title = "Settings";
     settingsBtn.onclick = () => {
-      const target = `${basePath}settings.html`;
+      const target = "./settings.html"; // ✅ now points to docs/settings.html
       if (!auth.currentUser) goToSignIn(target);
       else window.location.href = target;
     };
     navIcons.appendChild(settingsBtn);
   }
 
-  // --- Profile (hidden if already on profile page) ---
+  // --- Profile ---
   if (currentPage !== "profile") {
     const profileBtn = document.createElement("span");
     profileBtn.classList.add("nav-icon");
     profileBtn.innerHTML = `<i data-lucide="user"></i>`;
     profileBtn.title = "Profile";
     profileBtn.onclick = () => {
-      const target = `${basePath}profile.html`;
+      const target = "./profile.html"; // ✅ now points to docs/profile.html
       if (!auth.currentUser) goToSignIn(target);
       else window.location.href = target;
     };

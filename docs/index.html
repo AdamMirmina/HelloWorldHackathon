@@ -5,58 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Lofi Study Room</title>
   <link rel="stylesheet" href="index.css" />
+  <base href=".">
 </head>
 
 <body>
   <!-- Home Page -->
   <div class="page active" id="homePage">
     <div class="home-content">
-      <h1 class="title">Study Room</h1>
-      <p class="subtitle">It's time to lock in</p>
-      <button class="main-timer-btn" onclick="showPage('timer')">Start Timer</button>
+      <h1 class="title">Study Companion</h1>
+      <p class="subtitle">It's time to lock in.</p>
+      <!--<button class="main-timer-btn" onclick="showPage('timer')">Go to Study Room</button>
     </div>
   </div>
 
-  <!-- Timer Page -->
-<div class="page" id="timerPage">
-
-    <!-- Timer Display -->
-  <div class="timer-display" id="timerDisplay">25:00</div>
-  <div class="timer-status" id="timerStatus">Ready to Focus</div>
-
-  <!-- Controls -->
-  <div class="timer-controls">  
-    <button id="startBtn">Start</button>
-    <button id="pauseBtn">Pause</button>
-    <button id="resetBtn">Reset</button>
-  </div>
-
-  <!-- Mode Buttons -->
-  <div class="timer-modes">  
-    <button id="focusModeBtn">Focus</button>
-    <button id="shortBreakBtn">Short Break</button>
-    <button id="longBreakBtn">Long Break</button>
-  </div>
-
-  <!-- Settings -->
-  <div class="timer-settings">
-    <input type="number" id="focusTimeInput" min="1" max="60" value="25">
-    <input type="number" id="shortBreakInput" min="1" max="30" value="5">
-    <input type="number" id="longBreakInput" min="1" max="60" value="15">
-  </div>
-
-  <!-- Stats Display -->
-  <div class="timer-stats">
-    <span id="pomodoroCount">0</span>
-    <span id="totalStudyTime">0m</span>
-    <span id="sessionCount">1</span>
-    <span id="totalSessions">0</span>
-  </div>
-</div>
-
 
   <!-- Side Arrows -->
-  <div class="home-arrow left" onclick="window.location.href='src/spots.html'">
+  <div class="home-arrow left" onclick="window.location.href=''">
     <div class="arrow-icon">&lt;</div>
     <div class="arrow-text">Discover Study Spots</div>
   </div>

@@ -141,7 +141,7 @@ function renderStudySpots() {
                 </div>
                 
                 <button class="visit-btn" onclick="visitSpot('${spot.name}', ${spot.id})">
-                    get directions & reserve
+                    get directions
                 </button>
             </div>
         `;

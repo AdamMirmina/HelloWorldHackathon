@@ -1,28 +1,54 @@
 // docs/src/module/nav.js
+// -------------------------------------------------------------
+// NavBar module: renders the top nav and the "About" pill.
+// Works both on GitHub Pages and Live Server without breaking paths.
+// -------------------------------------------------------------
+
+// Firebase deps (same as before)
 import { auth } from "./auth.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { db } from "../config/firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 /**
- * Works on both:
- *  - GitHub Pages: /HelloWorldHackathon/...
- *  - Local dev (serving /docs): /
+ * Resolve a base prefix that works in both environments.
+ * - GitHub Pages: site is served from "/HelloWorldHackathon"
+ * - Live Server (repo root): you typically hit "/docs/index.html" → use "/docs"
+ * - Live Server (serving /docs as root via settings): then BASE = ""
  */
-const REPO = "HelloWorldHackathon";
-const BASE = window.location.pathname.includes(`/${REPO}/`) ? `/${REPO}` : "";
+function resolveBasePrefix() {
+  const REPO = "HelloWorldHackathon";
+  const { hostname, pathname } = window.location;
+  const isLocal = hostname === "127.0.0.1" || hostname === "localhost";
 
-// Canonical routes
-const URLS = {
-  home:     `${BASE}/index.html`,
-  signin:   `${BASE}/signin.html`,
-  profile:  `${BASE}/profile.html`,
-  settings: `${BASE}/settings.html`,
-  messages: `${BASE}/src/messages.html`, // messages stays under /src/
-  about:    `${BASE}/about.html`,
-};
+  if (!isLocal) {
+    // GitHub Pages
+    return `/${REPO}`;
+  }
 
-// Inject once-per-page styles for the About pill
+  // Local dev:
+  // If URL contains "/docs/", LS is serving repo root → prefix with "/docs"
+  // Otherwise LS might be serving /docs as root → no prefix
+  return pathname.includes("/docs/") ? "/docs" : "";
+}
+
+/**
+ * Build canonical URLs from the computed BASE.
+ */
+function buildUrls(BASE) {
+  return {
+    home:     `${BASE}/index.html`,
+    signin:   `${BASE}/signin.html`,
+    profile:  `${BASE}/profile.html`,
+    settings: `${BASE}/settings.html`,
+    messages: `${BASE}/src/messages.html`, // lives under /src
+    about:    `${BASE}/about.html`,
+  };
+}
+
+/**
+ * Inject once-per-page styles for the floating "About" pill.
+ */
 function injectAboutStylesOnce() {
   if (document.getElementById("about-pill-styles")) return;
   const style = document.createElement("style");
@@ -56,49 +82,66 @@ function injectAboutStylesOnce() {
   document.head.appendChild(style);
 }
 
-function renderNavBar(currentPage) {
-  const topNav = document.createElement("div");
-  topNav.classList.add("top-nav");
+/**
+ * NavBar class
+ * - Renders icon buttons (Home, Messages, Settings, Profile)
+ * - Handles auth-protected routes
+ * - Adds the "About" floating pill on the index page only
+ */
+export class NavBar {
+  /**
+   * @param {Object} options
+   * @param {"index"|"settings"|"profile"|"other"} options.currentPage  Used to hide some buttons & show About pill
+   */
+  constructor({ currentPage = "other" } = {}) {
+    this.currentPage = currentPage;
+    this.BASE = resolveBasePrefix();
+    this.URLS = buildUrls(this.BASE);
+  }
 
-  const navIcons = document.createElement("div");
-  navIcons.classList.add("nav-icons");
+  /**
+   * Helper: navigate respecting the computed BASE.
+   * @param {string} url Absolute (already prefixed) URL from this.URLS
+   */
+  go(url) {
+    window.location.href = url;
+  }
 
-  // ── No back button ──
-
-  // Home
-  const homeBtn = document.createElement("span");
-  homeBtn.classList.add("nav-icon");
-  homeBtn.innerHTML = `<i data-lucide="home"></i>`;
-  homeBtn.title = "Home";
-  homeBtn.onclick = () => (window.location.href = URLS.home);
-  navIcons.appendChild(homeBtn);
-
-  // Helper: auth required
-  function goProtected(targetUrl) {
+  /**
+   * Helper: auth-gated navigation.
+   * If not logged in → send to signin with redirect back to target.
+   */
+  goProtected(targetUrl) {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        window.location.href = targetUrl;
+        this.go(targetUrl);
       } else {
-        window.location.href = `${URLS.signin}?redirect=${encodeURIComponent(targetUrl)}`;
+        const signinWithRedirect = `${this.URLS.signin}?redirect=${encodeURIComponent(targetUrl)}`;
+        this.go(signinWithRedirect);
       }
     });
   }
 
-  // Messages requires auth + public profile
-  function goMessagesGuarded() {
+  /**
+   * Messages: requires auth AND a public profile.
+   * If private, we alert and send to profile page with from=messages.
+   */
+  async goMessagesGuarded() {
     onAuthStateChanged(auth, async (user) => {
       if (!user) {
-        window.location.href = `${URLS.signin}?redirect=${encodeURIComponent(URLS.messages)}`;
+        const toSignin = `${this.URLS.signin}?redirect=${encodeURIComponent(this.URLS.messages)}`;
+        this.go(toSignin);
         return;
       }
       try {
         const snap = await getDoc(doc(db, "users", user.uid));
         const isPublic = snap.exists() && !!snap.data().public;
         if (isPublic) {
-          window.location.href = URLS.messages;
+          this.go(this.URLS.messages);
         } else {
           alert("Your profile must be Public to use Messages.");
-          window.location.href = `${URLS.profile}?from=messages`;
+          const toProfile = `${this.URLS.profile}?from=messages`;
+          this.go(toProfile);
         }
       } catch (e) {
         console.error(e);
@@ -107,51 +150,96 @@ function renderNavBar(currentPage) {
     });
   }
 
-  // Messages
-  const msgBtn = document.createElement("span");
-  msgBtn.classList.add("nav-icon");
-  msgBtn.innerHTML = `<i data-lucide="message-circle"></i>`;
-  msgBtn.title = "Messages";
-  msgBtn.onclick = goMessagesGuarded;
-  navIcons.appendChild(msgBtn);
-
-  // Settings (hide when already there)
-  if (currentPage !== "settings") {
-    const settingsBtn = document.createElement("span");
-    settingsBtn.classList.add("nav-icon");
-    settingsBtn.innerHTML = `<i data-lucide="settings"></i>`;
-    settingsBtn.title = "Settings";
-    settingsBtn.onclick = () => goProtected(URLS.settings);
-    navIcons.appendChild(settingsBtn);
+  /**
+   * Build a single icon button with a lucide icon and click handler.
+   */
+  makeIconButton({ icon, title, onClick }) {
+    const btn = document.createElement("span");
+    btn.classList.add("nav-icon");
+    btn.innerHTML = `<i data-lucide="${icon}"></i>`;
+    btn.title = title;
+    btn.onclick = onClick;
+    return btn;
   }
 
-  // Profile (hide when already there)
-  if (currentPage !== "profile") {
-    const profileBtn = document.createElement("span");
-    profileBtn.classList.add("nav-icon");
-    profileBtn.innerHTML = `<i data-lucide="user"></i>`;
-    profileBtn.title = "Profile";
-    profileBtn.onclick = () => goProtected(URLS.profile);
-    navIcons.appendChild(profileBtn);
-  }
+  /**
+   * Render the bar at the top of <body>, and optionally the About pill.
+   */
+  render() {
+    // Container
+    const topNav = document.createElement("div");
+    topNav.classList.add("top-nav");
 
-  topNav.appendChild(navIcons);
-  document.body.prepend(topNav);
+    // Icons container
+    const navIcons = document.createElement("div");
+    navIcons.classList.add("nav-icons");
 
-  // ✅ Only show the About pill on the main (index) screen
-  if (currentPage === "index") {
-    injectAboutStylesOnce();
-    if (!document.querySelector(".about-tag")) {
-      const about = document.createElement("a");
-      about.className = "about-tag";
-      about.href = URLS.about;
-      about.setAttribute("aria-label", "About this project");
-      about.textContent = "About";
-      document.body.appendChild(about);
+    // Home
+    const homeBtn = this.makeIconButton({
+      icon: "home",
+      title: "Home",
+      onClick: () => this.go(this.URLS.home),
+    });
+    navIcons.appendChild(homeBtn);
+
+    // Messages (guarded)
+    const msgBtn = this.makeIconButton({
+      icon: "message-circle",
+      title: "Messages",
+      onClick: () => this.goMessagesGuarded(),
+    });
+    navIcons.appendChild(msgBtn);
+
+    // Settings (hide when already there)
+    if (this.currentPage !== "settings") {
+      const settingsBtn = this.makeIconButton({
+        icon: "settings",
+        title: "Settings",
+        onClick: () => this.goProtected(this.URLS.settings),
+      });
+      navIcons.appendChild(settingsBtn);
+    }
+
+    // Profile (hide when already there)
+    if (this.currentPage !== "profile") {
+      const profileBtn = this.makeIconButton({
+        icon: "user",
+        title: "Profile",
+        onClick: () => this.goProtected(this.URLS.profile),
+      });
+      navIcons.appendChild(profileBtn);
+    }
+
+    // Mount nav
+    topNav.appendChild(navIcons);
+    document.body.prepend(topNav);
+
+    // About pill only on the main (index) screen
+    if (this.currentPage === "index") {
+      injectAboutStylesOnce();
+      if (!document.querySelector(".about-tag")) {
+        const about = document.createElement("a");
+        about.className = "about-tag";
+        about.href = this.URLS.about;
+        about.setAttribute("aria-label", "About this project");
+        about.textContent = "About";
+        document.body.appendChild(about);
+      }
+    }
+
+    // Render lucide icons if available
+    if (window.lucide && typeof window.lucide.createIcons === "function") {
+      window.lucide.createIcons();
     }
   }
-
-  if (window.lucide) lucide.createIcons();
 }
 
-export { renderNavBar };
+/**
+ * Backward-compatible helper so you don't have to change callers.
+ * Usage (unchanged):
+ *   import { renderNavBar } from "./src/module/nav.js";
+ *   renderNavBar("index");
+ */
+export function renderNavBar(currentPage) {
+  new NavBar({ currentPage }).render();
+}

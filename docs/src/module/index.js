@@ -4,6 +4,9 @@ class PomodoroTimer {
     this.initializeEventListeners();
     this.updateDisplay();
     this.setMode(this.state.mode);
+
+    // guard to avoid accidental double-complete spam
+    this._lastCompleteAt = 0;
   }
 
   // Default settings
@@ -19,14 +22,14 @@ class PomodoroTimer {
   }
 
   // Load timer state from localStorage
-  loadTimerState() {  
+  loadTimerState() {
     const saved = localStorage.getItem("pomodoroTimer");
     const dailyStats = localStorage.getItem("dailyStats");
 
     this.settings =
       JSON.parse(localStorage.getItem("timerSettings")) ||
       this.getDefaultSettings();
-    
+
     if (saved) {
       this.state = JSON.parse(saved);
     } else {
@@ -70,7 +73,7 @@ class PomodoroTimer {
       seconds: 0,
       isRunning: false,
       isPaused: false,
-      mode: "focus", 
+      mode: "focus",
       currentPomodoro: 1,
       totalTime: this.settings.focusTime * 60,
       currentTime: this.settings.focusTime * 60,
@@ -80,38 +83,24 @@ class PomodoroTimer {
 
   // Initialize event listeners
   initializeEventListeners() {
-    document
-      .getElementById("startBtn")
-      ?.addEventListener("click", () => this.start());
-    document
-      .getElementById("pauseBtn")
-      ?.addEventListener("click", () => this.pause());
-    document
-      .getElementById("resetBtn")
-      ?.addEventListener("click", () => this.reset());
+    document.getElementById("startBtn")?.addEventListener("click", () => this.start());
+    document.getElementById("pauseBtn")?.addEventListener("click", () => this.pause());
+    document.getElementById("resetBtn")?.addEventListener("click", () => this.reset());
 
     // Settings input (focus minutes)
-    document
-      .getElementById("focusTimeInput")
-      ?.addEventListener("change", (e) => {
-        const v = parseInt(e.target.value, 10);
-        // clamp to 1–90 and fall back to default if NaN
-        const clamped =
-          Number.isFinite(v) ? Math.max(1, Math.min(90, v)) : this.getDefaultSettings().focusTime;
-        this.settings.focusTime = clamped;
-        e.target.value = clamped; // reflect sanitized value
-        this.saveState();
-        if (this.state.mode === "focus" && !this.state.isRunning) {
-          this.setMode("focus");
-        }
-      });
-
-    // // Future: additional inputs/modes
-    // document.getElementById('shortBreakInput')?.addEventListener('change', (e) => { ... });
-    // document.getElementById('longBreakInput')?.addEventListener('change', (e) => { ... });
-    // document.getElementById('focusModeBtn')?.addEventListener('click', () => this.setMode('focus'));
-    // document.getElementById('shortBreakBtn')?.addEventListener('click', () => this.setMode('shortBreak'));
-    // document.getElementById('longBreakBtn')?.addEventListener('click', () => this.setMode('longBreak'));
+    document.getElementById("focusTimeInput")?.addEventListener("change", (e) => {
+      const v = parseInt(e.target.value, 10);
+      // clamp to 1–90 and fall back to default if NaN
+      const clamped = Number.isFinite(v)
+        ? Math.max(1, Math.min(90, v))
+        : this.getDefaultSettings().focusTime;
+      this.settings.focusTime = clamped;
+      e.target.value = clamped; // reflect sanitized value
+      this.saveState();
+      if (this.state.mode === "focus" && !this.state.isRunning) {
+        this.setMode("focus");
+      }
+    });
   }
 
   // Set timer mode (focus, short break, long break)
@@ -143,14 +132,26 @@ class PomodoroTimer {
     this.saveState();
   }
 
-  // ✅ Start countdown (fixed)
+  // ✅ Start countdown (reseed if at 00:00; resumes music)
   start() {
     if (this.state.isRunning) return; // Prevent double start
+
+    // If timer is at 00:00, reset to the current mode's default before starting
+    if (this.state.minutes === 0 && this.state.seconds === 0) {
+      this.setMode(this.state.mode); // resets minutes/seconds/totalTime/currentTime
+    }
+
     this.state.isRunning = true;
     this.state.isPaused = false;
 
     if (!this.state.sessionStartTime) {
       this.state.sessionStartTime = Date.now();
+    }
+
+    // Resume background music on start
+    const bgm = document.getElementById("backgroundMusic");
+    if (bgm && bgm.paused) {
+      bgm.play().catch(() => {}); // ignore autoplay blocks; intro click usually whitelists
     }
 
     // Real countdown logic
@@ -188,23 +189,39 @@ class PomodoroTimer {
   }
 
   // Stop timer (used internally)
-  stop() {  
+  stop() {
     this.state.isRunning = false;
     this.state.isPaused = false;
     clearInterval(this.interval);
     this.interval = null;
   }
 
-  // Reset current session
+  // ✅ Reset current session (also pauses music)
   reset() {
     this.stop();
+
+    // Pause background music when user hits Reset
+    const bgm = document.getElementById("backgroundMusic");
+    if (bgm && !bgm.paused) bgm.pause();
+
     this.state.sessionStartTime = null;
     this.setMode(this.state.mode); // Reset to current mode's default time
   }
 
-  // Complete a session (when timer reaches 0)
+  // ✅ Complete a session (pause music when timer hits 0)
   completeSession() {
+    // tiny guard to avoid duplicate completes from any edge case
+    const now = Date.now();
+    if (now - this._lastCompleteAt < 400) return;
+    this._lastCompleteAt = now;
+
     this.stop();
+
+    // Pause background music at session end
+    try {
+      const bgm = document.getElementById("backgroundMusic");
+      if (bgm && !bgm.paused) bgm.pause();
+    } catch {}
 
     // Update daily stats
     if (this.state.mode === "focus") {
@@ -218,7 +235,7 @@ class PomodoroTimer {
     this.dailyStats.totalSessions++;
     this.state.sessionStartTime = null;
 
-    // Show completion message
+    // Completion UI/notification
     this.showCompletionNotification();
 
     this.saveState();

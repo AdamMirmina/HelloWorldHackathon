@@ -1,35 +1,65 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const myButton = document.getElementById("intro");
-  const backgroundMusic = document.getElementById("backgroundMusic");
-  const timerInterface = document.getElementById("timerPage");
+// docs/src/module/lofi.js
+document.addEventListener("DOMContentLoaded", () => {
+  const introBtn = document.getElementById("intro");
+  const bgm = document.getElementById("backgroundMusic");
+  const timerPage = document.getElementById("timerPage");
 
-  myButton.addEventListener("click", function () {
-    backgroundMusic.play();
-    console.log("play!");
+  if (!introBtn || !timerPage) return; // nothing to do if elements missing
 
-    myButton.classList.add("fade-out"); // Add the fade-out class
+  let started = false;
 
-    // Optionally, remove the button from the DOM after the animation completes
-    myButton.addEventListener(
+  async function beginSession() {
+    if (started) return;
+    started = true;
+
+    // Try to play background music on user gesture
+    if (bgm) {
+      try {
+        // optional: bgm.volume = 0.6;
+        await bgm.play();
+      } catch (e) {
+        console.warn("Audio play was blocked or failed:", e);
+      }
+    }
+
+    // Fade out and remove the intro curtain
+    introBtn.classList.add("fade-out");
+    introBtn.addEventListener(
       "transitionend",
-      function () {
-        myButton.remove(); // Removes the button element
-        console.log("play!");
-      },
+      () => introBtn.remove(),
       { once: true }
-    ); // Ensures the event listener is removed after one use
+    );
 
-    timerPage.classList.add("active")
+    // Reveal the timer page
+    timerPage.classList.add("active");
+  }
+
+  // Start on click
+  introBtn.addEventListener("click", beginSession, { once: true });
+
+  // Also allow Enter/Space to start for accessibility
+  introBtn.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      beginSession();
+    }
   });
 });
 
-function showPage(pageName) {
-  document.querySelectorAll(".page").forEach((page) => {
-    page.classList.remove("active");
-  });
+/**
+ * Keep a global helper for compatibility with any inline calls.
+ * Accepts "timer" or "timerPage" and activates that page.
+ */
+function showPage(name) {
+  const targetId = name.endsWith("Page") ? name : `${name}Page`;
 
-  const targetPage = document.getElementById(pageName + "Page");
-  if (targetPage) {
-    targetPage.classList.add("active");
-  }
+  document.querySelectorAll(".page").forEach((el) => el.classList.remove("active"));
+
+  const target = document.getElementById(targetId);
+  if (target) target.classList.add("active");
 }
+
+// Expose globally if modules scope-isolate (harmless if already global)
+try {
+  window.showPage = window.showPage || showPage;
+} catch { /* noop for very old browsers */ }

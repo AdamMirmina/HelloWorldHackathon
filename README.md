@@ -1,11 +1,9 @@
-![Study Companion cover](./cover.png)
-
 # Study Companion
 
-> A hackathon prototype that helps students focus and find the right people to study with.
+> A hackathon prototype that helps students lock in and find the right people to study with.
 
-**Live site:** https://adammirmina.github.io/HelloWorldHackathon/
-**Hackathon:** Purdue Hello World — **Sep 20–21, 2025**
+**Live site:** https://adammirmina.github.io/HelloWorldHackathon/  
+**Hackathon:** Purdue Hello World — **Sep 20–21, 2025**  
 **Team:** Adam Mirmina, Bonnie Le, Kyler Yun
 
 ---
@@ -14,26 +12,35 @@
 
 Study Companion blends a focused **lofi study room**, lightweight **profiles**, and class-based **study buddy matching**.
 
-- **Study Room** – distraction-light page with lofi music and a simple timer
-- **Find Study Buddies** – match by **school, classes, and preferences**
-- **Profiles** – public/private visibility, optional contact info
+- **Study Room** – distraction-light page with lofi ambience and a simple timer  
+- **Find Study Buddies** – match by **school, classes, and preferences**  
+- **Profiles** – public/private visibility, optional contact info  
 - **Matching Score** – each candidate gets a **1–5 score** based on multiple signals:
   - Shared classes (highest weight; multiple overlaps boost the score)
   - Study style alignment (e.g., quiet vs. collaborative)
   - Time preference (morning / afternoon / evening)
 
-> ⚠️ **Prototype status:**
-> **Private Messaging** is demo-only (local, non-realtime, no cross-device sync).
+> ⚠️ **Prototype status:**  
+> **Private Messaging** is demo-only (local, non-realtime, no cross-device sync).  
 > **Study Spots** is a proof-of-concept UI (not backed by live data yet).
+
+---
+
+## Tech
+
+- **Frontend:** HTML/CSS/JS (static), hosted on **GitHub Pages**
+- **Auth/Data:** **Firebase** (client SDK)
+- **Repo layout:** the production site is served from the `docs/` directory
+- **Routing:** client-side links are normalized to work both on GitHub Pages and Live Server (see `docs/src/module/nav.js`)
 
 ---
 
 ## Project structure
 
-```text
+```
 HelloWorldHackathon/
-└─ docs/                      # GitHub Pages root (site lives here)
-   ├─ index.html              # Home
+└─ docs/                     # GitHub Pages root (site lives here)
+   ├─ index.html             # Home
    ├─ about.html
    ├─ profile.html
    ├─ settings.html
@@ -44,7 +51,7 @@ HelloWorldHackathon/
    │  ├─ lofi.html
    │  ├─ spots.html
    │  ├─ config/
-   │  │  └─ firebase.js      # Your Firebase config
+   │  │  └─ firebase.js     # Your Firebase config
    │  └─ module/
    │     ├─ auth.js
    │     ├─ nav.js
@@ -52,39 +59,69 @@ HelloWorldHackathon/
    │     ├─ messages.js
    │     ├─ profile.js
    │     └─ (other modules)
-   ├─ audio/                  # lofi audio
-   └─ wallpapers/             # background media
+   ├─ audio/                 # lofi audio
+   └─ wallpapers/            # background media
+```
+
+---
+
+## Local development
+
+1. **Clone** the repo and open it in VS Code.
+2. Install the **Live Server** extension.
+3. Right-click **`docs/index.html`** → **Open with Live Server**.
+   - Your URL should look like: `http://127.0.0.1:5500/docs/index.html`
+   - The nav is written to work both locally and on GitHub Pages.
+
+> If you see “Cannot GET /…”, make sure you launched **`docs/index.html`** (not the repo root), and that you didn’t move files out of `docs/`.
+
+---
+
+## Firebase setup
+
+Create a web app in Firebase and copy your config into:
+
+```
+docs/src/config/firebase.js
+```
+
+Example (keep keys client-side—this is normal for Firebase web apps):
+```js
+// docs/src/config/firebase.js
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+
+const firebaseConfig = {
+  apiKey: "…",
+  authDomain: "…",
+  projectId: "…",
+  storageBucket: "…",
+  messagingSenderId: "…",
+  appId: "…",
+};
+
+export const app = initializeApp(firebaseConfig);
+export { app as default };
 ```
 
 ---
 
 ## Deployment (GitHub Pages)
 
-This repo is already set up to deploy from **main → docs/**.
-Push to main, then check your site at:
+This repo is already set up to deploy from **`main` → `docs/`**.  
+Push to `main`, then check your site at:
+
+```
 https://<your-username>.github.io/HelloWorldHackathon/
+```
 
 ---
 
-## Scalability & Next Steps
+## Roadmap (nice-to-haves)
 
-- **Study Spots: real-time campus signals**
-  Integrate Purdue **UniTime** scheduling and **ID swipe aggregates** to infer building/space crowd levels in real time (privacy-preserving, anonymized).
-
-- **AI spot recommendations**
-  Rank and recommend study locations based on user preferences (noise tolerance, outlets, group size, caffeine proximity), combining live crowd data with historical trends.
-
-- **Fully live messaging**
-  Replace the demo with a realtime backend (e.g., Firebase/Firestore + WebSockets), typing indicators, read receipts, push notifications, and message retention policies.
-
-- **Multi-campus expansion**
-  Generalize the schema for multiple universities, add school-based discovery, and collaborate with student groups to seed initial data and moderation.
-
-- **Live study rooms (video)**
-  WebRTC-based focus rooms with optional camera/mic, synchronized Pomodoro timers, and presence indicators.
-
-- **More music options**
-  More curated lofi playlists, basic controls, and the ability to add ambient sounds.
+- Realtime messaging (presence, attachments), basic moderation
+- Richer profiles (avatars, bios, allow-DMs toggle, email visibility)
+- Study Spots directory with crowd levels, noise/outlet info, ratings
+- Shared focus rooms (group Pomodoro synced in small cohorts)
 
 ---
 
@@ -96,5 +133,5 @@ Profiles can be public or private. Demo messages are stored only in your browser
 
 ## License
 
-MIT
+MIT (or your preference).  
 © 2025 Study Companion Team

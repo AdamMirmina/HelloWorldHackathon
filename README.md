@@ -1,3 +1,5 @@
+![Study Companion cover](./cover.png)
+
 # Study Companion
 
 > A hackathon prototype that helps students focus and find the right people to study with.

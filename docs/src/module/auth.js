@@ -16,7 +16,8 @@ import {
 /* ------------------ Auth Init + Persistence ------------------ */
 const auth = getAuth(app);
 
-async function ensurePersistence() {
+/** Ensure we set some persistence (local → session → memory) before any action */
+const persistenceReady = (async () => {
   try {
     await setPersistence(auth, browserLocalPersistence);      // survive reloads
   } catch {
@@ -27,14 +28,13 @@ async function ensurePersistence() {
       console.warn("Using in-memory auth (private mode or storage blocked).");
     }
   }
-}
-ensurePersistence();
+})();
 
 /* ------------------ Export ------------------ */
 export { auth };
 
 /* ------------------ Demo chat storage helpers ------------------ */
-/** Wipes any demo chat caches regardless of user (used on logout). */
+/** Wipes any demo chat caches regardless of user (used on logout or auth null). */
 function clearDemoChatStorage() {
   try {
     const PREFIX = "sc_demo_threads_";
@@ -64,11 +64,15 @@ function getPasswordOrWarn() {
   const pwd = (passInput?.value ?? "");
   if (/^\s|\s$/.test(pwd)) {
     alert("Password cannot start or end with a space.");
-    throw Object.assign(new Error("password-has-edge-space"), { code: "password-has-edge-space" });
+    const err = new Error("password-has-edge-space");
+    err.code = "password-has-edge-space";
+    throw err;
   }
   if (pwd.length < 6) {
     alert("Password must be at least 6 characters.");
-    throw Object.assign(new Error("password-too-short"), { code: "password-too-short" });
+    const err = new Error("password-too-short");
+    err.code = "password-too-short";
+    throw err;
   }
   return pwd;
 }
@@ -94,6 +98,7 @@ if (signupBtn) {
   signupBtn.addEventListener("click", async (e) => {
     e.preventDefault?.();
     try {
+      await persistenceReady;
       const email = normEmail(emailInput?.value);
       const password = getPasswordOrWarn();
       await createUserWithEmailAndPassword(auth, email, password);
@@ -109,6 +114,7 @@ if (loginBtn) {
   loginBtn.addEventListener("click", async (e) => {
     e.preventDefault?.();
     try {
+      await persistenceReady;
       const email = normEmail(emailInput?.value);
       const password = getPasswordOrWarn();
       await signInWithEmailAndPassword(auth, email, password);
@@ -122,11 +128,25 @@ if (loginBtn) {
   });
 }
 
+/* ------------------ Enter-key support (calls login if present) ------------------ */
+function triggerOnEnter(ev, handler) {
+  if (ev.key === "Enter") handler?.(ev);
+}
+if (emailInput && loginBtn) {
+  const tryLogin = (ev) => loginBtn.click();
+  emailInput.addEventListener("keydown", (ev) => triggerOnEnter(ev, tryLogin));
+}
+if (passInput && loginBtn) {
+  const tryLogin = (ev) => loginBtn.click();
+  passInput.addEventListener("keydown", (ev) => triggerOnEnter(ev, tryLogin));
+}
+
 /* ------------------ Password Reset (optional) ------------------ */
 const resetBtn = $("reset");
 if (resetBtn) {
   resetBtn.addEventListener("click", async () => {
     try {
+      await persistenceReady;
       const email = normEmail(emailInput?.value);
       if (!email) return alert("Enter your email first, then click Reset.");
       await sendPasswordResetEmail(auth, email);

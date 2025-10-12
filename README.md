@@ -28,9 +28,10 @@ Study Companion blends a focused **lofi study room**, lightweight **profiles**, 
 
 ## Project structure
 
+```text
 HelloWorldHackathon/
-└─ docs/                     # GitHub Pages root (site lives here)
-   ├─ index.html             # Home
+└─ docs/                      # GitHub Pages root (site lives here)
+   ├─ index.html              # Home
    ├─ about.html
    ├─ profile.html
    ├─ settings.html
@@ -41,7 +42,7 @@ HelloWorldHackathon/
    │  ├─ lofi.html
    │  ├─ spots.html
    │  ├─ config/
-   │  │  └─ firebase.js     # Your Firebase config
+   │  │  └─ firebase.js      # Your Firebase config
    │  └─ module/
    │     ├─ auth.js
    │     ├─ nav.js
@@ -49,8 +50,9 @@ HelloWorldHackathon/
    │     ├─ messages.js
    │     ├─ profile.js
    │     └─ (other modules)
-   ├─ audio/                 # lofi audio
-   └─ wallpapers/            # background media
+   ├─ audio/                  # lofi audio
+   └─ wallpapers/             # background media
+```
 
 ---
 

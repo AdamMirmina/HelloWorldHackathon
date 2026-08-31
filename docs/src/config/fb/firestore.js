@@ -55,7 +55,10 @@ export async function getDoc(ref) {
     // A missing record is a 404 and is an ordinary answer, not a failure. Any
     // other status is a real error and must not be flattened into "no such
     // document" - that is how a broken read becomes an empty screen.
-    if (err && err.status === 404) return { id: ref.id, exists: () => false, data: () => undefined };
+    if (err && err.status === 404) {
+      if (pb.authStore.record && pb.authStore.record.id === ref.id) pb.authStore.clear();
+      return { id: ref.id, exists: () => false, data: () => undefined };
+    }
     throw err;
   }
 }
@@ -75,6 +78,16 @@ export async function setDoc(ref, data, _options) {
     await pb.collection(ref.collection).update(ref.id, stripUid(data));
   } catch (err) {
     if (err && err.status === 404) {
+      // A 404 on your OWN record means the session has outlived the account -
+      // the record was deleted while a token for it was still in localStorage.
+      // Left alone that is a dead page: every write throws and the visitor is
+      // shown a broken profile while the app still believes they are signed in.
+      // Clearing the store makes it what it actually is, a signed-out visitor,
+      // and the auth listeners route them to sign-in on their own.
+      if (pb.authStore.record && pb.authStore.record.id === ref.id) {
+        pb.authStore.clear();
+        throw new Error("Your session was for an account that no longer exists. Please sign in again.");
+      }
       throw new Error("No user record " + ref.id + " to write to. Sign-in creates it; this cannot.");
     }
     throw err;

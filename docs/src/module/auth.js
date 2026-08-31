@@ -1,5 +1,5 @@
 // docs/src/module/auth.js
-import { app } from "../config/firebase.js";
+import { app } from "../config/backend.js";
 import {
   getAuth,
   setPersistence,
@@ -11,7 +11,7 @@ import {
   sendPasswordResetEmail,
   signOut,
   onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+} from "../config/fb/auth.js";
 
 /* ------------------ Auth Init + Persistence ------------------ */
 const auth = getAuth(app);

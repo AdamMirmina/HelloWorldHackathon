@@ -29,7 +29,11 @@ Study Companion blends a focused **lofi study room**, lightweight **profiles**, 
 ## Tech
 
 - **Frontend:** HTML/CSS/JS (static), hosted on **GitHub Pages**
-- **Auth/Data:** **Firebase** (client SDK)
+- **Auth/Data:** self-hosted **PocketBase** at `helloworld-api.adammirmina.com`.
+  The hackathon build used Firebase; the client now talks to PocketBase through
+  a small compatibility layer in `docs/src/config/fb/`, so the call sites kept
+  their shape and the change is one readable module rather than 1,800 lines of
+  scattered edits.
 - **Repo layout:** the production site is served from the `docs/` directory
 - **Routing:** client-side links are normalized to work both on GitHub Pages and Live Server (see `docs/src/module/nav.js`)
 
@@ -77,31 +81,19 @@ HelloWorldHackathon/
 
 ---
 
-## Firebase setup
+## Backend setup
 
-Create a web app in Firebase and copy your config into:
+`scripts/setup-pocketbase.mjs` creates the `users` collection and its access
+rules. It is idempotent - every field is checked by name before being added -
+so it can be re-run to see what it did.
 
 ```
-docs/src/config/firebase.js
+node scripts/setup-pocketbase.mjs
 ```
 
-Example (keep keys client-side—this is normal for Firebase web apps):
-```js
-// docs/src/config/firebase.js
-import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-
-const firebaseConfig = {
-  apiKey: "…",
-  authDomain: "…",
-  projectId: "…",
-  storageBucket: "…",
-  messagingSenderId: "…",
-  appId: "…",
-};
-
-export const app = initializeApp(firebaseConfig);
-export { app as default };
-```
+It reads `PB_URL`, `PB_SUPERUSER_EMAIL` and `PB_SUPERUSER_PASSWORD` from a
+gitignored `.env`. This repository is public; no credential belongs in a
+tracked file.
 
 ---
 
@@ -137,17 +129,26 @@ curl -s -D - -o /dev/null -H "Range: bytes=0-99" https://helloworld.adammirmina.
 
 ---
 
-## Backend: migrating off Firebase
+## Backend: PocketBase
 
-Auth, profiles, matching and messages still run on the Firebase project
-`study-companion-3ad6d` via the client SDK, configured in
-`docs/src/config/firebase.js`. That is being moved to a self-hosted PocketBase
-instance, after which the Firebase project is retired.
+The Firestore model was a single `users` document per person keyed by auth uid.
+A PocketBase auth record already is that, so the whole document collapses into
+fields on the user and there is no second collection.
 
-Nothing here is broken today; this is recorded so that the Firebase project is
-not deleted on the assumption that a static site does not need it. Sign-in,
-settings and buddy matching all read from it, and deleting it first would leave
-a half-working site on a live domain.
+Access rules are single-condition on purpose, which is what makes them
+leak-safe: there is no cross-row traversal for a mismatched pair of conditions
+to satisfy separately. They were verified from a real second account rather than
+by reading them - an outsider sees public profiles only and cannot view or edit
+a private one, a signed-out visitor gets nothing at all, and a user can edit
+only their own record.
+
+Worth knowing before writing another check: PocketBase answers a rule that
+filters everything out with `200` and an empty list, not `403`. A test has to
+count items - asserting on the status code passes a leak.
+
+Password reset needs SMTP configured on the instance. Until it is, the request
+is accepted and no mail is sent, which from the visitor's side looks exactly
+like a reset that worked.
 
 ---
 

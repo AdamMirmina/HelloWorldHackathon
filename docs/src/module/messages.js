@@ -1,13 +1,13 @@
 // docs/src/module/messages.js
 import { auth } from "./auth.js";
-import { db } from "../config/firebase.js";
+import { db } from "../config/backend.js";
 import {
   onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+} from "../config/fb/auth.js";
 import {
   doc,
   getDoc,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+} from "../config/fb/firestore.js";
 
 /* ---------- DOM refs ---------- */
 const $ = (id) => document.getElementById(id);

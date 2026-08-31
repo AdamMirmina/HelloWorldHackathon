@@ -117,13 +117,13 @@
   <!-- Auth + Firestore (correct absolute paths from /docs/) -->
   <script type="module">
     import { auth } from "./src/module/auth.js";
-    import { db } from "./src/config/firebase.js";
+    import { db } from "./src/config/backend.js";
     import {
       doc, getDoc, setDoc
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    } from "./src/config/fb/firestore.js";
     import {
       onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    } from "./src/config/fb/auth.js";
 
     const publicToggle      = document.getElementById("publicProfileToggle");
     const showEmailToggle   = document.getElementById("showEmailToggle");

@@ -1,6 +1,6 @@
 import { resolveBasePrefix } from "./base.js";
 // docs/src/module/match.js
-import { app } from "../config/firebase.js";
+import { app } from "../config/backend.js";
 import {
   getFirestore,
   collection,
@@ -10,12 +10,12 @@ import {
   getDoc,
   query,
   where,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+} from "../config/fb/firestore.js";
 
 import {
   getAuth,
   onAuthStateChanged,
-} from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+} from "../config/fb/auth.js";
 
 /* ------------------ Env base (fixes 404 on Live Server) ------------------ */
 // GitHub Pages serves at /HelloWorldHackathon; Live Server often serves /docs

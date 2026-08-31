@@ -7,9 +7,9 @@ import { resolveBasePrefix } from "./base.js";
 
 // Firebase deps (same as before)
 import { auth } from "./auth.js";
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-import { db } from "../config/firebase.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+import { onAuthStateChanged } from "../config/fb/auth.js";
+import { db } from "../config/backend.js";
+import { doc, getDoc } from "../config/fb/firestore.js";
 
 /**
  * Resolve a base prefix that works in both environments.

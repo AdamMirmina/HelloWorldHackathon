@@ -259,9 +259,9 @@
   <!-- Auth gate: must be signed in AND profile must be public -->
   <script type="module">
     import { auth } from "./module/auth.js";
-    import { db } from "./../src/config/firebase.js"; /* same folder, explicit path is fine */
-    import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
-    import { doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { db } from "./../src/config/backend.js"; /* same folder, explicit path is fine */
+    import { onAuthStateChanged } from "./config/fb/auth.js";
+    import { doc, getDoc, setDoc, updateDoc } from "./config/fb/firestore.js";
 
     const gateOverlay   = document.getElementById("gateOverlay");
     const makePublicBtn = document.getElementById("makePublicBtn");

@@ -22,7 +22,7 @@ import {
 
 const BASE = resolveBasePrefix();
 
-/* ------------------ Firebase ------------------ */
+/* ------------------ Backend ------------------ */
 const db = getFirestore(app);
 const auth = getAuth(app);
 let currentUser = null;

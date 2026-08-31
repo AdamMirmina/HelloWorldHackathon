@@ -5,7 +5,7 @@ import { resolveBasePrefix } from "./base.js";
 // Works both on GitHub Pages and Live Server without breaking paths.
 // -------------------------------------------------------------
 
-// Firebase deps (same as before)
+// Backend deps. Same names as the Firebase originals: see src/config/fb/.
 import { auth } from "./auth.js";
 import { onAuthStateChanged } from "../config/fb/auth.js";
 import { db } from "../config/backend.js";

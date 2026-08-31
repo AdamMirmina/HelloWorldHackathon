@@ -55,7 +55,8 @@ HelloWorldHackathon/
    │  ├─ lofi.html
    │  ├─ spots.html
    │  ├─ config/
-   │  │  └─ firebase.js     # Your Firebase config
+   │  │  ├─ backend.js      # app + db handles
+   │  │  └─ fb/             # Firebase-shaped layer over PocketBase
    │  └─ module/
    │     ├─ auth.js
    │     ├─ nav.js

@@ -1,3 +1,4 @@
+import { resolveBasePrefix } from "./base.js";
 // docs/src/module/match.js
 import { app } from "../config/firebase.js";
 import {
@@ -18,13 +19,7 @@ import {
 
 /* ------------------ Env base (fixes 404 on Live Server) ------------------ */
 // GitHub Pages serves at /HelloWorldHackathon; Live Server often serves /docs
-function resolveBasePrefix() {
-  const REPO = "HelloWorldHackathon";
-  const { hostname, pathname } = window.location;
-  const isLocal = hostname === "127.0.0.1" || hostname === "localhost";
-  if (!isLocal) return `/${REPO}`;               // GitHub Pages
-  return pathname.includes("/docs/") ? "/docs" : ""; // Live Server
-}
+
 const BASE = resolveBasePrefix();
 
 /* ------------------ Firebase ------------------ */

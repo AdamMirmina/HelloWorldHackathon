@@ -104,9 +104,10 @@
       const signupBtn = document.getElementById("signupBtn");
       const resetLink = document.getElementById("resetLink");
 
-      // ✅ Redirect target (GitHub Pages-aware)
+      // Redirect target. Relative on purpose: it resolves correctly at a domain
+      // root, in a project subdirectory, and under Live Server alike.
       const params = new URLSearchParams(window.location.search);
-      const redirectTo = params.get("redirect") || "/HelloWorldHackathon/index.html";
+      const redirectTo = params.get("redirect") || "index.html";
 
       /* ------------ Helpers ------------ */
       const normEmail = (s) => (s || "").trim().toLowerCase();

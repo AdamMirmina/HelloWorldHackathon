@@ -1,3 +1,4 @@
+import { resolveBasePrefix } from "./base.js";
 // docs/src/module/nav.js
 // -------------------------------------------------------------
 // NavBar module: renders the top nav and the "About" pill.
@@ -16,21 +17,7 @@ import { doc, getDoc } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-
  * - Live Server (repo root): you typically hit "/docs/index.html" → use "/docs"
  * - Live Server (serving /docs as root via settings): then BASE = ""
  */
-function resolveBasePrefix() {
-  const REPO = "HelloWorldHackathon";
-  const { hostname, pathname } = window.location;
-  const isLocal = hostname === "127.0.0.1" || hostname === "localhost";
 
-  if (!isLocal) {
-    // GitHub Pages
-    return `/${REPO}`;
-  }
-
-  // Local dev:
-  // If URL contains "/docs/", LS is serving repo root → prefix with "/docs"
-  // Otherwise LS might be serving /docs as root → no prefix
-  return pathname.includes("/docs/") ? "/docs" : "";
-}
 
 /**
  * Build canonical URLs from the computed BASE.

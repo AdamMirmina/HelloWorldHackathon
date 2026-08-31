@@ -1,0 +1,25 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "helloworld",
+  // Pinned deliberately: three Cloudflare accounts are visible from this
+  // login and two of them belong to clients. An unpinned deploy asks the CLI
+  // to guess, and the wrong guess puts a personal project inside a client's
+  // account.
+  "account_id": "7add713aa8b1453972d1181241b4f88c",
+
+  "main": "worker/index.js",
+  "compatibility_date": "2026-08-31",
+  "assets": {
+    "directory": "./docs",
+    "binding": "ASSETS",
+    // Assets are served before the worker unless this is set, which would mean
+    // the https redirect and the HSTS header never ran for any real request.
+    "run_worker_first": true
+  },
+  // The lofi track is 45.9 MiB and a Workers static asset caps at 25 MiB, so
+  // it lives in R2 instead. docs/.assetsignore keeps it out of the asset
+  // upload; the worker serves it, with Range, from here.
+  "r2_buckets": [{ "binding": "AUDIO", "bucket_name": "helloworld-assets" }],
+  "routes": [{ "pattern": "helloworld.adammirmina.com", "custom_domain": true }],
+  "workers_dev": false
+}

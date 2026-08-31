@@ -2,7 +2,7 @@
 
 > A hackathon prototype that helps students lock in and find the right people to study with.
 
-**Live site:** https://adammirmina.github.io/HelloWorldHackathon/  
+**Live site:** https://helloworld.adammirmina.com  
 **Hackathon:** Purdue Hello World — **Sep 20–21, 2025**  
 **Team:** Adam Mirmina, Bonnie Le, Kyler Yun
 
@@ -39,7 +39,7 @@ Study Companion blends a focused **lofi study room**, lightweight **profiles**, 
 
 ```
 HelloWorldHackathon/
-└─ docs/                     # GitHub Pages root (site lives here)
+└─ docs/                     # site root (uploaded as Worker static assets)
    ├─ index.html             # Home
    ├─ about.html
    ├─ profile.html
@@ -105,14 +105,49 @@ export { app as default };
 
 ---
 
-## Deployment (GitHub Pages)
+## Deployment (Cloudflare)
 
-This repo is already set up to deploy from **`main` → `docs/`**.  
-Push to `main`, then check your site at:
+The site is a Cloudflare Worker serving `docs/` as static assets, on a custom
+domain. Deploy with:
 
 ```
-https://<your-username>.github.io/HelloWorldHackathon/
+npx wrangler deploy
 ```
+
+`wrangler.jsonc` pins an explicit `account_id`. That is deliberate rather than
+tidy: several Cloudflare accounts are reachable from one login, and an unpinned
+deploy asks the CLI to guess which.
+
+The lofi track lives in the `helloworld-assets` R2 bucket under `audio/`, because
+it is larger than the 25 MiB per-asset ceiling. To replace it:
+
+```
+npx wrangler r2 object put "helloworld-assets/audio/<file>.mp3" --file docs/audio/<file>.mp3 --content-type audio/mpeg --remote
+```
+
+Verify a deploy by checking bytes rather than status codes — a range request
+that returns the whole file still answers `206`, and nothing reports it:
+
+```
+curl -sI http://helloworld.adammirmina.com/            # expect 301 -> https
+curl -sI https://helloworld.adammirmina.com/           # expect Strict-Transport-Security
+curl -s -D - -o /dev/null -H "Range: bytes=0-99" https://helloworld.adammirmina.com/audio/<file>.mp3
+                                                       # expect 206 and Content-Length: 100
+```
+
+---
+
+## Backend: migrating off Firebase
+
+Auth, profiles, matching and messages still run on the Firebase project
+`study-companion-3ad6d` via the client SDK, configured in
+`docs/src/config/firebase.js`. That is being moved to a self-hosted PocketBase
+instance, after which the Firebase project is retired.
+
+Nothing here is broken today; this is recorded so that the Firebase project is
+not deleted on the assumption that a static site does not need it. Sign-in,
+settings and buddy matching all read from it, and deleting it first would leave
+a half-working site on a live domain.
 
 ---
 
